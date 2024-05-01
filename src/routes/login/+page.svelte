@@ -32,28 +32,6 @@
     return error;
    });
  }
-
- async function loginWithGoogle() {
-  const provider = new GoogleAuthProvider();
-  await signInWithPopup(auth, provider)
-   .then((result) => {
-    const { displayName, email, photoURL, uid } = result?.user;
-    session.set({
-     loggedIn: true,
-     user: {
-      displayName,
-      email,
-      photoURL,
-      uid
-     }
-    });
-
-    goto('/');
-   })
-   .catch((error) => {
-    return error;
-   });
- }
 </script>
 
 
@@ -65,8 +43,5 @@
   <button type="submit">Login</button>
  </form>
 
- <div>or</div>
-
- <button on:click={loginWithGoogle}>Login with Google</button>
  <div>Don't you have an account? <a href="/register"> Register</a></div>
 </div>
