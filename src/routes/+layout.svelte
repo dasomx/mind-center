@@ -19,7 +19,7 @@
  onMount(async () => {
   const user: any = await data.getAuthUser();
 
-  const loggedIn = !!user;
+  const loggedIn = !!user && user.emailVerified;
   session.update((cur: any) => {
    loading = false;
    return {
