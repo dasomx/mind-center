@@ -1,17 +1,37 @@
-# create-svelte
+# Mind Center
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+## About this project
 
-## Creating a project
+Mind Center is dedicated to providing support and vocational training to individuals affected by the traumatic events in the Jaranwala region of Pakistan. In August 2023, a fire caused significant damage to the local church and its congregation. In response, various organizations, including a team from Korea certified by the UN for trauma treatment methods, are offering their assistance.
 
-If you're seeing this, you've probably already done this step. Congrats!
+Our organization operates a trauma center and provides essential vocational training to help individuals rebuild their lives. In collaboration with the Future Talent Training Center, we are planning to conduct a comprehensive computer training course. As an affiliate of a university, we have been preparing for this cooperation to ensure the highest quality of training and support.
 
+## Project Setup
+
+To set up the project, follow these steps:
+
+1. Clone the repository:
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
+git clone <repository-url>
+cd <repository-directory>
+```
 
-# create a new project in my-app
-npm create svelte@latest my-app
+2. Create a .env file and add the necessary environment variables.
+3. Install dependencies
+```bash
+npm install
+```
+4. Start the Firebase local emulator:
+```bash
+npm run emulator
+```
+
+5. In a separate terminal, start the development server and open the app in a new browser tab:
+```bash
+npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
 ## Developing
@@ -25,14 +45,24 @@ npm run dev
 npm run dev -- --open
 ```
 
-## Building
+## Contributing
 
-To create a production version of your app:
+We welcome contributions to improve the Mind Center project. If you are interested in helping out, please follow these steps:
 
+1.	Choose an issue from the issues list.
+2.	Comment on the issue to notify others that you will be working on it.
+3.	Create a branch for your issue. The branch name should follow the format yourID/issue{issue #}. For example, if your ID is choipd and you are working on issue #3, the branch name should be choipd/issue3.
+ 
 ```bash
-npm run build
+git checkout -b yourID/issue{issue #}
 ```
 
-You can preview the production build with `npm run preview`.
+4.	Once you’ve made your changes, push the branch to the repository and submit a pull request.
+5.	After your pull request is reviewed and merged into the main branch, the changes will be automatically deployed to production.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+## Contact
+
+For any inquiries or further information, please contact us at info@dasomx.com
+
+Thank you for supporting Mind Center and helping us make a difference in the lives of those affected by trauma.
