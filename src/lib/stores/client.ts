@@ -5,13 +5,14 @@ import { getAnalytics } from 'firebase/analytics';
 
 // Initialize Firebase Firestore
 const firebaseConfig = {
-	apiKey: 'AIzaSyDzKHSGoEkwYuEaBwfP9z1UgqCqgFbc4YU',
-	authDomain: 'mind-center-34f1e.firebaseapp.com',
-	projectId: 'mind-center-34f1e',
-	storageBucket: 'mind-center-34f1e.appspot.com',
-	messagingSenderId: '218245904143',
-	appId: '1:218245904143:web:a573875d5c9bd4eb9ff07a',
-	measurementId: 'G-Q8Y3WW8JS2'
+	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+	appId: import.meta.env.VITE_FIREBASE_APP_ID,
+	measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+	useEmulator: import.meta.env.VITE_FIREBASE_USE_EMULATOR === 'true'
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
