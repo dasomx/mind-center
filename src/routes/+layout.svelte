@@ -6,6 +6,7 @@
 	import { auth } from '$lib/firebase.client';
 
 	import type { LayoutData } from './$types';
+	import Navigation from '$lib/Navigation.svelte';
 	export let data: LayoutData;
 
 	let loading: boolean = true;
@@ -18,8 +19,10 @@
 
 	onMount(async () => {
 		const user: any = await data.getAuthUser();
-
+		
+		
 		const loggedIn = !!user && user.emailVerified;
+		console.log('user', user, loggedIn);
 		session.update((cur: any) => {
 			loading = false;
 			return {
@@ -30,11 +33,13 @@
 			};
 		});
 
-		if (loggedIn) {
+		if (!loggedIn) {
 			goto('/');
 		}
 	});
 </script>
+
+<Navigation />
 
 {#if loading}
 	<div>Loading...</div>
