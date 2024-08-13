@@ -17,10 +17,11 @@ cd <repository-directory>
 ```
 
 2. Create a .env file and add the necessary environment variables.
-3. Install dependencies
+3. Install dependencies:
 ```bash
 npm install
 ```
+
 4. Start the Firebase local emulator:
 ```bash
 npm run emulator
@@ -45,21 +46,24 @@ npm run dev
 npm run dev -- --open
 ```
 
+## Deployment
+
+Our deployment process is automated using Firebase Hosting. After a developer submits a pull request and it is approved by a maintainer, the changes are merged into the `main` branch. This triggers an automatic build and deployment to Firebase Hosting.
+
 ## Contributing
 
 We welcome contributions to improve the Mind Center project. If you are interested in helping out, please follow these steps:
 
-1.	Choose an issue from the issues list.
-2.	Comment on the issue to notify others that you will be working on it.
-3.	Create a branch for your issue. The branch name should follow the format yourID/issue{issue #}. For example, if your ID is choipd and you are working on issue #3, the branch name should be choipd/issue3.
- 
+1. Choose an issue from the issues list.
+2. Comment on the issue to notify others that you will be working on it.
+3. Create a branch for your issue. The branch name should follow the format yourID/issue{issue #}. For example, if your ID is choipd and you are working on issue #3, the branch name should be `choipd/issue3`.
+
 ```bash
 git checkout -b yourID/issue{issue #}
 ```
 
-4.	Once you’ve made your changes, push the branch to the repository and submit a pull request.
-5.	After your pull request is reviewed and merged into the main branch, the changes will be automatically deployed to production.
-
+4. Once you’ve made your changes, push the branch to the repository and submit a pull request.
+5. After your pull request is reviewed and merged into the main branch, the changes will be automatically deployed to production.
 
 ## Contact
 
