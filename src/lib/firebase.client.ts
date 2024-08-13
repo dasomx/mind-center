@@ -11,10 +11,13 @@ export let auth: Auth;
 
 const firebaseConfig = {
 	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-	appId: import.meta.env.VITE_FIREBASE_APP_ID,
-	useEmulator: import.meta.env.VITE_FIREBASE_USE_EMULATOR === 'true',
 	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID
+	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+	appId: import.meta.env.VITE_FIREBASE_APP_ID,
+	measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+	useEmulator: import.meta.env.VITE_FIREBASE_USE_EMULATOR === 'true'
 };
 
 export const initializeFirebase = () => {
