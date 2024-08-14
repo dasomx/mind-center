@@ -1,10 +1,9 @@
 <script>
     let menus = [
-        { name: 'Menu 1', link: '/menu1' },
-        { name: 'Menu 2', link: '/menu2' },
-        { name: 'Menu 3', link: '/menu3' },
-        { name: 'Menu 4', link: '/menu4' },
-        { name: 'Menu 5', link: '/menu5' }
+        { name: 'Dashboard', link: '/' },
+        { name: 'My Clients', link: '/clients' },
+        { name: 'My Counselings', link: '/counselings' },
+        { name: 'Link / Refer', link: '/links' },
     ];
 </script>
 
