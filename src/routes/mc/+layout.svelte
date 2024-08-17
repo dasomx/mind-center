@@ -10,7 +10,7 @@
 	import Button from '@smui/button';
 	import Card from '@smui/card';
 
-	import type { LayoutData } from './$types';
+	import type { LayoutData } from '../$types';
 	export let data: LayoutData;
 
 	const defaultImage = '/favicon.png';
@@ -95,16 +95,16 @@
 							>
 						{/if}
 					</div>
-					<Item href="/">
+					<Item href="/mc">
 						<Text>Dashboard</Text>
 					</Item>
-					<Item href="/clients">
+					<Item href="/mc/clients">
 						<Text>My Clients</Text>
 					</Item>
-					<Item href="/counselings">
+					<Item href="/mc/counselings">
 						<Text>My Counselings</Text>
 					</Item>
-					<Item href="/links">
+					<Item href="/mc/links">
 						<Text>Link / Refer</Text>
 					</Item>
 				</List>
