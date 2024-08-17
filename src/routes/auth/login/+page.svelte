@@ -70,9 +70,9 @@
 				class="login-textfield"
 			/>
 			<form on:submit|preventDefault={loginWithMail} style="width: 100%">
-				<Button class="login-button" type="submit" variant="unelevated">Login</Button>
+				<Button class="login-button" type="submit" variant="unelevated" on:click={()=>errorMessage = undefined}>Login</Button>
 			</form>
-			<div>
+			<div style="display:flex; width:100%; justify-content:space-around">
 				<Button variant="text">FORGOT PASSWORD</Button>
 				<Button variant="text">HELP</Button>
 			</div>
