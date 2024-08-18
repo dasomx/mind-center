@@ -1,6 +1,6 @@
 <script lang="ts">
  // register/+page.svelte
- import { auth } from '$lib/firebase.client';
+ import { auth } from '$lib/firebase/firebase.client';
  import { createUserWithEmailAndPassword } from 'firebase/auth';
  import { goto } from '$app/navigation';
  import { session } from '$lib/session';
