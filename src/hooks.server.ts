@@ -1,7 +1,7 @@
+import { initializeFirebase } from '$lib/firebase/firebase.client';
+
 export async function handle({ event, resolve }) {
-	// Initialize Firebase
-	// initializeFirebase();
-	console.log('Server hook', event);
+	// console.log('Server hook', event);
 
 	// Pass the request
 	const response = await resolve(event);

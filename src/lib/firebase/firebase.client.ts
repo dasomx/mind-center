@@ -1,8 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import type { FirebaseApp } from 'firebase/app';
+import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
+import { connectAuthEmulator, getAuth, type Auth } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore, type Firestore } from 'firebase/firestore';
-import type { Auth } from 'firebase/auth';
 import { browser } from '$app/environment';
 
 export let db: Firestore;
@@ -21,9 +19,7 @@ const firebaseConfig = {
 };
 
 export const initializeFirebase = () => {
-	if (!browser) {
-		throw new Error("Can't use the Firebase client on the server.");
-	}
+	console.debug('initializeFirebase');
 	if (!app) {
 		app = initializeApp(firebaseConfig);
 		auth = getAuth(app);

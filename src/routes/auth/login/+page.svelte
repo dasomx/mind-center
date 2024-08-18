@@ -1,10 +1,9 @@
 <script lang="ts">
 	// login/+page.svelte
 	import { session } from '$lib/session';
-	import { auth } from '$lib/firebase.client';
+	import { auth, db } from '$lib/firebase/firebase.client';
 	import { signInWithEmailAndPassword, type UserCredential } from 'firebase/auth';
 	import { collection, query, orderBy, limit, onSnapshot, doc, getDoc } from 'firebase/firestore';
-	import { db } from '$lib/firebase.client';
 	import { goto } from '$app/navigation';
 	import Button from '@smui/button';
 	import TextField from '@smui/textfield';

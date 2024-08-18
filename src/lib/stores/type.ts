@@ -30,6 +30,14 @@ enum DisasterVictimType {
 	Others = 'Others'
 }
 
+enum CounselingType {
+	VisitHome = 'Visit Home',
+	ComeToCenter = 'Come to Center',
+	Call = 'Call',
+	Absence = 'Absence',
+	Others = 'Others'
+}
+
 enum ReferType {
 	CareerCounselor = 'Career Counselor',
 	Psychiatrist = 'Psychiatrist',
@@ -44,7 +52,15 @@ enum ResultOfAction {
 	CaseManagementRegistration = 'Case management registration'
 }
 
+enum CounselingEndingType {
+	CompleteRecovery = 'Complete recovery',
+	FindingJob = 'Finding a job',
+	HavingReliableCareer = 'Having a reliable career',
+	Others = 'Others'
+}
+
 type Client = {
+	id: string;
 	disasterName: string;
 	disasterType: DisasterType;
 	fatherName: string;
@@ -64,4 +80,46 @@ type Client = {
 	disasterVictimType: DisasterVictimType;
 	referTo: ReferType;
 	resultOfAction: ResultOfAction;
+	registeredAt: number;
+	createdAt: number;
+	updatedAt: number;
+};
+
+type Counseling = {
+	id: string;
+	clientId: string;
+	createdAt: number;
+	updatedAt: number;
+	startTime: number;
+	endTime: number;
+	counselorId: string;
+	counselingType: CounselingType;
+	emergencyIntervention?: string;
+	counselingTopic: string;
+	counselingDetails: string;
+	pictureUrls: string[];
+	psychologicalAidDetails?: string;
+	categoricalEvaluation?: {
+		psychological: number;
+		physical: number;
+		educational: number;
+		financial: number;
+		spriitual: number;
+	};
+	assessmentId?: string;
+	endingType?: CounselingEndingType;
+	reason?: string;
+};
+
+type Link = {
+	id: string;
+	clientId: string;
+	createdAt: number;
+	updatedAt: number;
+	counselorId: string;
+	referralName: string;
+	referType: ReferType;
+	receptionist: string;
+	organizationName: string;
+	reason: string;
 };
