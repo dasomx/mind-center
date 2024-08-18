@@ -3,7 +3,7 @@
 	import { session } from '$lib/session';
 	import { goto } from '$app/navigation';
 	import { signOut } from 'firebase/auth';
-	import { auth } from '$lib/firebase.client';
+	import { auth } from '$lib/firebase/firebase.client';
 
 	import Drawer, { AppContent, Content } from '@smui/drawer';
 	import List, { Item, Text, Separator } from '@smui/list';
