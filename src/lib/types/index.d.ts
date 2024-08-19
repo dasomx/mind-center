@@ -62,31 +62,33 @@ export enum CounselingEndingType {
 export const DisasterNames = ['816', '922'];
 
 export type Client = {
-	id: string;
-	disasterName: '816' | '922';
-	disasterType: DisasterType;
-	fatherName: string;
-	name: string;
-	gender: GenderType;
-	dob: string;
-	cnicNumber: string;
-	code: string;
-	contactNoHome: string;
-	mobile: string;
-	address: string;
-	job: Jobs;
-	schoolName: string;
-	grade: string;
-	companyName: string;
-	otherJobs: string;
-	disasterVictimType: DisasterVictimType;
-	referTo: ReferType;
-	resultOfAction: ResultOfAction;
-	status: string;
-	sessions: number;
-	regDate: string;
-	createdAt: number;
-	updatedAt: number;
+	id?: string;
+	disasterName?: '816' | '922';
+	disasterType?: DisasterType;
+	fatherName?: string;
+	name?: string;
+	gender?: GenderType;
+	dob?: string;
+	cnicNumber?: string;
+	code?: string;
+	contactNoHome?: string;
+	mobile?: string;
+	address?: string;
+	job?: Jobs;
+	schoolName?: string;
+	grade?: string;
+	companyName?: string;
+	otherJobs?: string;
+	disasterVictimType?: DisasterVictimType;
+	referTo?: ReferType;
+	resultOfAction?: ResultOfAction;
+	status?: ClientStatus;
+	sessions?: number;
+	regDate?: string;
+	caseManager?: string;
+	medicalCoverage?: string;
+	createdAt?: number;
+	updatedAt?: number;
 };
 
 export type Counseling = {

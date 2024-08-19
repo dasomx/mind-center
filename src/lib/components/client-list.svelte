@@ -40,8 +40,8 @@
 				<Cell><StatusChip status={status}/></Cell>
 				<Cell>{sessions}</Cell>
 				<Cell>
-					<Button>Edit</Button>
-					<Button>Delete</Button>
+					<Button on:click={()=>alert('under construction :)')}>Edit</Button>
+					<Button on:click={()=>alert('under construction :)')}>Delete</Button>
 				</Cell>
 			</Row>
 		{/each}
