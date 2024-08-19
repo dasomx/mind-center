@@ -1,151 +1,231 @@
-<script>
-	import TextField from '@smui/textfield';
-	import Select, { Option } from '@smui/select';
-	import List, { Item, Text } from '@smui/list';
-	import LayoutGrid, { Cell } from '@smui/layout-grid';
+<script lang="ts">
 	import Button from '@smui/button';
-	import {
-		DISASTER_TYPES,
-		GENDERS,
-		JOBS,
-		DISASTER_VICTIM_TYPES,
-		REFER_TO,
-		RESULT_OF_ACTION
-	} from '$lib/config';
-	import { onMount } from 'svelte';
+	import Textfield from '@smui/textfield';
+	import Select, { Option } from '@smui/select';
+	import { DISASTER_NAMES } from '$lib/config';
+	import ClientList from '$lib/components/client-list.svelte';
+	import { ClientStatus, DisasterType, DisasterVictimType, GenderType, Jobs, ReferType, ResultOfAction, type Client } from '$lib/types/index.d.ts';
 
-	let disasterName = '';
-	let disasterType = '';
-	let fatherName = '';
-	let name = '';
-	let gender = '';
-	let dob = '';
-	let cnicNumber = '';
-	let code = '';
-	let contactNoHome = '';
-	let mobile = '';
-	let address = '';
-	let job = '';
-	let schoolName = '';
-	let grade = '';
-	let companyName = '';
-	let otherJobs = '';
-	let disasterVictimType = '';
-	let referTo = '';
-	let resultOfAction = '';
+	let name: string = '';
+	let disasterName: string = '';
+	let mobile: string = '';
 
-	onMount(() => {
-		// 필요한 초기화 작업을 여기에 작성합니다.
-	});
-
-	function clearForm() {
-		// 폼 초기화 로직을 여기에 작성합니다.
-		disasterName = '';
-		disasterType = '';
-		fatherName = '';
+	function initValues() {
 		name = '';
-		gender = '';
-		dob = '';
-		cnicNumber = '';
-		code = '';
-		contactNoHome = '';
+		disasterName = '';
 		mobile = '';
-		address = '';
-		job = '';
-		schoolName = '';
-		grade = '';
-		companyName = '';
-		disasterVictimType = '';
-		referTo = '';
-		resultOfAction = '';
 	}
 
-	function submitForm() {
-		// 폼 제출 로직을 여기에 작성합니다.
-		console.log({
-			disasterName,
-			disasterType,
-			fatherName,
-		});
-	}
+	const clients: Client[] = [
+		{
+			id: '1',
+			disasterName: '816',
+			disasterType: DisasterType.HouseBurnt,
+			fatherName: 'Muhammad Raza',
+			name: 'Ahmed Raza',
+			gender: GenderType.Male,
+			dob: '1987-03-12',
+			cnicNumber: '35202-1234567-1',
+			code: 'LHR-001',
+			contactNoHome: '042-1234567',
+			mobile: '0300-1234567',
+			address: '123 Main Street, Lahore',
+			job: Jobs.JobWork,
+			schoolName: 'Govt. High School Lahore',
+			grade: 'B',
+			companyName: 'Lahore Construction Ltd.',
+			otherJobs: 'Part-time Tutor',
+			disasterVictimType: DisasterVictimType.Father,
+			referTo: ReferType.CareerCounselor,
+			resultOfAction: ResultOfAction.CaseManagementRegistration,
+			status: ClientStatus.Init,
+			sessions: 10,
+			regDate: '2024-08-01',
+			createdAt: 1691740800000,
+			updatedAt: 1691740800000
+		},
+		{
+			id: '2',
+			disasterName: '922',
+			disasterType: DisasterType.Looted,
+			fatherName: 'Abdul Haq',
+			name: 'Fatima Haq',
+			gender: GenderType.Female,
+			dob: '1990-07-25',
+			cnicNumber: '35202-7654321-0',
+			code: 'LHR-002',
+			contactNoHome: '042-7654321',
+			mobile: '0301-2345678',
+			address: '456 Market Road, Lahore',
+			job: Jobs.Student,
+			schoolName: 'Lahore College for Women',
+			grade: 'A',
+			companyName: '',
+			otherJobs: 'Freelance Writer',
+			disasterVictimType: DisasterVictimType.Daughter,
+			referTo: ReferType.Psychiatrist,
+			resultOfAction: ResultOfAction.CounselingFollowUp,
+			status: ClientStatus.Completed,
+			sessions: 5,
+			regDate: '2024-07-20',
+			createdAt: 1690502400000,
+			updatedAt: 1690502400000
+		},
+		{
+			id: '3',
+			disasterName: '816',
+			disasterType: DisasterType.Killed,
+			fatherName: 'Sami Ullah',
+			name: 'Bilal Sami',
+			gender: GenderType.Male,
+			dob: '1985-11-10',
+			cnicNumber: '35202-9876543-2',
+			code: 'LHR-003',
+			contactNoHome: '042-9876543',
+			mobile: '0302-3456789',
+			address: '789 Garden Town, Lahore',
+			job: Jobs.JobWork,
+			schoolName: 'Aitchison College',
+			grade: 'A+',
+			companyName: 'Lahore General Hospital',
+			otherJobs: 'Medical Consultant',
+			disasterVictimType: DisasterVictimType.Relative,
+			referTo: ReferType.VocationalTrainer,
+			resultOfAction: ResultOfAction.ServiceTermination,
+			status: ClientStatus.InProgress,
+			sessions: 15,
+			regDate: '2024-07-15',
+			createdAt: 1689811200000,
+			updatedAt: 1689811200000
+		},
+		{
+			id: '4',
+			disasterName: '922',
+			disasterType: DisasterType.ChurchBurnt,
+			fatherName: 'Ali Akbar',
+			name: 'Zainab Akbar',
+			gender: GenderType.Female,
+			dob: '1995-06-20',
+			cnicNumber: '35202-1122334-5',
+			code: 'LHR-004',
+			contactNoHome: '042-3344556',
+			mobile: '0303-4567890',
+			address: '101 Gulberg, Lahore',
+			job: Jobs.Student,
+			schoolName: 'Punjab University',
+			grade: 'A',
+			companyName: '',
+			otherJobs: 'Volunteer',
+			disasterVictimType: DisasterVictimType.Sister,
+			referTo: ReferType.Others,
+			resultOfAction: ResultOfAction.CounselingFollowUp,
+			status: ClientStatus.Pending,
+			sessions: 3,
+			regDate: '2024-07-30',
+			createdAt: 1690684800000,
+			updatedAt: 1690684800000
+		},
+		{
+			id: '5',
+			disasterName: '816',
+			disasterType: DisasterType.Injured,
+			fatherName: 'Rehman Malik',
+			name: 'Usman Malik',
+			gender: GenderType.Male,
+			dob: '1992-02-28',
+			cnicNumber: '35202-5566778-9',
+			code: 'LHR-005',
+			contactNoHome: '042-5566778',
+			mobile: '0304-5678901',
+			address: '202 DHA, Lahore',
+			job: Jobs.JobWork,
+			schoolName: 'Beaconhouse School',
+			grade: 'B+',
+			companyName: 'Malik Traders',
+			otherJobs: '',
+			disasterVictimType: DisasterVictimType.Son,
+			referTo: ReferType.Lawyer,
+			resultOfAction: ResultOfAction.CaseManagementRegistration,
+			status: ClientStatus.InProgress,
+			sessions: 8,
+			regDate: '2024-08-05',
+			createdAt: 1691193600000,
+			updatedAt: 1691193600000
+		}
+	];
+
 </script>
 
 <div>
-	<h1>General Counseling Registration</h1>
-
-	<div class="grid-container">
-		<TextField label="Disaster Name" bind:value={disasterName} required />
-		<Select label="Disaster Type" bind:value={disasterType}>
-			{#each DISASTER_TYPES as type (type)}
-				<Option value={type}>{type}</Option>
-			{/each}
-		</Select>
-		<TextField label="Father Name" bind:value={fatherName} />
-		<TextField label="Name" bind:value={name} required />
-		<Select label="Gender" bind:value={gender}>
-			{#each GENDERS as type (type)}
-				<Option value={type}>{type}</Option>
-			{/each}
-		</Select>
-		<TextField label="DoB" bind:value={dob} type="date" />
-		<TextField label="CNIC Number" bind:value={cnicNumber} required />
-		<TextField label="Code (system)" bind:value={code} />
-		<TextField label="Contact No. / Home" bind:value={contactNoHome} />
-		<TextField label="Mobile" bind:value={mobile} />
-		<TextField label="Address" bind:value={address} />
+	<h6>My Clients</h6>
+	<h5>My Clients</h5>
+	<div class="search-container">
+		<div class="inner-container">
+			<Textfield variant="outlined" label="Name" bind:value={name} type="text" style="flex: 1" />
+			<Select variant="outlined" label="Disaster Name" bind:value={disasterName} style="flex: 1">
+				{#each DISASTER_NAMES as type (type)}
+					<Option value={type}>{type}</Option>
+				{/each}
+			</Select>
+			<Textfield
+				variant="outlined"
+				label="Mobile"
+				bind:value={mobile}
+				type="phone"
+				style="flex: 1"
+			/>
+		</div>
+		<div style="align-self: flex-end;">
+			<Button on:click={initValues}>Clear</Button>
+			<Button variant="raised">Search</Button>
+		</div>
 	</div>
-
-	<!-- 추가 정보 -->
-	<div>
-		<div>
-			<Select label="Job" bind:value={job}>
-				{#each JOBS as type (type)}
-					<Option value={type}>{type}</Option>
-				{/each}
-			</Select>
-			{#if job === 'Student'}
-				<TextField label="School Name" bind:value={schoolName} />
-				<TextField label="Grade" bind:value={grade} />
-			{:else if job === 'Job / Work'}
-				<TextField label="Company Name" bind:value={companyName} />
-			{:else if job === 'Others'}
-				<TextField label="Other jobs" bind:value={otherJobs} />
-			{/if}
+	<div class="list-container">
+		<div class="list-header">
+			<div>
+			<span>Total</span>
+			<span style="margin-left: 17px"><strong>{clients.length}</strong></span>
+			</div>
+			<Button variant="raised">Add Client</Button>
 		</div>
-		<div>
-			<Select label="Disaster Victim type" bind:value={disasterVictimType} required>
-				{#each DISASTER_VICTIM_TYPES as type (type)}
-					<Option value={type}>{type}</Option>
-				{/each}
-			</Select>
-		</div>
-		<div>
-			<Select label="Refer to" bind:value={referTo}>
-				{#each REFER_TO as type (type)}
-					<Option value={type}>{type}</Option>
-				{/each}
-			</Select>
-		</div>
-		<div>
-			<Select label="Result of action" bind:value={resultOfAction}>
-				{#each RESULT_OF_ACTION as type (type)}
-					<Option value={type}>{type}</Option>
-				{/each}
-			</Select>
-		</div>
-		<LayoutGrid class="grid-container">
-			<Cell>
-				<Button variant="outlined" on:click={clearForm}>Clear</Button>
-				<Button variant="unelevated" on:click={submitForm}>Submit</Button>
-			</Cell>
-		</LayoutGrid>
+		<ClientList data={clients.map((client, index)=>({no: index+1, ...client}))}/>
 	</div>
 </div>
 
 <style>
-	.grid-container {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 10px;
+	.search-container {
+		align-self: stretch;
+		flex-grow: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: flex-end;
+		gap: 12px;
+		padding: 24px;
+		border-radius: 4px;
+		border: solid 1px #e0e0e0;
+		background-color: #fff;
+	}
+	.inner-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0;
+		background-color: white;
+		gap: 24px;
+		width: 100%;
+	}
+
+	.list-container {
+		margin-top: 24px;
+		background-color: white;
+		border-radius: 8px;
+	}
+	.list-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 12px 24px;
+		border-bottom: solid 1px #e0e0e0;
 	}
 </style>

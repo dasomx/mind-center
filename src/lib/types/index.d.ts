@@ -1,4 +1,4 @@
-enum DisasterType {
+export enum DisasterType {
 	Killed = 'Killed',
 	Injured = 'Injured',
 	ChurchBurnt = 'Church burnt',
@@ -7,19 +7,19 @@ enum DisasterType {
 	Other = 'Other'
 }
 
-enum GenderType {
+export enum GenderType {
 	Male = 'Male',
 	Female = 'Female'
 }
 
-enum Jobs {
+export enum Jobs {
 	None = 'None',
 	Student = 'Student',
 	JobWork = 'Job / Work',
 	Others = 'Others'
 }
 
-enum DisasterVictimType {
+export enum DisasterVictimType {
 	Father = 'Father',
 	Mother = 'Mother',
 	Son = 'Son',
@@ -30,7 +30,7 @@ enum DisasterVictimType {
 	Others = 'Others'
 }
 
-enum CounselingType {
+export enum CounselingType {
 	VisitHome = 'Visit Home',
 	ComeToCenter = 'Come to Center',
 	Call = 'Call',
@@ -38,7 +38,7 @@ enum CounselingType {
 	Others = 'Others'
 }
 
-enum ReferType {
+export enum ReferType {
 	CareerCounselor = 'Career Counselor',
 	Psychiatrist = 'Psychiatrist',
 	VocationalTrainer = 'Vocational Trainer',
@@ -46,22 +46,24 @@ enum ReferType {
 	Others = 'Others'
 }
 
-enum ResultOfAction {
+export enum ResultOfAction {
 	CounselingFollowUp = 'Counseling follow-up',
 	ServiceTermination = 'Service termination',
 	CaseManagementRegistration = 'Case management registration'
 }
 
-enum CounselingEndingType {
+export enum CounselingEndingType {
 	CompleteRecovery = 'Complete recovery',
 	FindingJob = 'Finding a job',
 	HavingReliableCareer = 'Having a reliable career',
 	Others = 'Others'
 }
 
-type Client = {
+export const DisasterNames = ['816', '922'];
+
+export type Client = {
 	id: string;
-	disasterName: string;
+	disasterName: '816' | '922';
 	disasterType: DisasterType;
 	fatherName: string;
 	name: string;
@@ -80,12 +82,14 @@ type Client = {
 	disasterVictimType: DisasterVictimType;
 	referTo: ReferType;
 	resultOfAction: ResultOfAction;
-	registeredAt: number;
+	status: string;
+	sessions: number;
+	regDate: string;
 	createdAt: number;
 	updatedAt: number;
 };
 
-type Counseling = {
+export type Counseling = {
 	id: string;
 	clientId: string;
 	createdAt: number;
@@ -111,7 +115,7 @@ type Counseling = {
 	reason?: string;
 };
 
-type Link = {
+export type Link = {
 	id: string;
 	clientId: string;
 	createdAt: number;
@@ -123,3 +127,11 @@ type Link = {
 	organizationName: string;
 	reason: string;
 };
+
+export enum ClientStatus {
+	Init = 'Init',
+	InProgress = 'In Progress',
+	Completed = 'Completed',
+	Canceled = 'Canceled',
+	Pending = 'Pending'
+}
