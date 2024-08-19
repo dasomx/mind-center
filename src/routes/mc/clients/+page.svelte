@@ -5,15 +5,25 @@
 	import { DISASTER_NAMES } from '$lib/config';
 	import ClientList from '$lib/components/client-list.svelte';
 	import { ClientStatus, DisasterType, DisasterVictimType, GenderType, Jobs, ReferType, ResultOfAction, type Client } from '$lib/types/index.d.ts';
+  import Snackbar, { Label, Actions } from '@smui/snackbar';
+  import IconButton from '@smui/icon-button';
+	import { goto } from '$app/navigation';
 
 	let name: string = '';
 	let disasterName: string = '';
 	let mobile: string = '';
+	let snackbarInfo: Snackbar;
+	let information: string = '';
 
 	function initValues() {
 		name = '';
 		disasterName = '';
 		mobile = '';
+	}
+
+	function showSnackbarInfo(info: string) {
+		information = info;
+		snackbarInfo.open();
 	}
 
 	const clients: Client[] = [
@@ -177,7 +187,7 @@
 		</div>
 		<div style="align-self: flex-end;">
 			<Button on:click={initValues}>Clear</Button>
-			<Button variant="raised">Search</Button>
+			<Button variant="raised" on:click={()=>showSnackbarInfo('미구현')} >Search</Button>
 		</div>
 	</div>
 	<div class="list-container">
@@ -186,11 +196,18 @@
 			<span>Total</span>
 			<span style="margin-left: 17px"><strong>{clients.length}</strong></span>
 			</div>
-			<Button variant="raised">Add Client</Button>
+			<Button variant="raised" on:click={()=>goto('/mc/clients/new')}>Add Client</Button>
 		</div>
 		<ClientList data={clients.map((client, index)=>({no: index+1, ...client}))}/>
 	</div>
 </div>
+<Snackbar bind:this={snackbarInfo}>
+  <Label
+    >{information}</Label>
+  <Actions>
+    <IconButton class="material-icons" title="Dismiss">close</IconButton>
+  </Actions>
+</Snackbar>
 
 <style>
 	.search-container {
