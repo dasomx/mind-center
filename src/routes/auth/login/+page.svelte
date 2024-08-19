@@ -36,7 +36,7 @@
 							uid: user?.uid
 						}
 					});
-					goto('/');
+					goto('/mc');
 				} else {
 					errorMessage = 'Your account has not been approved yet.';
 				}

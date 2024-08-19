@@ -32,7 +32,7 @@
 			imageUrl = user.photoURL?.length > 0 ? user.photoURL : defaultImage;
 		}
 		console.log('imageUrl', imageUrl);
-		const loggedIn = !!user && user.emailVerified;
+		const loggedIn = !!user; // ignore emailVerified for now && user.emailVerified;
 		console.log('user', user, loggedIn);
 		session.update((cur: any) => {
 			loading = false;
@@ -45,7 +45,7 @@
 		});
 
 		if (!loggedIn) {
-			goto('/');
+			goto('/auth/login');
 		}
 	});
 </script>
@@ -90,7 +90,7 @@
 						{:else}
 							<Button
 								on:click={async () => {
-									goto('/login');
+									goto('/auth/login');
 								}}>Login</Button
 							>
 						{/if}
@@ -111,7 +111,7 @@
 			</Content>
 		</Drawer>
 
-		<AppContent>
+		<AppContent class="app-content">
 			<Content>
 				<div class="main-content">
 					<slot />
@@ -125,8 +125,9 @@
 	/* These classes are only needed because the
     drawer is in a container on the page. */
 	.drawer-container {
-		position: relative;
+		/* position: relative; */
 		display: flex;
+		flex: 1;
 		height: 100vh;
 		border: 1px solid var(--mdc-theme-text-hint-on-background, rgba(0, 0, 0, 0.1));
 		overflow: hidden;
@@ -138,17 +139,16 @@
 		background-color: white;
 	}
 
-	* :global(.app-content) {
-		flex: auto;
-		overflow: auto;
-		position: relative;
-		flex-grow: 1;
+	:global(.app-content) {
+		flex: 1;
+		width: 100%;
 	}
 
 	.main-content {
 		overflow: auto;
 		padding: 16px;
-		height: 100%;
+		height: 100vh;
+		width: 100%;
 		box-sizing: border-box;
 	}
 
