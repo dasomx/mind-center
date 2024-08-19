@@ -1,3 +1,5 @@
+export const DISASTER_NAMES = ['816', '922'];
+
 export const DISASTER_TYPES = [
 	'Killed',
 	'Injured',

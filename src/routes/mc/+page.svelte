@@ -42,11 +42,11 @@
 	}
 	.mc_dash_small_list {
 		flex: 1;
-		background-color: white  !important;
- padding: 24px;
-  border-radius: 8px;
-  border: solid 1px #e0e0e0;
-  background-color: #fff;
+		background-color: white !important;
+		padding: 24px;
+		border-radius: 8px;
+		border: solid 1px #e0e0e0;
+		background-color: #fff;
 	}
 	.mc_dash_small_item_title {
 		height: 32px;
