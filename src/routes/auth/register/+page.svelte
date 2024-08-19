@@ -20,7 +20,7 @@
       loading: false
      };
     });
-    goto('/');
+    goto('/mc');
    })
    .catch((error) => {
     throw new Error(error);

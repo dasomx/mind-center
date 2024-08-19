@@ -20,12 +20,16 @@
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
+		"@event-calendar/core": "^3.4.0",
+		"@event-calendar/day-grid": "^3.4.0",
+		"@event-calendar/time-grid": "^3.4.0",
 		"@material/typography": "^14.0.0",
 		"@mdi/js": "^7.4.47",
 		"@playwright/test": "^1.28.1",
 		"@smui/button": "^7.0.0-beta.18",
 		"@smui/card": "^7.0.0",
 		"@smui/common": "^7.0.0-beta.18",
+		"@smui/data-table": "^7.0.0",
 		"@smui/drawer": "^7.0.0",
 		"@smui/form-field": "^7.0.0-beta.18",
 		"@smui/layout-grid": "^7.0.0",
