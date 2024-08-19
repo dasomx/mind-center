@@ -32,7 +32,7 @@
 			imageUrl = user.photoURL?.length > 0 ? user.photoURL : defaultImage;
 		}
 		console.log('imageUrl', imageUrl);
-		const loggedIn = !!user && user.emailVerified;
+		const loggedIn = !!user; // ignore emailVerified for now && user.emailVerified;
 		console.log('user', user, loggedIn);
 		session.update((cur: any) => {
 			loading = false;
@@ -90,7 +90,7 @@
 						{:else}
 							<Button
 								on:click={async () => {
-									goto('/login');
+									goto('/auth/login');
 								}}>Login</Button
 							>
 						{/if}

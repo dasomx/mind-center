@@ -1,6 +1,5 @@
 <!-- Dashboard -->
 <script lang="ts">
-	import Paper from '@smui/paper';
 	import SmallTable from '$lib/components/small-table.svelte';
 	import Calendar from '$lib/components/calendar.svelte';
 
@@ -13,24 +12,24 @@
 <p>Welcome to the dashboard</p>
 <div style="display: flex; flex-direction:column; gap: 16px">
 	<div class="container">
-		<Paper variant="outlined" class="mc_dash_small_list">
+		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">My Clients</div>
 			<SmallTable />
-		</Paper>
-		<Paper variant="outlined" class="mc_dash_small_list">
+		</div>
+		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Active Individual Counseling</div>
 			<SmallTable />
-		</Paper>
-		<Paper variant="outlined" class="mc_dash_small_list">
+		</div>
+		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Link/Refer List</div>
 			<SmallTable />
-		</Paper>
+		</div>
 	</div>
 	<div>
-		<Paper variant="outlined" class="mc_dash_small_list">
+		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Calendar</div>
 			<Calendar />
-		</Paper>
+		</div>
 	</div>
 </div>
 
@@ -41,9 +40,13 @@
 		justify-content: space-between; /* 필요에 따라 조정 */
 		gap: 16px;
 	}
-	:global(.mc_dash_small_list) {
+	.mc_dash_small_list {
 		flex: 1;
-		background-color: white;
+		background-color: white  !important;
+ padding: 24px;
+  border-radius: 8px;
+  border: solid 1px #e0e0e0;
+  background-color: #fff;
 	}
 	.mc_dash_small_item_title {
 		height: 32px;
