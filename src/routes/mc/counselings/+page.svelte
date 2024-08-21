@@ -1,12 +1,22 @@
-<script>
-    import TextField from "@smui/textfield";
-    import Button from "@smui/button";
+<script lang="ts">
+	import Button from '@smui/button';
+	import Textfield from '@smui/textfield';
+	import Select, { Option } from '@smui/select';
+	import { DISASTER_NAMES } from '$lib/config';
+	import CounselingList from '$lib/components/counseling-list.svelte';
+	import { DisasterName, DisasterType, CounselingType, CounselingStatus, CounselingEndingType, RelationVictim, type Counseling } from '$lib/types/index.d.ts';
+    import Snackbar, { Label, Actions } from '@smui/snackbar';
+    import IconButton from '@smui/icon-button';
+	import { goto } from '$app/navigation';
 
-    let name = "";
-    let disasterType = "";
-    let mobile = "";
-    let dob = "";
-    let code = "";
+    let name: string = '';
+	let disasterName: string = '';
+	let mobile: string = '';
+	let snackbarInfo: Snackbar;
+	let information: string = '';
+
+
+    let disasterType: string = "";
     let counselingDate = "";
     let startTime = "";
     let endTime = "";
@@ -27,7 +37,16 @@
     let financialProfile = "";
     let spiritualProfile = "";
 
-    let searchResults = [];
+	function initValues() {
+		name = '';
+		disasterName = '';
+		mobile = '';
+	}
+
+	function showSnackbarInfo(info: string) {
+		information = info;
+		snackbarInfo.open();
+	}
 
     function calculateEndTime() {
         // Calculate the end time based on the start time
@@ -37,29 +56,187 @@
     function saveCounseling() {
         // Save all the input values to the database or perform any other necessary actions
     }
+
+
+    const counselings: Counseling[] = [
+		{
+			id: '1',
+			clientId: '1',
+			disasterType: DisasterType.HouseBurnt,
+			disasterName: 816,
+			clientName: 'Ahmed Raza',
+            clientMobile: '0300-1234567',
+            counselorId: '1',
+			counselingType: CounselingType.VisitHome,
+            relationVictim: RelationVictim.Family,
+			status: CounselingStatus.Completed,
+			startTime: 1691750800000,
+			endTime: 1691750800000,
+            date: '2024-08-20',
+			createdAt: 1691740800000,
+			updatedAt: 1691740800000,
+            emergencyIntervention: "Some Text",
+            counselingTopic: "Some Text",
+            counselingDetails: "Some Text",
+            pictureUrls: [""],
+            psychologicalAidDetails: "Some Text",
+            categoricalEvaluation: {
+                psychological: 10,
+                physical: 10,
+                educational: 10,
+                financial: 10,
+                spriitual: 10
+            },
+            assessmentId: '1',
+            treatmentEnding: null,
+            endingType: null
+		},
+        {
+			id: '2',
+			clientId: '1',
+			disasterType: DisasterType.HouseBurnt,
+			disasterName: 816,
+			clientName: 'Ahmed Raza',
+            clientMobile: '0300-1234567',
+            counselorId: '1',
+			counselingType: CounselingType.ComeToCenter,
+            relationVictim: RelationVictim.Neighbor,
+			status: CounselingStatus.Planned,
+			startTime: 1691740800000,
+			endTime: 1691750800000,
+            date: '2024-09-24',
+			createdAt: 1691740800000,
+			updatedAt: 1691740800000,
+            emergencyIntervention: "Some Text",
+            counselingTopic: "Some Text",
+            counselingDetails: "Some Text",
+            pictureUrls: [""],
+            psychologicalAidDetails: "Some Text",
+            categoricalEvaluation: {
+                psychological: 10,
+                physical: 10,
+                educational: 10,
+                financial: 10,
+                spriitual: 10
+            },
+            assessmentId: '1',
+            treatmentEnding: null,
+            endingType: null
+		},
+        {
+			id: '3',
+			clientId: '2',
+			disasterType: DisasterType.Looted,
+			disasterName: 922,
+			clientName: 'Fatima Haq',
+            clientMobile: '0301-2345678',
+            counselorId: '1',
+			counselingType: CounselingType.ComeToCenter,
+            relationVictim: RelationVictim.Neighbor,
+			status: CounselingStatus.Planned,
+			startTime: 1691740800000,
+			endTime: 1691750800000,
+            date: '2024-10-28',
+			createdAt: 1691740800000,
+			updatedAt: 1691740800000,
+            emergencyIntervention: "Some Text",
+            counselingTopic: "Some Text",
+            counselingDetails: "Some Text",
+            pictureUrls: [""],
+            psychologicalAidDetails: "Some Text",
+            categoricalEvaluation: {
+                psychological: 10,
+                physical: 10,
+                educational: 10,
+                financial: 10,
+                spriitual: 10
+            },
+            assessmentId: '1',
+            treatmentEnding: null,
+            endingType: null
+		}
+    ];
+
 </script>
 
-<main>
-    <h1>내담자의 상담내용 입력</h1>
+<div>
+	<h6>My Counselings</h6>
+	<h5>My Clients</h5>
+	<div class="search-container">
+		<div class="inner-container">
+			<Textfield variant="outlined" label="Name" bind:value={name} type="text" style="flex: 1" />
+			<Select variant="outlined" label="Disaster Name" bind:value={disasterName} style="flex: 1">
+				{#each DISASTER_NAMES as type (type)}
+					<Option value={type}>{type}</Option>
+				{/each}
+			</Select>
+			<Textfield
+				variant="outlined"
+				label="Mobile"
+				bind:value={mobile}
+				type="phone"
+				style="flex: 1"
+			/>
+		</div>
+		<div style="align-self: flex-end;">
+			<Button on:click={initValues}>Clear</Button>
+			<Button variant="raised" on:click={()=>showSnackbarInfo('미구현')} >Search</Button>
+		</div>
+	</div>
 
-    <!-- Search functionality -->
-    <div>
-        <TextField placeholder="Name or Mobile" bind:value={name} />
-        <!-- Display the search results here -->
-        <div>
-            {#if searchResults && searchResults.length > 0}
-                {#each searchResults as result}
-                    <div>{result.name} - {result.mobile}</div>
-                {/each}
-            {:else}
-                <div>No results found</div>
-            {/if}
-        </div>
-        <TextField label="Financial Profile" bind:value={financialProfile} />
+	<div class="list-container">
+		<div class="list-header">
+			<div>
+			<span>Total</span>
+			<span style="margin-left: 17px"><strong>{counselings.length}</strong></span>
+			</div>
+			<Button variant="raised" on:click={()=>goto('/mc/counseling/new')}>Add Counseling</Button>
+		</div>
+		<CounselingList data={counselings.map((counseling, index)=>({no: index+1, ...counseling}))}/>
+	</div>
+</div>
+<Snackbar bind:this={snackbarInfo}>
+  <Label
+    >{information}</Label>
+  <Actions>
+    <IconButton class="material-icons" title="Dismiss">close</IconButton>
+  </Actions>
+</Snackbar>
 
-        <TextField label="Spiritual Profile" bind:value={spiritualProfile} />
-    </div>
+<style>
+	.search-container {
+		align-self: stretch;
+		flex-grow: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: flex-end;
+		gap: 12px;
+		padding: 24px;
+		border-radius: 4px;
+		border: solid 1px #e0e0e0;
+		background-color: #fff;
+	}
+	.inner-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0;
+		background-color: white;
+		gap: 24px;
+		width: 100%;
+	}
 
-    <!-- Save button -->
-    <Button on:click={saveCounseling}>Save</Button>
-</main>
+	.list-container {
+		margin-top: 24px;
+		background-color: white;
+		border-radius: 8px;
+	}
+	.list-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 12px 24px;
+		border-bottom: solid 1px #e0e0e0;
+	}
+</style>

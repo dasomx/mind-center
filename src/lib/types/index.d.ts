@@ -38,6 +38,7 @@ export enum CounselingType {
 	Others = 'Others'
 }
 
+
 export enum ReferType {
 	CareerCounselor = 'Career Counselor',
 	Psychiatrist = 'Psychiatrist',
@@ -59,12 +60,10 @@ export enum CounselingEndingType {
 	Others = 'Others'
 }
 
-export const DisasterNames = ['816', '922'];
+export const DisasterName = ['816', '922'];
 
 export type Client = {
 	id?: string;
-	disasterName?: '816' | '922';
-	disasterType?: DisasterType;
 	fatherName?: string;
 	name?: string;
 	gender?: GenderType;
@@ -79,6 +78,8 @@ export type Client = {
 	grade?: string;
 	companyName?: string;
 	otherJobs?: string;
+	disasterName?: DisasterName;
+	disasterType?: DisasterType;
 	disasterVictimType?: DisasterVictimType;
 	referTo?: ReferType;
 	resultOfAction?: ResultOfAction;
@@ -93,13 +94,18 @@ export type Client = {
 
 export type Counseling = {
 	id: string;
-	clientId: string;
-	createdAt: number;
-	updatedAt: number;
+	clientId: Client['id'];
+	clientName: Client['name'];
+	clientMobile: Client['mobile'];
+	disasterName?: DisasterName;
+	disasterType?: DisasterType;
+	date?: string;
 	startTime: number;
 	endTime: number;
 	counselorId: string;
 	counselingType: CounselingType;
+	relationVictim: RelationVictim;
+	status: CounselingStatus;
 	emergencyIntervention?: string;
 	counselingTopic: string;
 	counselingDetails: string;
@@ -113,7 +119,12 @@ export type Counseling = {
 		spriitual: number;
 	};
 	assessmentId?: string;
-	endingType?: CounselingEndingType;
+	createdAt: number;
+	updatedAt: number;
+
+	// Ending Session Only
+	treatmentEnding: string | null;
+	endingType?: CounselingEndingType | null;
 	reason?: string;
 };
 
@@ -136,4 +147,18 @@ export enum ClientStatus {
 	Completed = 'Completed',
 	Canceled = 'Canceled',
 	Pending = 'Pending'
+}
+
+export enum CounselingStatus {
+	Planned = 'Planned',
+	Completed = 'Completed',
+	Canceled = 'Canceled'
+}
+
+export enum RelationVictim {
+	Self = 'Self',
+	Family = 'Family',
+	Neighbor = 'Neighbor',
+	RelatedWorker = 'Related Worker',
+	Others = 'Others'
 }
