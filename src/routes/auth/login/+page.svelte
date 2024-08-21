@@ -53,7 +53,7 @@
 <div class="container">
 	<Paper class="login-container">
 		<div class="login-form">
-			<h6 style="text-align: center;">Login</h6>
+			<div><img src="/mclogo.svg" alt="Mind Center logo" width="194" height="28" style="margin-bottom:40px"/></div>
 			<TextField
 				variant="outlined"
 				bind:value={email}
