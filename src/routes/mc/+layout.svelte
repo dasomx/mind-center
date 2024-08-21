@@ -58,7 +58,7 @@
 			<Content class="menu-content">
 				<List>
 					<Item ripple={false}>
-						<Text>Mind Center</Text>
+						<div><img src="/mclogo.svg" alt="Mind Center logo" width="166" height="24" style="margin-top:24px;margin-bottom:16px;"/></div>
 					</Item>
 					<div style="display:flex; height: 58px!important; margin: 8px;border-radius: 4px;border: solid 1px #e8e8e8;
 					">
