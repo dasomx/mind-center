@@ -15,28 +15,6 @@
 	let snackbarInfo: Snackbar;
 	let information: string = '';
 
-
-    let disasterType: string = "";
-    let counselingDate = "";
-    let startTime = "";
-    let endTime = "";
-    let counselor = "";
-    let counselingType = "";
-    let informationProviderRelationship = "";
-    let informationProviderName = "";
-    let informationProviderAddress = "";
-    let informationProviderMobile = "";
-    let informationProviderHome = "";
-    let disasterTypeOptions = ["Killed", "Injured", "Church burnt", "House burnt", "Looted", "Other"];
-    let counselingTopics = "";
-    let counselingDetail = "";
-    let psychologicalProfile = "";
-    let physicalProfile = "";
-    let socialProfile = "";
-    let educationalProfile = "";
-    let financialProfile = "";
-    let spiritualProfile = "";
-
 	function initValues() {
 		name = '';
 		disasterName = '';
@@ -56,7 +34,6 @@
     function saveCounseling() {
         // Save all the input values to the database or perform any other necessary actions
     }
-
 
     const counselings: Counseling[] = [
 		{
@@ -133,6 +110,38 @@
             counselorId: '1',
 			counselingType: CounselingType.ComeToCenter,
             relationVictim: RelationVictim.Neighbor,
+			status: CounselingStatus.Canceled,
+			startTime: 1691740800000,
+			endTime: 1691750800000,
+            date: '2024-10-15',
+			createdAt: 1691740800000,
+			updatedAt: 1691740800000,
+            emergencyIntervention: "Some Text",
+            counselingTopic: "Some Text",
+            counselingDetails: "Some Text",
+            pictureUrls: [""],
+            psychologicalAidDetails: "Some Text",
+            categoricalEvaluation: {
+                psychological: 10,
+                physical: 10,
+                educational: 10,
+                financial: 10,
+                spriitual: 10
+            },
+            assessmentId: '1',
+            treatmentEnding: null,
+            endingType: null
+		},
+        {
+			id: '4',
+			clientId: '2',
+			disasterType: DisasterType.Looted,
+			disasterName: 922,
+			clientName: 'Fatima Haq',
+            clientMobile: '0301-2345678',
+            counselorId: '1',
+			counselingType: CounselingType.ComeToCenter,
+            relationVictim: RelationVictim.Neighbor,
 			status: CounselingStatus.Planned,
 			startTime: 1691740800000,
 			endTime: 1691750800000,
@@ -161,7 +170,7 @@
 
 <div>
 	<h6>My Counselings</h6>
-	<h5>My Clients</h5>
+	<h5>My Counselings</h5>
 	<div class="search-container">
 		<div class="inner-container">
 			<Textfield variant="outlined" label="Name" bind:value={name} type="text" style="flex: 1" />
