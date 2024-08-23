@@ -1,7 +1,18 @@
 import { initializeApp, getApps, type FirebaseApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth, type Auth } from 'firebase/auth';
-import { connectFirestoreEmulator, getFirestore, type Firestore } from 'firebase/firestore';
+import {
+	addDoc,
+	collection,
+	connectFirestoreEmulator,
+	deleteDoc,
+	doc,
+	Firestore,
+	getFirestore,
+	setDoc,
+	Timestamp
+} from 'firebase/firestore';
 import { browser } from '$app/environment';
+import type { Client } from '$lib/types';
 
 export let db: Firestore;
 export let app: FirebaseApp;
@@ -30,4 +41,35 @@ export const initializeFirebase = () => {
 			connectFirestoreEmulator(db, 'localhost', 9080);
 		}
 	}
+};
+
+export const saveClient = async (client: Client) => {
+	// covert the client object to fit the firestore schema
+	// undefiend values are not allowed in firestore
+	Object.keys(client).forEach((key) => {
+		if (client[key] === '' || client[key] === undefined) {
+			client[key] = null;
+		}
+	});
+	client.createdAt = client.createdAt || Timestamp.now();
+	client.updatedAt = Timestamp.now();
+
+	// if the client has an id, update the client, otherwise create a new client
+	let docRef = null;
+	if (!client) {
+		throw new Error('Client is required.');
+	}
+	if (client.id) {
+		docRef = doc(db, 'clients', client.id);
+		await setDoc(docRef, client);
+	} else {
+		const colRef = collection(db, 'clients');
+		docRef = await addDoc(colRef, client);
+	}
+	return docRef.id;
+};
+
+export const deleteClient = async (clientId: string) => {
+	const docRef = doc(db, 'clients', clientId);
+	return await deleteDoc(docRef);
 };
