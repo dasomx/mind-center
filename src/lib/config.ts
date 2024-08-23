@@ -41,7 +41,7 @@ export const RESULT_OF_ACTION = [
 ];
 
 export const INIT_CLIENT: Client = {
-	id: '',
+	id: null,
 	disasterName: '',
 	disasterType: '',
 	fatherName: '',

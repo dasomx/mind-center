@@ -63,7 +63,7 @@ export enum CounselingEndingType {
 export const DisasterName = ['816', '922'];
 
 export type Client = {
-	id?: string;
+	id?: string | null;
 	fatherName?: string;
 	name?: string;
 	gender?: GenderType;
@@ -88,8 +88,8 @@ export type Client = {
 	regDate?: string;
 	caseManager?: string;
 	medicalCoverage?: string;
-	createdAt?: number;
-	updatedAt?: number;
+	createdAt?: firebase.firestore.Timestamp;
+	updatedAt?: firebase.firestore.Timestamp;
 };
 
 export type Counseling = {

@@ -14,36 +14,20 @@
 		DISASTER_VICTIM_TYPES,
 		REFER_TO
 	} from '$lib/config';
+	import { saveClient } from '$lib/firebase/firebase.client';
 
-	export let data: Client = {
-		id: '3',
-		disasterName: '816',
-		disasterType: 'Killed',
-		fatherName: 'Sami Ullah',
-		name: 'Bilal Sami',
-		gender: 'Male',
-		dob: '1985-11-10',
-		cnicNumber: '35202-9876543-2',
-		code: 'LHR-003',
-		contactNoHome: '042-9876543',
-		mobile: '0302-3456789',
-		address: '789 Garden Town, Lahore',
-		job: 'Job / Work',
-		schoolName: 'Aitchison College',
-		grade: 'A+',
-		companyName: 'Lahore General Hospital',
-		otherJobs: 'Medical Consultant',
-		disasterVictimType: 'Relative',
-		referTo: 'Vocational Trainer',
-		resultOfAction: 'Service termination',
-		caseManager: 'Ali',
-		medicalCoverage: 'Yes',
-		status: 'In Progress',
-		sessions: 15,
-		regDate: '2024-07-15',
-		createdAt: 1689811200000,
-		updatedAt: 1689811200000
-	};
+	export let data: Client | undefined = undefined;
+	console.log('data ', data);
+
+	async function save() {
+		if(!data) return;
+		try {
+			await saveClient(data)
+		} catch(error) {
+			console.error('Error saving client', error);
+		}
+		console.log('data ', data);
+	}
 </script>
 
 <div class="container">
@@ -81,9 +65,6 @@
 			</Cell>
 			<Cell>
 				<Textfield label="Contact No. Home" variant="outlined" bind:value={data.contactNoHome} />
-			</Cell>
-			<Cell>
-				<Textfield label="Mobile" variant="outlined" bind:value={data.mobile} />
 			</Cell>
 			<Cell span={12}>
 				<Textfield
@@ -144,9 +125,6 @@
 				</Select>
 			</Cell>
 			<Cell>
-				<Textfield label="Father's Name" variant="outlined" bind:value={data.fatherName} />
-			</Cell>
-			<Cell>
 				<Select
 					variant="outlined"
 					label="Disaster Victim Type"
@@ -194,7 +172,7 @@
 		</LayoutGrid>
 		<div style="align-self: flex-end;">
 			<Button variant="outlined" on:click={()=>history.back()}>Close</Button>
-			<Button variant="raised" on:click={()=>alert('under construction :)')}>Save</Button>
+			<Button variant="raised" on:click={save}>Save</Button>
 		</div>
 	</div>
 </div>
