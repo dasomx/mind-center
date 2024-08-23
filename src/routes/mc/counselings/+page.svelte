@@ -199,7 +199,7 @@
 			<span>Total</span>
 			<span style="margin-left: 17px"><strong>{counselings.length}</strong></span>
 			</div>
-			<Button variant="raised" on:click={()=>goto('/mc/counseling/new')}>Add Counseling</Button>
+			<Button variant="raised" on:click={()=>goto('/mc/counselings/new')}>Add Counseling</Button>
 		</div>
 		<CounselingList data={counselings.map((counseling, index)=>({no: index+1, ...counseling}))}/>
 	</div>

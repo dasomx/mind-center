@@ -169,7 +169,7 @@
 <div>
 	<h6>My Clients</h6>
 	<h5>My Clients</h5>
-	<div class="search-container">
+	<div class="container">
 		<div class="inner-container">
 			<Textfield variant="outlined" label="Name" bind:value={name} type="text" style="flex: 1" />
 			<Select variant="outlined" label="Disaster Name" bind:value={disasterName} style="flex: 1">

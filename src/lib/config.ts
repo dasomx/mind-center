@@ -1,4 +1,4 @@
-import type { Client } from './types';
+import { type Client, type Counseling } from './types/index.d.ts';
 
 export const DISASTER_NAMES = ['816', '922'];
 
@@ -68,4 +68,37 @@ export const INIT_CLIENT: Client = {
 	regDate: '',
 	createdAt: 0,
 	updatedAt: 0
+};
+
+export const INIT_COUNSELING: Counseling = {
+	id: '',
+	clientId: '',
+	disasterType: '',
+	disasterName: '',
+	clientName: '',
+	clientMobile: '',
+	counselorId: '1',
+	counselingType: '',
+	relationVictim: '',
+	status: '',
+	startTime: '',
+	endTime: '',
+	date: '',
+	createdAt: '',
+	updatedAt: '',
+	emergencyIntervention: "",
+	counselingTopic: "",
+	counselingDetails: "",
+	pictureUrls: [""],
+	psychologicalAidDetails: "S",
+	categoricalEvaluation: {
+		psychological: 0,
+		physical: 0,
+		educational: 0,
+		financial: 0,
+		spriitual: 0
+	},
+	assessmentId: '',
+	treatmentEnding: '',
+	endingType: ''
 };

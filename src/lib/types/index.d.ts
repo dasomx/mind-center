@@ -38,7 +38,6 @@ export enum CounselingType {
 	Others = 'Others'
 }
 
-
 export enum ReferType {
 	CareerCounselor = 'Career Counselor',
 	Psychiatrist = 'Psychiatrist',
