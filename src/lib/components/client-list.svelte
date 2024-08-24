@@ -5,6 +5,9 @@
 	import Select, {Option} from '@smui/select';
 	import IconButton from '@smui/icon-button';
 	import type { Client } from '$lib/types';
+	import { goto } from '$app/navigation';
+	import { routes } from '$lib/config';
+	import { convertTimestampToDateString } from '$lib/firebase/utils';
 	export let data: Data[] = [];
 	type Data = Client & { no: number };
 	let rowsPerPage = 10;
@@ -29,10 +32,10 @@
 		</Row>
 	</Head>
 	<Body>
-		{#each data as { no, regDate, name, disasterName, gender, dob, status, sessions }}
+		{#each data as { id, no, createdAt, name, disasterName, gender, dob, status, sessions }}
 			<Row class="content-row">
 				<Cell>{no}</Cell>
-				<Cell>{regDate}</Cell>
+				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
 				<Cell>{name}</Cell>
 				<Cell>{disasterName}</Cell>
 				<Cell>{gender}</Cell>
@@ -40,7 +43,7 @@
 				<Cell><StatusChip status={status}/></Cell>
 				<Cell>{sessions}</Cell>
 				<Cell>
-					<Button on:click={()=>alert('under construction :)')}>Edit</Button>
+					<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Edit</Button>
 					<Button on:click={()=>alert('under construction :)')}>Delete</Button>
 				</Cell>
 			</Row>

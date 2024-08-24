@@ -7,6 +7,4 @@
     console.log('data ', data);
 </script>
 
-
-<h1>Hello,{data.props.client.name}</h1>
 <ClientForm data={data.props.client}/>
