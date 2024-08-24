@@ -10,3 +10,14 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 *.log
 /.vscode
+.bash_history
+.bash_logout
+.bashrc
+.cache/
+.config/
+.lesshst
+.npm/
+.profile
+.ssh/
+.viminfo
+.vim

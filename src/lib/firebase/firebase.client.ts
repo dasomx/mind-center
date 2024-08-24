@@ -29,6 +29,7 @@ const firebaseConfig = {
 	useEmulator: import.meta.env.VITE_FIREBASE_USE_EMULATOR === 'true'
 };
 
+
 export const initializeFirebase = () => {
 	console.debug('initializeFirebase');
 	if (!app) {
@@ -37,8 +38,10 @@ export const initializeFirebase = () => {
 		db = getFirestore(app);
 
 		if (firebaseConfig.useEmulator) {
-			connectAuthEmulator(auth, 'http://127.0.0.1:9099');
-			connectFirestoreEmulator(db, 'localhost', 9080);
+			const emulatorAuthUrl = import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_URL?? 'http://127.0.0.1:9099';
+			const emulatorHost = import.meta.env.VITE_FIREBASE_EMULATOR_HOST ?? 'localhost';
+			connectAuthEmulator(auth, emulatorAuthUrl);
+			connectFirestoreEmulator(db, emulatorHost, 9080);
 		}
 	}
 };
