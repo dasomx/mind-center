@@ -99,7 +99,7 @@ export type Counseling = {
 	disasterName?: DisasterName;
 	disasterType?: DisasterType;
 	date?: string;
-	startTime: number;
+	startTime: date;
 	endTime: number;
 	counselorId: string;
 	counselingType: CounselingType;

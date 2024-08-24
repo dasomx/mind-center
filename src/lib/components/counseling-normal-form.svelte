@@ -11,7 +11,11 @@
 		DISASTER_TYPES,
 		DISASTER_VICTIM_TYPES,
 		REFER_TO,
+		INIT_COUNSELING
 	} from '$lib/config';
+
+	let data: Counseling = INIT_COUNSELING;
+	console.log('data ', data);
 
 	let selectedSession = 'normal';
 </script>
@@ -40,6 +44,20 @@
 
 		<div class="grid-title">Normal Session</div>
 		<LayoutGrid class="grid-container">		
+			<Cell>
+				<Textfield
+					bind:value={data.startTime}
+					label="DateTime-Local"
+					type="datetime-local"
+    			/>
+			</Cell>
+			<Cell>
+				
+			</Cell>
+			<Cell>
+				<Textfield label="End Time" variant="outlined" type="time"/>
+			</Cell>
+
 		</LayoutGrid>
 		
 		<div class="grid-title">Information Provider</div>
