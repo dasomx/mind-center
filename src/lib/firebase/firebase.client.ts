@@ -37,8 +37,9 @@ export const initializeFirebase = () => {
 		db = getFirestore(app);
 
 		if (firebaseConfig.useEmulator) {
-			const emulatorHost = import.meta.env.VITE_FIREBASE_EMULATOR_HOST ?? 'http://127.0.0.1:9099';
-			const emulatorAuthUrl = import.meta.env.VITE_FIREBASE_EMULATOR_AUTH_URL ?? 'localhost';
+			const emulatorHost = import.meta.env.VITE_FIREBASE_EMULATOR_HOST ?? 'localhost';
+			const emulatorAuthUrl =
+				import.meta.env.VITE_FIREBASE_EMULATOR_AUTH_URL ?? 'http://127.0.0.1:9099';
 			connectAuthEmulator(auth, emulatorAuthUrl);
 			connectFirestoreEmulator(db, emulatorHost, 9080);
 		}
@@ -74,4 +75,14 @@ export const saveClient = async (client: Client) => {
 export const deleteClient = async (clientId: string) => {
 	const docRef = doc(db, 'clients', clientId);
 	return await deleteDoc(docRef);
+};
+
+export const getClient = async (clientId: string) => {
+	const docRef = doc(db, 'clients', clientId);
+	const docSnap = await docRef.get();
+	if (docSnap.exists()) {
+		return docSnap.data();
+	} else {
+		throw new Error('Client not found');
+	}
 };
