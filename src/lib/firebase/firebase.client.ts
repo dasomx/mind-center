@@ -7,12 +7,17 @@ import {
 	deleteDoc,
 	doc,
 	Firestore,
+	getDoc,
+	getDocs,
 	getFirestore,
+	limit,
+	orderBy,
+	query,
 	setDoc,
 	Timestamp
 } from 'firebase/firestore';
 import { browser } from '$app/environment';
-import type { Client } from '$lib/types';
+import type { Client, Counseling, Link } from '$lib/types';
 
 export let db: Firestore;
 export let app: FirebaseApp;
@@ -54,20 +59,22 @@ export const saveClient = async (client: Client) => {
 			client[key] = null;
 		}
 	});
+
 	client.createdAt = client.createdAt || Timestamp.now();
 	client.updatedAt = Timestamp.now();
+	const { id, ...rest } = client;
 
 	// if the client has an id, update the client, otherwise create a new client
 	let docRef = null;
 	if (!client) {
 		throw new Error('Client is required.');
 	}
-	if (client.id) {
-		docRef = doc(db, 'clients', client.id);
-		await setDoc(docRef, client);
+	if (id) {
+		docRef = doc(db, 'clients', id);
+		await setDoc(docRef, rest);
 	} else {
 		const colRef = collection(db, 'clients');
-		docRef = await addDoc(colRef, client);
+		docRef = await addDoc(colRef, rest);
 	}
 	return docRef.id;
 };
@@ -79,10 +86,40 @@ export const deleteClient = async (clientId: string) => {
 
 export const getClient = async (clientId: string) => {
 	const docRef = doc(db, 'clients', clientId);
-	const docSnap = await docRef.get();
-	if (docSnap.exists()) {
-		return docSnap.data();
-	} else {
-		throw new Error('Client not found');
-	}
+	const clientDoc = await getDoc(docRef);
+	return clientDoc.exists() ? { id: clientDoc.id, ...clientDoc.data() } : null;
+};
+
+// fetch clients from Firestore
+export const fetchClients = async () => {
+	const q = query(collection(db, 'clients'), orderBy('createdAt', 'desc'), limit(5));
+	const querySnapshot = await getDocs(q);
+	const clients: Client[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		clients.push({ id: doc.id, ...(doc.data() as Omit<Client, 'id'>) });
+	});
+	return clients;
+};
+
+export const fetchCounselings = async () => {
+	const q = query(collection(db, 'counselings'), orderBy('createdAt', 'desc'), limit(5));
+	const querySnapshot = await getDocs(q);
+	const counselings: Counseling[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		counselings.push({ id: doc.id, ...(doc.data() as Omit<Counseling, 'id'>) });
+	});
+	return counselings;
+};
+
+export const fetchLinks = async () => {
+	const q = query(collection(db, 'links'), orderBy('createdAt', 'desc'), limit(5));
+	const querySnapshot = await getDocs(q);
+	const links: Link[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		links.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
+	});
+	return links;
 };

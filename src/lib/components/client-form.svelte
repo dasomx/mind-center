@@ -12,19 +12,40 @@
 		DISASTER_NAMES,
 		DISASTER_TYPES,
 		DISASTER_VICTIM_TYPES,
-		REFER_TO
+		REFER_TO,
+
+		STATUS_TYPES,
+
+		RESULT_OF_ACTION
+
+
 	} from '$lib/config';
 	import { saveClient } from '$lib/firebase/firebase.client';
+	import { goto } from '$app/navigation';
 
 	export let data: Client | undefined = undefined;
+
+	// data의 값을 변경할 때 medicalCoverage가 undefined일 경우를 처리
+	data = {
+		...data,
+		caseManager: data?.caseManager ?? null,
+		medicalCoverage: data?.medicalCoverage ?? null
+	};
+	
 	console.log('data ', data);
+	let saving = false;
 
 	async function save() {
 		if(!data) return;
 		try {
+			saving = true;
 			await saveClient(data)
+			goto('/mc/clients');
 		} catch(error) {
 			console.error('Error saving client', error);
+
+		} finally {
+			saving = false;
 		}
 		console.log('data ', data);
 	}
@@ -34,6 +55,13 @@
 	<div class="form-container">
 		<div class="grid-title">General Information</div>
 		<LayoutGrid class="grid-container">
+			<Cell>
+				<Select variant="outlined" label="Status" bind:value={data.status}>
+					{#each STATUS_TYPES as option}
+						<Option value={option}>{option}</Option>
+					{/each}
+				</Select>
+			</Cell>
 			<Cell>
 				<Textfield label="Name" variant="outlined" bind:value={data.name} />
 			</Cell>
@@ -162,17 +190,15 @@
 					bind:value={data.resultOfAction}
 					style="width: 100%"
 				>
-					<Option value="Service termination">Service termination</Option>
-					<Option value="Case Management Registration">Case Management Registration</Option>
-					<Option value="Case Management Closure">Case Management Closure</Option>
-					<Option value="Case Management Transfer">Case Management Transfer</Option>
-					<Option value="Case Management Re-Open">Case Management Re-Open</Option>
+					{#each RESULT_OF_ACTION as option}
+						<Option value={option}>{option}</Option>
+					{/each}				
 				</Select>
 			</Cell>
 		</LayoutGrid>
 		<div style="align-self: flex-end;">
 			<Button variant="outlined" on:click={()=>history.back()}>Close</Button>
-			<Button variant="raised" on:click={save}>Save</Button>
+			<Button variant="raised" on:click={save}>{saving ? 'Saving...' : 'Save'}</Button>
 		</div>
 	</div>
 </div>
