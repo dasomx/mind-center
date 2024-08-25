@@ -36,10 +36,15 @@ export const REFER_TO = [
 ];
 
 export const RESULT_OF_ACTION = [
-	'Counseling follow-up',
-	'Service termination',
-	'Case management registration'
+	'Counseling Follow-up',
+	'Service Termination',
+	'Case Management Registration',
+	'Case Management Closure',
+	'Case Management Transfer',
+	'Case Management Re-open'
 ];
+
+export const STATUS_TYPES = ['Init', 'In Progress', 'Completed', 'Cancelled', 'Pending', 'Deleted'];
 
 export const INIT_CLIENT: Client = {
 	id: null,
@@ -112,3 +117,14 @@ export const COUNSELING_TYPE = [
 	'Absence',
 	'Others'
 ];
+export const routes = {
+	home: '/',
+	login: '/auth/login',
+	logout: '/auth/logout',
+	clients: '/mc/clients',
+	counselings: '/mc/counselings',
+	links: '/mc/links',
+	profile: '/mc/profile',
+	settings: '/mc/settings',
+	about: '/about'
+};

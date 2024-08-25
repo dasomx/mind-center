@@ -6,6 +6,7 @@
 	/** @type {import('./$types').PageData} */
 	export let data;
 	console.log('data', data);
+	const { clients, counselings, links } = data;
 </script>
 
 <h4>Dashboard</h4>
@@ -14,15 +15,15 @@
 	<div class="container">
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">My Clients</div>
-			<SmallTable />
+			<SmallTable data={clients} />
 		</div>
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Active Individual Counseling</div>
-			<SmallTable />
+			<SmallTable data={counselings} />
 		</div>
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Link/Refer List</div>
-			<SmallTable />
+			<SmallTable data={links}/>
 		</div>
 	</div>
 	<div>

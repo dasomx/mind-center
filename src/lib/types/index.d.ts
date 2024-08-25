@@ -47,9 +47,12 @@ export enum ReferType {
 }
 
 export enum ResultOfAction {
-	CounselingFollowUp = 'Counseling follow-up',
-	ServiceTermination = 'Service termination',
-	CaseManagementRegistration = 'Case management registration'
+	CounselingFollowUp = 'Counseling Follow-up',
+	ServiceTermination = 'Service Termination',
+	CaseManagementRegistration = 'Case Management Registration',
+	CaseManagementClosure = 'Case Management Closure',
+	CaseManagementTransfer = 'Case Management Transfer',
+	CaseManagementReOpen = 'Case Management Re-open'
 }
 
 export enum CounselingEndingType {
@@ -85,8 +88,8 @@ export type Client = {
 	status?: ClientStatus;
 	sessions?: number;
 	regDate?: string;
-	caseManager?: string;
-	medicalCoverage?: string;
+	caseManager?: string | null;
+	medicalCoverage?: string | null;
 	createdAt?: firebase.firestore.Timestamp;
 	updatedAt?: firebase.firestore.Timestamp;
 };
@@ -146,7 +149,8 @@ export enum ClientStatus {
 	InProgress = 'In Progress',
 	Completed = 'Completed',
 	Canceled = 'Canceled',
-	Pending = 'Pending'
+	Pending = 'Pending',
+	Deleted = 'Deleted'
 }
 
 export enum CounselingStatus {
