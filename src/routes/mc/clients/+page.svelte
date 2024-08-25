@@ -17,6 +17,7 @@
 	import Snackbar, { Label, Actions } from '@smui/snackbar';
 	import IconButton from '@smui/icon-button';
 	import { goto } from '$app/navigation';
+	import { searchClients } from '$lib/firebase/firebase.client';
 
 
 	/** @type {import('./$types').PageData} */
@@ -24,16 +25,19 @@
 	console.log('data', data);
 	const { clients } = data;
 
+	let filteredClients: Client[] = clients;
+
 	let name: string = '';
 	let disasterName: string = '';
 	let mobile: string = '';
 	let snackbarInfo: Snackbar;
 	let information: string = '';
 
-	function initValues() {
+	function clearValues() {
 		name = '';
 		disasterName = '';
 		mobile = '';
+		filteredClients = clients;
 	}
 
 	function showSnackbarInfo(info: string) {
@@ -179,6 +183,15 @@
 	// 	}
 	// ];
 	
+	async function search() {
+		try {
+			const data = await searchClients({ name, disasterName, mobile });
+			console.log('data', data);
+			filteredClients = data;
+		} catch (error) {
+			showSnackbarInfo(error);
+		}
+	}
 
 </script>
 
@@ -202,19 +215,19 @@
 			/>
 		</div>
 		<div style="align-self: flex-end;">
-			<Button on:click={initValues}>Clear</Button>
-			<Button variant="raised" on:click={() => showSnackbarInfo('미구현')}>Search</Button>
+			<Button on:click={clearValues}>Clear</Button>
+			<Button variant="raised" on:click={search}>Search</Button>
 		</div>
 	</div>
 	<div class="list-container">
 		<div class="list-header">
 			<div>
 				<span>Total</span>
-				<span style="margin-left: 17px"><strong>{clients.length}</strong></span>
+				<span style="margin-left: 17px"><strong>{filteredClients.length}</strong></span>
 			</div>
 			<Button variant="raised" on:click={() => goto('/mc/clients/new')}>Add Client</Button>
 		</div>
-		<ClientList data={clients.map((client, index) => ({ no: index + 1, ...client }))} />
+		<ClientList data={filteredClients.map((client, index) => ({ no: index + 1, ...client }))} />
 	</div>
 </div>
 <Snackbar bind:this={snackbarInfo}>
