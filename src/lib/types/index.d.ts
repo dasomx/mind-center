@@ -38,7 +38,6 @@ export enum CounselingType {
 	Others = 'Others'
 }
 
-
 export enum ReferType {
 	CareerCounselor = 'Career Counselor',
 	Psychiatrist = 'Psychiatrist',
@@ -166,3 +165,9 @@ export enum RelationVictim {
 	RelatedWorker = 'Related Worker',
 	Others = 'Others'
 }
+
+export type ClientSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
