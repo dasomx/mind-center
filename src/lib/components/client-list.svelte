@@ -45,7 +45,7 @@
 	</Head>
 	<Body>
 		{#each data as { id, no, createdAt, name, disasterName, gender, dob, status, sessions }}
-			<Row class="content-row">
+			<Row class="content-row" on:click={()=>goto(`${routes.clients}/${id}`)}>
 				<Cell>{no}</Cell>
 				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
 				<Cell>{name}</Cell>
@@ -55,7 +55,7 @@
 				<Cell><StatusChip status={status}/></Cell>
 				<Cell>{sessions}</Cell>
 				<Cell>
-					<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Edit</Button>
+					<Button on:click={()=>goto(`${routes.clients}/${id}/edit`)}>Edit</Button>
 					<Button on:click={()=>removeClient(id)}>Delete</Button>
 				</Cell>
 			</Row>
