@@ -6,6 +6,9 @@
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
+	import LinearProgress from '@smui/linear-progress';
+	import CircularProgress from '@smui/circular-progress';
+
 	import {
 		GENDERS,
 		JOBS,
@@ -39,6 +42,8 @@
 		if(!data) return;
 		try {
 			saving = true;
+			// sleep for 5 seconds
+			await new Promise(resolve => setTimeout(resolve, 5000));
 			await saveClient(data)
 			goto('/mc/clients');
 		} catch(error) {
@@ -54,6 +59,9 @@
 <div class="container">
 	<div class="form-container">
 		<div class="grid-title">General Information</div>
+		{#if saving}
+			<LinearProgress indeterminate />
+		{/if}
 		<LayoutGrid class="grid-container">
 			<Cell>
 				<Select variant="outlined" label="Status" bind:value={data.status}>
@@ -198,7 +206,11 @@
 		</LayoutGrid>
 		<div style="align-self: flex-end;">
 			<Button variant="outlined" on:click={()=>history.back()}>Close</Button>
-			<Button variant="raised" on:click={save}>{saving ? 'Saving...' : 'Save'}</Button>
+			<Button variant="raised" disabled={saving} on:click={save}>{saving ? 'Saving...' : 'Save'}
+				{#if saving}
+					<CircularProgress style="height: 24px; width: 24px;" indeterminate />
+				{/if}
+			</Button>
 		</div>
 	</div>
 </div>

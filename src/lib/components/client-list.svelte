@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/config';
 	import { convertTimestampToDateString } from '$lib/firebase/utils';
+	import { deleteClient } from '$lib/firebase/firebase.client';
 	export let data: Data[] = [];
 	type Data = Client & { no: number };
 	let rowsPerPage = 10;
@@ -15,6 +16,17 @@
 	let start = currentPage * rowsPerPage;
 	let end = start + rowsPerPage;
 	let lastPage = Math.ceil(data.length / rowsPerPage) - 1;
+	
+	async function removeClient(id: string) {
+		console.log('removeClient', id);
+		try {
+			await deleteClient(id);
+			console.log('Client deleted successfully');
+			data = data.filter(client => client.id !== id);
+		} catch (error) {
+			console.error('Error deleting client', error);
+		}
+	}
 </script>
 
 <DataTable table$aria-label="People list" style="width: 100%; border: 0px">
@@ -44,7 +56,7 @@
 				<Cell>{sessions}</Cell>
 				<Cell>
 					<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Edit</Button>
-					<Button on:click={()=>alert('under construction :)')}>Delete</Button>
+					<Button on:click={()=>removeClient(id)}>Delete</Button>
 				</Cell>
 			</Row>
 		{/each}
