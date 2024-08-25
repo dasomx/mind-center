@@ -4,10 +4,11 @@
 	import Select, { Option } from '@smui/select';
 	import { DISASTER_NAMES } from '$lib/config';
 	import CounselingList from '$lib/components/counseling-list.svelte';
-	import { DisasterName, DisasterType, CounselingType, CounselingStatus, CounselingEndingType, RelationVictim, type Counseling } from '$lib/types/index.d.ts';
+	import { DisasterName, DisasterType, CounselingType, CounselingStatus, CounselingEndingType, RelationVictim, type Counseling, DisasterVictimType } from '$lib/types/index.d.ts';
     import Snackbar, { Label, Actions } from '@smui/snackbar';
     import IconButton from '@smui/icon-button';
 	import { goto } from '$app/navigation';
+	import firebase from 'firebase/compat/app';
 
     let name: string = '';
 	let disasterName: string = '';
@@ -46,9 +47,10 @@
             counselorId: '1',
 			counselingType: CounselingType.VisitHome,
             relationVictim: RelationVictim.Family,
+            relationFamilyDetail: DisasterVictimType.Father,
 			status: CounselingStatus.Completed,
-			startTime: 1691750800000,
-			endTime: 1691750800000,
+			startTime: new Date('2024-08-14T13:30:00'),
+			endTime: new Date('2024-08-14T15:30:00'),
             date: '2024-08-20',
 			createdAt: 1691740800000,
 			updatedAt: 1691740800000,
@@ -78,9 +80,10 @@
             counselorId: '1',
 			counselingType: CounselingType.ComeToCenter,
             relationVictim: RelationVictim.Neighbor,
+			relationFamilyDetail: null,
 			status: CounselingStatus.Planned,
-			startTime: 1691740800000,
-			endTime: 1691750800000,
+			startTime: new Date('2024-08-14T13:30:00'),
+			endTime: new Date('2024-08-14T15:30:00'),
             date: '2024-09-24',
 			createdAt: 1691740800000,
 			updatedAt: 1691740800000,
@@ -110,9 +113,10 @@
             counselorId: '1',
 			counselingType: CounselingType.ComeToCenter,
             relationVictim: RelationVictim.Neighbor,
+			relationFamilyDetail: null,
 			status: CounselingStatus.Canceled,
-			startTime: 1691740800000,
-			endTime: 1691750800000,
+			startTime: new Date('2024-08-14T13:30:00'),
+			endTime: new Date('2024-08-14T15:30:00'),
             date: '2024-10-15',
 			createdAt: 1691740800000,
 			updatedAt: 1691740800000,
@@ -141,10 +145,11 @@
             clientMobile: '0301-2345678',
             counselorId: '1',
 			counselingType: CounselingType.ComeToCenter,
-            relationVictim: RelationVictim.Neighbor,
+            relationVictim: RelationVictim.Family,
+			relationFamilyDetail: DisasterVictimType.Sister,			
 			status: CounselingStatus.Planned,
-			startTime: 1691740800000,
-			endTime: 1691750800000,
+			startTime: new Date('2024-08-14T13:30:00'),
+			endTime: new Date('2024-08-14T15:30:00'),
             date: '2024-10-28',
 			createdAt: 1691740800000,
 			updatedAt: 1691740800000,
@@ -199,7 +204,7 @@
 			<span>Total</span>
 			<span style="margin-left: 17px"><strong>{counselings.length}</strong></span>
 			</div>
-			<Button variant="raised" on:click={()=>goto('/mc/counseling/new')}>Add Counseling</Button>
+			<Button variant="raised" on:click={()=>goto('/mc/counselings/new')}>Add Counseling</Button>
 		</div>
 		<CounselingList data={counselings.map((counseling, index)=>({no: index+1, ...counseling}))}/>
 	</div>

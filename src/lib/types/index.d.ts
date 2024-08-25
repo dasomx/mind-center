@@ -102,11 +102,12 @@ export type Counseling = {
 	disasterName?: DisasterName;
 	disasterType?: DisasterType;
 	date?: string;
-	startTime: number;
-	endTime: number;
+	startTime?: Date | null;
+	endTime?: Date | null;
 	counselorId: string;
 	counselingType: CounselingType;
 	relationVictim: RelationVictim;
+	relationFamilyDetail: DisasterVictimType
 	status: CounselingStatus;
 	emergencyIntervention?: string;
 	counselingTopic: string;
@@ -166,6 +167,13 @@ export enum RelationVictim {
 	Others = 'Others'
 }
 
+export enum EvaluationCategory {
+	'2' = "Worst",
+	'4' = "Bad",
+	'6' = "So&so",
+	'8' = "Good",
+	'10' = "Best",
+}
 export type ClientSearchCriteria = {
 	name?: string;
 	mobile?: string;
