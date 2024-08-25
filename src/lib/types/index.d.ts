@@ -99,11 +99,12 @@ export type Counseling = {
 	disasterName?: DisasterName;
 	disasterType?: DisasterType;
 	date?: string;
-	startTime: date;
-	endTime: number;
+	startTime?: Date | null;
+	endTime?: Date | null;
 	counselorId: string;
 	counselingType: CounselingType;
 	relationVictim: RelationVictim;
+	relationFamilyDetail: DisasterVictimType
 	status: CounselingStatus;
 	emergencyIntervention?: string;
 	counselingTopic: string;

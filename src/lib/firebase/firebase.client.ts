@@ -39,8 +39,8 @@ export const initializeFirebase = () => {
 		if (firebaseConfig.useEmulator) {
 			const emulatorHost = import.meta.env.VITE_FIREBASE_EMULATOR_HOST ?? 'http://127.0.0.1:9099';
 			const emulatorAuthUrl = import.meta.env.VITE_FIREBASE_EMULATOR_AUTH_URL ?? 'localhost';
-			connectAuthEmulator(auth, emulatorAuthUrl);
-			connectFirestoreEmulator(db, emulatorHost, 9080);
+			connectAuthEmulator(auth, emulatorHost);
+			connectFirestoreEmulator(db, emulatorAuthUrl, 9080);
 		}
 	}
 };

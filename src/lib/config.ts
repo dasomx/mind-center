@@ -1,3 +1,4 @@
+import firebase from 'firebase/compat/app';
 import { type Client, type Counseling } from './types/index.d.ts';
 
 export const DISASTER_NAMES = ['816', '922'];
@@ -77,12 +78,13 @@ export const INIT_COUNSELING: Counseling = {
 	disasterName: '',
 	clientName: '',
 	clientMobile: '',
-	counselorId: '1',
+	counselorId: '',
 	counselingType: '',
 	relationVictim: '',
+	relationFamilyDetail: '',
 	status: '',
-	startTime: '',
-	endTime: '',
+	startTime: new Date(),
+	endTime: new Date(),
 	date: '',
 	createdAt: '',
 	updatedAt: '',
@@ -102,3 +104,11 @@ export const INIT_COUNSELING: Counseling = {
 	treatmentEnding: '',
 	endingType: ''
 };
+
+export const COUNSELING_TYPE = [
+	'Visit Home',
+	'Come to Center',
+	'Call',
+	'Absence',
+	'Others'
+];

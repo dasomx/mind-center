@@ -1,29 +1,46 @@
 <script lang="ts">
-	import { type Counseling } from '$lib/types/index.d.ts';
+	import { type Counseling, type Client, CounselingType, RelationVictim } from '$lib/types/index.d.ts';
 	import FormField from '@smui/form-field';
 	import Select, { Option } from '@smui/select';
 	import Radio from '@smui/radio';
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
+  	import HelperText from '@smui/textfield/helper-text'
 	import {
 		DISASTER_NAMES,
 		DISASTER_TYPES,
 		DISASTER_VICTIM_TYPES,
 		REFER_TO,
+		COUNSELING_TYPE,
 		INIT_COUNSELING
 	} from '$lib/config';
 
 	let data: Counseling = INIT_COUNSELING;
 	console.log('data ', data);
-
 	let selectedSession = 'normal';
+	let clientData: Client = {
+		id:'',
+		name: '',
+		mobile:'',
+		address:'',
+		contactNoHome:''
+
+	};
+
+	let clients: any = [
+		{id: '1', name: 'Ahmed Raza'},
+		{id: '2', name: 'Fatima Haq'},
+		{id: '3', name: 'Bilal Sami'},
+		{id: '4', name: 'Zainab Akbar'}
+	];
+
+	let relationVictimeEntries = Object.entries(RelationVictim);
+	
 </script>
 
 <div class="container">
-
 	<div class="form-container">
-
 		<div class="inner-container addSessionType">
 			<span>
 				Add Session Type *
@@ -41,27 +58,113 @@
 			</span>
 		</div>
 
-
 		<div class="grid-title">Normal Session</div>
 		<LayoutGrid class="grid-container">		
 			<Cell>
 				<Textfield
 					bind:value={data.startTime}
-					label="DateTime-Local"
+					label="Start Time"
 					type="datetime-local"
+					variant="outlined"
     			/>
 			</Cell>
 			<Cell>
-				
+				<Textfield
+					bind:value={data.endTime}
+					label="End Time"
+					type="datetime-local"
+					variant="outlined"
+    			/>
 			</Cell>
 			<Cell>
-				<Textfield label="End Time" variant="outlined" type="time"/>
+				<Textfield label="Counselor" variant="outlined" bind:value={data.counselorId} />
 			</Cell>
-
-		</LayoutGrid>
-		
-		<div class="grid-title">Information Provider</div>
-		<LayoutGrid class="grid-container">
+			<Cell>
+				<Select variant="outlined" label="Counseling Type" bind:value={data.counselingType}>
+					{#each COUNSELING_TYPE as option}
+						<Option value={option}>{option}</Option>
+					{/each}
+				</Select>
+			</Cell>
+			<Cell span={12}>
+				<div class="grid-title">Information Provider</div>
+				<div>Information ProviderRelationship with the Victim*</div>
+				
+				<div style="display: flex; flex-direction: column;">
+					{#each relationVictimeEntries as [key, value]}
+						<FormField>
+							<Radio bind:group={data.relationVictim} value={key} touch />
+							<span slot="label">{value}
+							{#if key === 'Family'}
+								<Select variant="outlined" label="Choose if Family" bind:value={data.relationFamilyDetail}>
+									{#each DISASTER_VICTIM_TYPES as option}
+										<Option value={option}>{option}</Option>
+									{/each}
+								</Select>								
+							{/if}
+							</span>
+						</FormField>
+				  	{/each}
+				</div>
+			</Cell>
+			<Cell>
+				<Select variant="outlined" label="Client Name" bind:value={clientData.id}>
+					{#each clients as option}
+						<Option value={option.id}>{option.name}</Option>
+					{/each}
+				</Select>	
+			</Cell>
+			<Cell>
+				<Textfield label="Mobile" variant="outlined" bind:value={clientData.mobile} />
+			</Cell>
+			<Cell>
+				<Textfield label="Home Phone" variant="outlined" bind:value={clientData.contactNoHome} />
+			</Cell>
+			<Cell span={12}>
+				<Textfield
+					label="Address"
+					variant="outlined"
+					bind:value={clientData.address}
+					style="width: 100%"
+				/>
+			</Cell>
+			<Cell span={12}>
+				<Select variant="outlined" label="Disaster Type" bind:value={data.disasterType}>
+					{#each DISASTER_TYPES as option}
+						<Option value={option}>{option}</Option>
+					{/each}
+				</Select>
+			</Cell>
+			<Cell span={12}>
+				<Textfield
+					label="Emergency Intervention"
+					variant="outlined"
+					bind:value={data.emergencyIntervention}
+					style="width: 100%"
+				/>
+			</Cell>
+			<Cell span={12}>
+				<Textfield
+					label="Counseling Topic"
+					variant="outlined"
+					bind:value={data.counselingTopic}
+					style="width: 100%"
+				/>
+			</Cell>
+			<Cell span={12}>
+				<div class="margins">
+					<Textfield
+					  style="width: 100%;"
+					  helperLine$style="width: 100%;"
+					  textarea
+					  bind:value={data.counselingDetails}
+					  label="Counseling Detail"
+					>
+					  <HelperText slot="helper">Write the Counseling Details</HelperText>
+					</Textfield>
+				  </div>
+				   
+			</Cell>
 		</LayoutGrid>
 		
 		<div class="grid-title">Categorical Evaluations</div>
