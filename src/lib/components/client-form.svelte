@@ -42,8 +42,6 @@
 		if(!data) return;
 		try {
 			saving = true;
-			// sleep for 5 seconds
-			await new Promise(resolve => setTimeout(resolve, 5000));
 			await saveClient(data)
 			goto('/mc/clients');
 		} catch(error) {
