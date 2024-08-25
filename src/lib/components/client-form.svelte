@@ -16,12 +16,8 @@
 		DISASTER_TYPES,
 		DISASTER_VICTIM_TYPES,
 		REFER_TO,
-
 		STATUS_TYPES,
-
 		RESULT_OF_ACTION
-
-
 	} from '$lib/config';
 	import { saveClient } from '$lib/firebase/firebase.client';
 	import { goto } from '$app/navigation';
@@ -34,19 +30,18 @@
 		caseManager: data?.caseManager ?? null,
 		medicalCoverage: data?.medicalCoverage ?? null
 	};
-	
+
 	console.log('data ', data);
 	let saving = false;
 
 	async function save() {
-		if(!data) return;
+		if (!data) return;
 		try {
 			saving = true;
-			await saveClient(data)
+			await saveClient(data);
 			goto('/mc/clients');
-		} catch(error) {
+		} catch (error) {
 			console.error('Error saving client', error);
-
 		} finally {
 			saving = false;
 		}
@@ -55,11 +50,21 @@
 </script>
 
 <div class="container">
+	{#if saving}
+		<LinearProgress indeterminate />
+	{/if}
 	<div class="form-container">
+	<h3>Client Form</h3>
+		<div style="align-self: flex-end;">
+			<Button variant="outlined" on:click={() => history.back()}>Close</Button>
+			<Button variant="raised" disabled={saving} on:click={save}
+				>{saving ? 'Saving...' : 'Save'}
+				{#if saving}
+					<CircularProgress style="height: 24px; width: 24px;" indeterminate />
+				{/if}
+			</Button>
+		</div>
 		<div class="grid-title">General Information</div>
-		{#if saving}
-			<LinearProgress indeterminate />
-		{/if}
 		<LayoutGrid class="grid-container">
 			<Cell>
 				<Select variant="outlined" label="Status" bind:value={data.status}>
@@ -198,13 +203,14 @@
 				>
 					{#each RESULT_OF_ACTION as option}
 						<Option value={option}>{option}</Option>
-					{/each}				
+					{/each}
 				</Select>
 			</Cell>
 		</LayoutGrid>
 		<div style="align-self: flex-end;">
-			<Button variant="outlined" on:click={()=>history.back()}>Close</Button>
-			<Button variant="raised" disabled={saving} on:click={save}>{saving ? 'Saving...' : 'Save'}
+			<Button variant="outlined" on:click={() => history.back()}>Close</Button>
+			<Button variant="raised" disabled={saving} on:click={save}
+				>{saving ? 'Saving...' : 'Save'}
 				{#if saving}
 					<CircularProgress style="height: 24px; width: 24px;" indeterminate />
 				{/if}
@@ -242,7 +248,7 @@
 		width: 100%;
 	}
 	.grid-title {
-        font-size: 1.5rem;
+		font-size: 1.5rem;
 		height: 32px;
 		align-self: stretch;
 		flex-grow: 0;
@@ -251,6 +257,6 @@
 		justify-content: flex-start;
 		align-items: flex-start;
 		padding: 0;
-        margin-top: 2.5rem;
+		margin-top: 2.5rem;
 	}
 </style>
