@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { type Counseling, type Client, CounselingType, RelationVictim } from '$lib/types/index.d.ts';
+	import { type Counseling, type Client, CounselingType, RelationVictim, EvaluationCategory } from '$lib/types/index.d.ts';
 	import FormField from '@smui/form-field';
 	import Select, { Option } from '@smui/select';
 	import Radio from '@smui/radio';
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
-  	import HelperText from '@smui/textfield/helper-text'
+  	import HelperText from '@smui/textfield/helper-text';
 	import {
 		DISASTER_NAMES,
 		DISASTER_TYPES,
@@ -25,7 +25,6 @@
 		mobile:'',
 		address:'',
 		contactNoHome:''
-
 	};
 
 	let clients: any = [
@@ -36,6 +35,7 @@
 	];
 
 	let relationVictimeEntries = Object.entries(RelationVictim);
+	let evaluationCategory = Object.entries(EvaluationCategory);
 	
 </script>
 
@@ -112,7 +112,7 @@
 					{#each clients as option}
 						<Option value={option.id}>{option.name}</Option>
 					{/each}
-				</Select>	
+				</Select>
 			</Cell>
 			<Cell>
 				<Textfield label="Mobile" variant="outlined" bind:value={clientData.mobile} />
@@ -162,15 +162,77 @@
 					>
 					  <HelperText slot="helper">Write the Counseling Details</HelperText>
 					</Textfield>
-				  </div>
-				   
+				</div>	   
+			</Cell>
+			<Cell span={12}>
+				<div class="margins">
+					<Textfield
+					  style="width: 100%;"
+					  helperLine$style="width: 100%;"
+					  textarea
+					  bind:value={data.pictureUrls}
+					  label="Click to upload or drag & drop"
+					>
+					  <HelperText slot="helper">Click to upload or drag & drop</HelperText>
+					</Textfield>
+				</div>	   
+			</Cell>
+			<Cell span={12}>
+				<div class="margins">
+					<Textfield
+					  style="width: 100%;"
+					  helperLine$style="width: 100%;"
+					  textarea
+					  bind:value={data.psychologicalAidDetails}
+					  label="Psychological Aid Details"
+					>
+					  <HelperText slot="helper">Write the Psychological Aid Details</HelperText>
+					</Textfield>
+				</div>
+			</Cell>
+			<Cell span={12}>
+				<div class="grid-title">Categorical Evaluations</div>
+			</Cell>
+			<Cell>
+				<Select variant="outlined" label="Psycological" bind:value={data.categoricalEvaluation.psychological}>
+					{#each evaluationCategory as [key,value]}
+						<Option value={key}>{value}</Option>
+					{/each}
+				</Select>
+			</Cell>
+			<Cell>
+				<Select variant="outlined" label="Physical" bind:value={data.categoricalEvaluation.physical}>
+					{#each evaluationCategory as [key,value]}
+						<Option value={key}>{value}</Option>
+					{/each}
+				</Select>
+			</Cell>
+			<Cell>
+				<Select variant="outlined" label="Educational" bind:value={data.categoricalEvaluation.educational}>
+					{#each evaluationCategory as [key,value]}
+						<Option value={key}>{value}</Option>
+					{/each}
+				</Select>
+			</Cell>
+			<Cell>
+				<Select variant="outlined" label="Financial" bind:value={data.categoricalEvaluation.financial}>
+					{#each evaluationCategory as [key,value]}
+						<Option value={key}>{value}</Option>
+					{/each}
+				</Select>
+			</Cell>
+			<Cell>
+				<Select variant="outlined" label="Spiritual" bind:value={data.categoricalEvaluation.spiritual}>
+					{#each evaluationCategory as [key,value]}
+						<Option value={key}>{value}</Option>
+					{/each}
+				</Select>
+			</Cell>
+			<Cell span={12}>
+				<div class="grid-title">Evaluation  Total: _____   Average:_____</div>
 			</Cell>
 		</LayoutGrid>
 		
-		<div class="grid-title">Categorical Evaluations</div>
-		<LayoutGrid class="grid-container">
-		</LayoutGrid>
-
 		<div class="grid-title">Assessment</div>
 		<LayoutGrid class="grid-container">
 		</LayoutGrid>

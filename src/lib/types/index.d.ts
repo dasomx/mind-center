@@ -166,3 +166,11 @@ export enum RelationVictim {
 	RelatedWorker = 'Related Worker',
 	Others = 'Others'
 }
+
+export enum EvaluationCategory {
+	'2' = "Worst",
+	'4' = "Bad",
+	'6' = "So&so",
+	'8' = "Good",
+	'10' = "Best",
+}

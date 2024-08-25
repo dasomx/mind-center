@@ -97,7 +97,7 @@ export const INIT_COUNSELING: Counseling = {
 	counselingTopic: "",
 	counselingDetails: "",
 	pictureUrls: [""],
-	psychologicalAidDetails: "S",
+	psychologicalAidDetails: "",
 	categoricalEvaluation: {
 		psychological: 0,
 		physical: 0,
