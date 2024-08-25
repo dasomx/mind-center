@@ -14,10 +14,11 @@ import {
 	orderBy,
 	query,
 	setDoc,
-	Timestamp
+	Timestamp,
+	where
 } from 'firebase/firestore';
 import { browser } from '$app/environment';
-import type { Client, Counseling, Link } from '$lib/types';
+import type { Client, ClientSearchCriteria, Counseling, Link } from '$lib/types';
 
 export let db: Firestore;
 export let app: FirebaseApp;
@@ -122,4 +123,24 @@ export const fetchLinks = async () => {
 		links.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
 	});
 	return links;
+};
+
+export const searchClients = async (criteria: ClientSearchCriteria) => {
+	let q = query(collection(db, 'clients'));
+	if (criteria.name) {
+		q = query(q, where('name', '==', criteria.name));
+	}
+	if (criteria.mobile) {
+		q = query(q, where('mobile', '==', criteria.mobile));
+	}
+	if (criteria.disasterName) {
+		q = query(q, where('disasterName', '==', criteria.disasterName));
+	}
+	const querySnapshot = await getDocs(q);
+	const clients: Client[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		clients.push({ id: doc.id, ...(doc.data() as Omit<Client, 'id'>) });
+	});
+	return clients;
 };

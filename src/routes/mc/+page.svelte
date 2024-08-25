@@ -15,15 +15,15 @@
 	<div class="container">
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">My Clients</div>
-			<SmallTable data={clients} />
+			<SmallTable data={clients} resource="clients"/>
 		</div>
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Active Individual Counseling</div>
-			<SmallTable data={counselings} />
+			<SmallTable data={counselings} resource="counselings"/>
 		</div>
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Link/Refer List</div>
-			<SmallTable data={links}/>
+			<SmallTable data={links} resource="links"/>
 		</div>
 	</div>
 	<div>

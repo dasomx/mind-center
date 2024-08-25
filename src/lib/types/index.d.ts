@@ -174,3 +174,8 @@ export enum EvaluationCategory {
 	'8' = "Good",
 	'10' = "Best",
 }
+export type ClientSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
