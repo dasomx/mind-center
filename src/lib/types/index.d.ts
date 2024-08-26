@@ -87,7 +87,6 @@ export type Client = {
 	resultOfAction?: ResultOfAction;
 	status?: ClientStatus;
 	sessions?: number;
-	regDate?: string;
 	caseManager?: string | null;
 	medicalCoverage?: string | null;
 	createdAt?: firebase.firestore.Timestamp;

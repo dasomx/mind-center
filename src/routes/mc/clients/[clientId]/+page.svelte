@@ -16,8 +16,40 @@
 	/** @type {import('./$types').PageData}*/
 	export let data;
 
-	console.log('data ', data);
-	const client: Client = data.props.client;
+	console.log('client data', data.props.client);
+
+	// If some keys of client were undefined, make them as null
+	const client: Client = {
+		... data.props.client,
+		fatherName: data.props.client?.fatherName ?? null,
+		name: data.props.client?.name ?? null,
+		gender: data.props.gender ?? null,
+		dob: data.props.client?.dob ?? null,
+		cnicNumber: data.props.client?.cnicNumber ?? null,
+		code: data.props.client?.code ?? null,
+		contactNoHome: data.props.client?.contactNoHome ?? null,
+		mobile: data.props.client?.mobile ?? null,
+		address: data.props.client?.address ?? null,
+		job: data.props.client?.job ?? null,
+		schoolName: data.props.client?.schoolName ?? null,
+		grade: data.props.client?.grade ?? null,
+		companyName: data.props.client?.companyName ?? null,
+		otherJobs: data.props.client?.otherJobs ?? null,
+		disasterName: data.props.client?.disasterName ?? null,
+		disasterType: data.props.client?.disasterType ?? null,
+		disasterVictimType: data.props.client?.disasterVictimType ?? null,
+		referTo: data.props.client?.referTo ?? null,
+		resultOfAction: data.props.client?.resultOfAction ?? null,
+		status: data.props.client?.status ?? null,
+		sessions: data.props.client?.sessions ?? null,
+		caseManager: data.props.client?.caseManager ?? null,
+		medicalCoverage: data.props.client?.medicalCoverage ?? null,
+		createdAt: data.props.client?.createdAt ?? null,
+		updatedAt: data.props.client?.updatedAt ?? null
+	}
+
+
+
     async function removeClient(id: string) {
         console.log('removeClient', id);
         try {
