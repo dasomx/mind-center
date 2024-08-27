@@ -105,7 +105,7 @@ export const getClient = async (clientId: string) => {
 // fetch clients from Firestore
 export const fetchClients = async () => {
 	console.debug('DB: fetchClients');
-	const q = query(collection(db, 'clients'), orderBy('createdAt', 'desc'), limit(5));
+	const q = query(collection(db, 'clients'), orderBy('createdAt', 'desc'), limit(25));
 	const querySnapshot = await getDocs(q);
 	const clients: Client[] = [];
 	querySnapshot.forEach((doc) => {
@@ -193,7 +193,7 @@ export const fetchCounselings = async (clientId: string) => {
 	const q = query(
 		collection(db, `clients/${clientId}/counselings`),
 		orderBy('createdAt', 'desc'),
-		limit(5)
+		limit(25)
 	);
 	const querySnapshot = await getDocs(q);
 	const counselings: Counseling[] = [];
@@ -206,7 +206,7 @@ export const fetchCounselings = async (clientId: string) => {
 
 export const fetchAllCounselings = async () => {
 	console.debug('DB: fetchAllCounselings');
-	const q = query(collectionGroup(db, 'counselings'), orderBy('createdAt', 'desc'), limit(5));
+	const q = query(collectionGroup(db, 'counselings'), orderBy('createdAt', 'desc'), limit(25));
 	const querySnapshot = await getDocs(q);
 	const counselings: Counseling[] = [];
 	querySnapshot.forEach((doc) => {
@@ -246,7 +246,7 @@ export const fetchLinks = async (clientId: string) => {
 	const q = query(
 		collection(db, `clients/${clientId}/links`),
 		orderBy('createdAt', 'desc'),
-		limit(5)
+		limit(25)
 	);
 	const querySnapshot = await getDocs(q);
 	const links: Link[] = [];
@@ -259,7 +259,7 @@ export const fetchLinks = async (clientId: string) => {
 
 export const fetchAllLinks = async () => {
 	console.debug('DB: fetchAllLinks');
-	const q = query(collectionGroup(db, 'links'), orderBy('createdAt', 'desc'), limit(5));
+	const q = query(collectionGroup(db, 'links'), orderBy('createdAt', 'desc'), limit(25));
 	const querySnapshot = await getDocs(q);
 	const links: Link[] = [];
 	querySnapshot.forEach((doc) => {
