@@ -27,7 +27,7 @@
 	});
 
 	console.debug('queryParamTab ', queryParamTab);
-	console.debug('counselings ', data.props.counselings);
+	// console.debug('counselings ', data.props.counselings);
 
 	// If some keys of client were undefined, make them as null
 	const client: Client = {

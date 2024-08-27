@@ -14,7 +14,8 @@
 	import { COUNSELING_TYPE } from '$lib/config';
 	import { saveCounseling } from '$lib/firebase/firebase.client';
 	import CircularProgress from '@smui/circular-progress';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { Timestamp } from 'firebase/firestore';
+	import { convertTimestampToLocaleISOString } from '$lib/firebase/utils';
 
 	/** @type {import('./$types').PageData} */
 	export let counseling: Counseling;
@@ -30,12 +31,16 @@
 			educational: 0,
 			financial: 0,
 			spiritual: 0
-		}
+		},
+		
 	};
 
-	let startTime = counseling?.startTime?.toISOString().slice(0, 16);
-	let endTime = counseling?.endTime?.toISOString().slice(0, 16);
+	console.debug('counseling', counseling);
 
+	let startTime = convertTimestampToLocaleISOString(counseling?.startTime ?? Timestamp.now());
+	let endTime = convertTimestampToLocaleISOString(counseling?.endTime ?? Timestamp.now());
+
+	console.debug('startTime', startTime, 'endTime', endTime);
 	let selectedSession = 'normal';
 
 	let evaluationCategory = Object.entries(EvaluationCategory);
@@ -45,6 +50,8 @@
 		if (!counseling || !client) return;
 		try {
 			saving = true;
+			counseling.startTime = Timestamp.fromDate(new Date(startTime));
+			counseling.endTime = Timestamp.fromDate(new Date(endTime));
 			await saveCounseling(counseling, client);
 			window.location = `/mc/clients/${client.id}?tab=Counselings`;
 		} catch (error) {

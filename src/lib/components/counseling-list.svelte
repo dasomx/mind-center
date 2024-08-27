@@ -6,6 +6,8 @@
 	import IconButton from '@smui/icon-button';
 	import type { Counseling, Client } from '$lib/types';
 	import { convertTimestampToDateString } from '$lib/firebase/utils';
+	import { goto } from '$app/navigation';
+	import { deleteCounseling } from '$lib/firebase/firebase.client';
 	export let data: Data[] = [];
 	type Data = Counseling & { no: number };
 	let rowsPerPage = 10;
@@ -13,6 +15,16 @@
 	let start = currentPage * rowsPerPage;
 	let end = start + rowsPerPage;
 	let lastPage = Math.ceil(data.length / rowsPerPage) - 1;
+
+	async function removeCounseling(clientId: string, id: string) {
+		try {
+			await deleteCounseling(clientId, id);
+			console.debug('Counseling deleted successfully');
+			data = data.filter(counseling => counseling.id !== id);
+		} catch (error) {
+			console.error('Error deleting counseling', error);
+		}
+	}
 </script>
 
 <DataTable table$aria-label="People list" style="width: 100%; border: 0px">
@@ -29,7 +41,7 @@
 		</Row>
 	</Head>
 	<Body>
-		{#each data as { no, createdAt, startTime, clientName, disasterName, counselingType, status, assessmentId }}
+		{#each data as { no, createdAt, clientId, id, startTime, clientName, disasterName, counselingType, status, assessmentId }}
 			<Row class="content-row">
 				<Cell>{no}</Cell>
 				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
@@ -39,8 +51,8 @@
 				<Cell><StatusChipCounseling status={status}/></Cell>
 				<Cell>VIEW</Cell>
 				<Cell>
-					<Button on:click={()=>alert('under construction :)')}>Edit</Button>
-					<Button on:click={()=>alert('under construction :)')}>Delete</Button>
+					<Button on:click={()=>goto(`/mc/clients/${clientId}/counselings/${id}/edit`)}>Edit</Button>
+					<Button on:click={()=>removeCounseling(clientId, id)}>Delete</Button>
 				</Cell>
 			</Row>
 		{/each}

@@ -10,6 +10,18 @@ export const convertTimestampToDateTimeString = (timestamp: Timestamp) => {
 	return timestamp.toDate().toLocaleString();
 };
 
+export const convertTimestampToLocaleISOString = (timestamp: Timestamp) => {
+	// 로컬 시간으로 변환
+	const d = timestamp.toDate();
+	const offset = d.getTimezoneOffset() * 60000;
+	const localTime = new Date(d.getTime() - offset);
+
+	// 원하는 형식으로 변환
+	const formattedTime = localTime.toISOString().slice(0, 16);
+
+	return formattedTime;
+};
+
 export function cleanObject(obj: Record<string, any>): void {
 	Object.keys(obj).forEach((key) => {
 		const value = obj[key];

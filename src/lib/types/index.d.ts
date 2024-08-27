@@ -104,8 +104,8 @@ export type Counseling = {
 	clientMobile: Client['mobile'];
 	disasterName?: DisasterName;
 	disasterType?: DisasterType;
-	startTime?: Date | null;
-	endTime?: Date | null;
+	startTime?: Timestamp | null;
+	endTime?: Timestamp | null;
 	counselorId: string;
 	counselingType: CounselingType;
 	disasterVictimType: DisasterVictimType;
