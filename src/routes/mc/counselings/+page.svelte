@@ -4,7 +4,7 @@
 	import Select, { Option } from '@smui/select';
 	import { DISASTER_NAMES } from '$lib/config';
 	import CounselingList from '$lib/components/counseling-list.svelte';
-	import { DisasterName, DisasterType, CounselingType, CounselingStatus, CounselingEndingType, RelationVictim, type Counseling, DisasterVictimType } from '$lib/types/index.d.ts';
+	import { DisasterName, DisasterType, CounselingType, CounselingStatus, CounselingEndingType, type Counseling, DisasterVictimType } from '$lib/types/index.d.ts';
     import Snackbar, { Label, Actions } from '@smui/snackbar';
     import IconButton from '@smui/icon-button';
 	import { goto } from '$app/navigation';
@@ -37,138 +37,6 @@
     }
 
     const counselings: Counseling[] = [
-		{
-			id: '1',
-			clientId: '1',
-			disasterType: DisasterType.HouseBurnt,
-			disasterName: 816,
-			clientName: 'Ahmed Raza',
-            clientMobile: '0300-1234567',
-            counselorId: '1',
-			counselingType: CounselingType.VisitHome,
-            relationVictim: RelationVictim.Family,
-            relationFamilyDetail: DisasterVictimType.Father,
-			status: CounselingStatus.Completed,
-			startTime: new Date('2024-08-14T13:30:00'),
-			endTime: new Date('2024-08-14T15:30:00'),
-            date: '2024-08-20',
-			createdAt: 1691740800000,
-			updatedAt: 1691740800000,
-            emergencyIntervention: "Some Text",
-            counselingTopic: "Some Text",
-            counselingDetails: "Some Text",
-            pictureUrls: [""],
-            psychologicalAidDetails: "Some Text",
-            categoricalEvaluation: {
-                psychological: 10,
-                physical: 10,
-                educational: 10,
-                financial: 10,
-                spiritual: 10
-            },
-            assessmentId: '1',
-            treatmentEnding: null,
-            endingType: null
-		},
-        {
-			id: '2',
-			clientId: '1',
-			disasterType: DisasterType.HouseBurnt,
-			disasterName: 816,
-			clientName: 'Ahmed Raza',
-            clientMobile: '0300-1234567',
-            counselorId: '1',
-			counselingType: CounselingType.ComeToCenter,
-            relationVictim: RelationVictim.Neighbor,
-			relationFamilyDetail: null,
-			status: CounselingStatus.Planned,
-			startTime: new Date('2024-08-14T13:30:00'),
-			endTime: new Date('2024-08-14T15:30:00'),
-            date: '2024-09-24',
-			createdAt: 1691740800000,
-			updatedAt: 1691740800000,
-            emergencyIntervention: "Some Text",
-            counselingTopic: "Some Text",
-            counselingDetails: "Some Text",
-            pictureUrls: [""],
-            psychologicalAidDetails: "Some Text",
-            categoricalEvaluation: {
-                psychological: 10,
-                physical: 10,
-                educational: 10,
-                financial: 10,
-                spiritual: 10
-            },
-            assessmentId: '1',
-            treatmentEnding: null,
-            endingType: null
-		},
-        {
-			id: '3',
-			clientId: '2',
-			disasterType: DisasterType.Looted,
-			disasterName: 922,
-			clientName: 'Fatima Haq',
-            clientMobile: '0301-2345678',
-            counselorId: '1',
-			counselingType: CounselingType.ComeToCenter,
-            relationVictim: RelationVictim.Neighbor,
-			relationFamilyDetail: null,
-			status: CounselingStatus.Canceled,
-			startTime: new Date('2024-08-14T13:30:00'),
-			endTime: new Date('2024-08-14T15:30:00'),
-            date: '2024-10-15',
-			createdAt: 1691740800000,
-			updatedAt: 1691740800000,
-            emergencyIntervention: "Some Text",
-            counselingTopic: "Some Text",
-            counselingDetails: "Some Text",
-            pictureUrls: [""],
-            psychologicalAidDetails: "Some Text",
-            categoricalEvaluation: {
-                psychological: 10,
-                physical: 10,
-                educational: 10,
-                financial: 10,
-                spiritual: 10
-            },
-            assessmentId: '1',
-            treatmentEnding: null,
-            endingType: null
-		},
-        {
-			id: '4',
-			clientId: '2',
-			disasterType: DisasterType.Looted,
-			disasterName: 922,
-			clientName: 'Fatima Haq',
-            clientMobile: '0301-2345678',
-            counselorId: '1',
-			counselingType: CounselingType.ComeToCenter,
-            relationVictim: RelationVictim.Family,
-			relationFamilyDetail: DisasterVictimType.Sister,			
-			status: CounselingStatus.Planned,
-			startTime: new Date('2024-08-14T13:30:00'),
-			endTime: new Date('2024-08-14T15:30:00'),
-            date: '2024-10-28',
-			createdAt: 1691740800000,
-			updatedAt: 1691740800000,
-            emergencyIntervention: "Some Text",
-            counselingTopic: "Some Text",
-            counselingDetails: "Some Text",
-            pictureUrls: [""],
-            psychologicalAidDetails: "Some Text",
-            categoricalEvaluation: {
-                psychological: 10,
-                physical: 10,
-                educational: 10,
-                financial: 10,
-                spiritual: 10
-            },
-            assessmentId: '1',
-            treatmentEnding: null,
-            endingType: null
-		}
     ];
 
 </script>

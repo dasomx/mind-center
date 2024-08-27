@@ -42,7 +42,6 @@
 
 	let selectedSession = 'normal';
 
-	let relationVictimeEntries = Object.entries(DisasterVictimType);
 	let evaluationCategory = Object.entries(EvaluationCategory);
 
 	// save counseling
