@@ -1,10 +1,8 @@
 <script lang="ts">
-	import ClientForm from '$lib/components/client-form.svelte';
 	import type { Client } from '$lib/types';
 	import Button from '@smui/button';
 	import TextField from '@smui/textfield';
 	import {
-		convertTimestampToDateString,
 		convertTimestampToDateTimeString
 	} from '$lib/firebase/utils';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
@@ -16,10 +14,19 @@
 	import { routes } from '$lib/config';
 	import StatusChip from '$lib/components/status-chip.svelte';
 	import CounselingList from '$lib/components/counseling-list.svelte';
+	import { page } from '$app/stores';
+
 
 	/** @type {import('./$types').PageData}*/
 	export let data;
 
+	let queryParamTab: string | null = null;
+	page.subscribe(($page) => {
+		// Query parameter 'example'의 값을 가져옵니다.
+		queryParamTab = $page.url.searchParams.get('tab');
+	});
+
+	console.debug('queryParamTab ', queryParamTab);
 	console.debug('counselings ', data.props.counselings);
 
 	// If some keys of client were undefined, make them as null
@@ -63,7 +70,7 @@
 		}
 	}
 
-	let active = 'General';
+	let active = queryParamTab ?? 'General';
 </script>
 
 <h3>{data.props.client.name}'s profile</h3>
