@@ -144,7 +144,7 @@ export const saveCounseling = async (counseling: Counseling, client: Client) => 
 	console.debug('DB: saveCounseling');
 	cleanObject(counseling);
 	// populate the client information to the counseling
-	counseling.createdAt = counseling.createdAt || Timestamp.now();
+	counseling.createdAt = counseling.createdAt ?? Timestamp.now();
 	counseling.updatedAt = Timestamp.now();
 	counseling.clientId = client.id;
 	counseling.clientName = client.name;

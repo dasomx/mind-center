@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat/app';
 import { type Client, type Counseling } from './types/index.d.ts';
+import { Timestamp } from 'firebase/firestore';
 
 export const DISASTER_NAMES = ['816', '922'];
 
@@ -90,8 +91,8 @@ export const INIT_COUNSELING: Counseling = {
 	counselingType: '',
 	relationFamilyDetail: '',
 	status: '',
-	startTime: new Date(),
-	endTime: new Date(),
+	startTime: Timestamp.now(),
+	endTime: Timestamp.now(),
 	date: '',
 	createdAt: '',
 	updatedAt: '',

@@ -13,8 +13,6 @@
 	/** @type {import('./$types').PageData} */
 	export let data;
 
-	console.debug('data', data);
-
 	const { counselings } = data;
 	
     let name: string = '';
