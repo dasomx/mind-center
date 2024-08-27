@@ -65,6 +65,7 @@ export const initializeFirebase = () => {
  */
 
 export const saveClient = async (client: Client) => {
+	console.debug('DB: saveClient');
 	// covert the client object to fit the firestore schema
 	// undefiend values are not allowed in firestore
 	cleanObject(client);
@@ -89,11 +90,13 @@ export const saveClient = async (client: Client) => {
 };
 
 export const deleteClient = async (clientId: string) => {
+	console.debug('DB: deleteClient');
 	const docRef = doc(db, 'clients', clientId);
 	return await deleteDoc(docRef);
 };
 
 export const getClient = async (clientId: string) => {
+	console.debug('DB: getClient', db === undefined || db === null);
 	const docRef = doc(db, 'clients', clientId);
 	const clientDoc = await getDoc(docRef);
 	return clientDoc.exists() ? { id: clientDoc.id, ...clientDoc.data() } : null;
@@ -101,6 +104,7 @@ export const getClient = async (clientId: string) => {
 
 // fetch clients from Firestore
 export const fetchClients = async () => {
+	console.debug('DB: fetchClients');
 	const q = query(collection(db, 'clients'), orderBy('createdAt', 'desc'), limit(5));
 	const querySnapshot = await getDocs(q);
 	const clients: Client[] = [];
@@ -112,6 +116,7 @@ export const fetchClients = async () => {
 };
 
 export const searchClients = async (criteria: ClientSearchCriteria) => {
+	console.debug('DB: searchClients');
 	let q = query(collection(db, 'clients'));
 	if (criteria.name) {
 		q = query(q, where('name', '==', criteria.name));
@@ -136,6 +141,7 @@ export const searchClients = async (criteria: ClientSearchCriteria) => {
  */
 
 export const saveCounseling = async (counseling: Counseling, client: Client) => {
+	console.debug('DB: saveCounseling');
 	cleanObject(counseling);
 	counseling.createdAt = counseling.createdAt || Timestamp.now();
 	counseling.updatedAt = Timestamp.now();
@@ -169,17 +175,20 @@ export const saveCounseling = async (counseling: Counseling, client: Client) => 
 };
 
 export const deleteCounseling = async (clientId: string, counselingId: string) => {
+	console.debug('DB: deleteCounseling');
 	const docRef = doc(db, `clients/${clientId}/counselings`, counselingId);
 	return await deleteDoc(docRef);
 };
 
 export const getCounseling = async (clientId: string, counselingId: string) => {
+	console.debug('DB: getCounseling');
 	const docRef = doc(db, `clients/${clientId}/counselings`, counselingId);
 	const counselingDoc = await getDoc(docRef);
 	return counselingDoc.exists() ? { id: counselingDoc.id, ...counselingDoc.data() } : null;
 };
 
 export const fetchCounselings = async (clientId: string) => {
+	console.debug('DB: fetchCounselings');
 	const q = query(
 		collection(db, `clients/${clientId}/counselings`),
 		orderBy('createdAt', 'desc'),
@@ -195,6 +204,7 @@ export const fetchCounselings = async (clientId: string) => {
 };
 
 export const fetchAllCounselings = async () => {
+	console.debug('DB: fetchAllCounselings');
 	const q = query(collectionGroup(db, 'counselings'), orderBy('createdAt', 'desc'), limit(5));
 	const querySnapshot = await getDocs(q);
 	const counselings: Counseling[] = [];
@@ -206,6 +216,7 @@ export const fetchAllCounselings = async () => {
 };
 
 export const searchCounseling = async (criteria: CounselingSearchCriteria) => {
+	console.debug('DB: searchCounseling');
 	let q = query(collectionGroup(db, 'counselings'));
 	if (criteria.name) {
 		q = query(q, where('name', '==', criteria.name));
@@ -220,7 +231,7 @@ export const searchCounseling = async (criteria: CounselingSearchCriteria) => {
 	const counselings: Counseling[] = [];
 	querySnapshot.forEach((doc) => {
 		// prettier-ignore
-		counselings.push({ id: doc.id, ...(doc.data() as Omit<Client, 'id'>) });
+		counselings.push({ id: doc.id, ...(doc.data() as Omit<Counseling, 'id'>) });
 	});
 	return counselings;
 };
@@ -229,8 +240,13 @@ export const searchCounseling = async (criteria: CounselingSearchCriteria) => {
  * Link CRUD
  */
 
-export const fetchLinks = async () => {
-	const q = query(collection(db, 'links'), orderBy('createdAt', 'desc'), limit(5));
+export const fetchLinks = async (clientId: string) => {
+	console.debug('DB: fetchLinks');
+	const q = query(
+		collection(db, `clients/${clientId}/links`),
+		orderBy('createdAt', 'desc'),
+		limit(5)
+	);
 	const querySnapshot = await getDocs(q);
 	const links: Link[] = [];
 	querySnapshot.forEach((doc) => {
@@ -240,3 +256,14 @@ export const fetchLinks = async () => {
 	return links;
 };
 
+export const fetchAllLinks = async () => {
+	console.debug('DB: fetchAllLinks');
+	const q = query(collectionGroup(db, 'links'), orderBy('createdAt', 'desc'), limit(5));
+	const querySnapshot = await getDocs(q);
+	const links: Link[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		links.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
+	});
+	return links;
+};

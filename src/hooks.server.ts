@@ -1,5 +1,3 @@
-import { initializeFirebase } from '$lib/firebase/firebase.client';
-
 export async function handle({ event, resolve }) {
 	// console.log('Server hook', event);
 

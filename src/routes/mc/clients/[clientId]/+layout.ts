@@ -14,13 +14,11 @@ export async function load({ params }) {
 	if (clientId) {
 		// Get the client
 		client = await getClient(clientId);
-		console.log('client =', client);
 		if (!client) {
 			error(404, 'Client not found');
 		}
 		// Get the client's counselings
 		counselings = await fetchCounselings(clientId);
-		console.log('counselings =', counselings);
 	}
 
 	return {

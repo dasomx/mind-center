@@ -20,8 +20,6 @@
 	/** @type {import('./$types').PageData}*/
 	export let data;
 
-	console.log('client data', data.props.client);
-
 	// If some keys of client were undefined, make them as null
 	const client: Client = {
 		...data.props.client,
