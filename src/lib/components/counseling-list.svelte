@@ -5,6 +5,7 @@
 	import Select, {Option} from '@smui/select';
 	import IconButton from '@smui/icon-button';
 	import type { Counseling, Client } from '$lib/types';
+	import { convertTimestampToDateString } from '$lib/firebase/utils';
 	export let data: Data[] = [];
 	type Data = Counseling & { no: number };
 	let rowsPerPage = 10;
@@ -28,10 +29,10 @@
 		</Row>
 	</Head>
 	<Body>
-		{#each data as { no, date, startTime, clientName, disasterName, counselingType, status, assessmentId }}
+		{#each data as { no, createdAt, startTime, clientName, disasterName, counselingType, status, assessmentId }}
 			<Row class="content-row">
 				<Cell>{no}</Cell>
-				<Cell>{date}</Cell>
+				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
 				<Cell>{clientName}</Cell>
 				<Cell>{disasterName}</Cell>
 				<Cell>{counselingType}</Cell>

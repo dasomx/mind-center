@@ -143,16 +143,17 @@ export const searchClients = async (criteria: ClientSearchCriteria) => {
 export const saveCounseling = async (counseling: Counseling, client: Client) => {
 	console.debug('DB: saveCounseling');
 	cleanObject(counseling);
+	// populate the client information to the counseling
 	counseling.createdAt = counseling.createdAt || Timestamp.now();
 	counseling.updatedAt = Timestamp.now();
-	const { id, clientId, ...rest } = counseling;
-
-	// populate the client information to the counseling
-	rest.clientName = client.name;
-	rest.clientMobile = client.mobile;
-	rest.disasterName = client.disasterName;
-	rest.disasterType = client.disasterType;
-	rest.disasterVictimType = client.disasterVictimType;
+	counseling.clientId = client.id;
+	counseling.clientName = client.name;
+	counseling.clientMobile = client.mobile;
+	counseling.disasterName = client.disasterName;
+	counseling.disasterType = client.disasterType;
+	counseling.disasterVictimType = client.disasterVictimType;
+	const clientId = client.id;
+	const { id, ...rest } = counseling;
 
 	// if the counseling has an id, update the counseling, otherwise create a new counseling
 	let docRef = null;

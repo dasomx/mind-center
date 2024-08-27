@@ -20,6 +20,8 @@
 	/** @type {import('./$types').PageData}*/
 	export let data;
 
+	console.debug('counselings ', data.props.counselings);
+
 	// If some keys of client were undefined, make them as null
 	const client: Client = {
 		...data.props.client,
@@ -177,12 +179,12 @@
 		<Paper variant="unelevated">
 			<Content>
 				<section>Counselings</section>
-				<div>
+				<div style="display: flex; justify-content: flex-end;">
 					<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/new`)}
-						>Add</Button
+						>Add new session</Button
 					>
 				</div>
-				<CounselingList data={data.props.client.counselings} />
+				<CounselingList data={data.props.counselings} />
 			</Content>
 		</Paper>
 	{:else if active === 'Links'}

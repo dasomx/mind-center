@@ -4,12 +4,19 @@
 	import Select, { Option } from '@smui/select';
 	import { DISASTER_NAMES } from '$lib/config';
 	import CounselingList from '$lib/components/counseling-list.svelte';
-	import { DisasterName, DisasterType, CounselingType, CounselingStatus, CounselingEndingType, type Counseling, DisasterVictimType } from '$lib/types/index.d.ts';
+	import { type Counseling } from '$lib/types/index.d';
     import Snackbar, { Label, Actions } from '@smui/snackbar';
     import IconButton from '@smui/icon-button';
 	import { goto } from '$app/navigation';
-	import firebase from 'firebase/compat/app';
+	
 
+	/** @type {import('./$types').PageData} */
+	export let data;
+
+	console.debug('data', data);
+
+	const { counselings } = data;
+	
     let name: string = '';
 	let disasterName: string = '';
 	let mobile: string = '';
@@ -35,9 +42,6 @@
     function saveCounseling() {
         // Save all the input values to the database or perform any other necessary actions
     }
-
-    const counselings: Counseling[] = [
-    ];
 
 </script>
 

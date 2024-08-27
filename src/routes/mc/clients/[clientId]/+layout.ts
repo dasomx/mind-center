@@ -19,6 +19,12 @@ export async function load({ params }) {
 		}
 		// Get the client's counselings
 		counselings = await fetchCounselings(clientId);
+		counselings = counselings.map((counseling, index) => {
+			return {
+				...counseling,
+				no: index + 1
+			};
+		});
 	}
 
 	return {
