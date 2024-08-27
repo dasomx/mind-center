@@ -18,14 +18,12 @@
 		try {
 			const result = await signInWithEmailAndPassword(auth, email, password);
 			const { user }: UserCredential = result;
-			console.log('user ', user);
 
 			try {
 				// Check if the user is approved
 				const userDocRef = doc(db, 'users', user?.uid);
 				const userDoc = await getDoc(userDocRef);
 
-				console.log('user doc data ', userDoc.data());
 				if (userDoc.exists() && userDoc.data().approved) {
 					session.set({
 						loggedIn: true,

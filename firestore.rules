@@ -2,28 +2,25 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
-      match /users/{userId} {
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.uid == userId;
-      }
-      function isApproved() {
-        return true; // this is a placeholder for the actual logic
-      	// return request.auth.uid != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.approved;
-      }            
-      match /counselings/{counselingId} {
-        allow read: if isApproved();
-        allow write: if isApproved();
-      }
-      match /clients/{clientId} {
-        allow read: if isApproved();
-        allow write: if isApproved();
-      }
-      match /links/{linkId} {
-        allow read: if isApproved();
-        allow write: if isApproved();
-      }      
+    match /users/{user} {
+      allow read: if request.auth.uid == user;
+      allow write: if request.auth.uid == user;
+    }
+    function isApproved() {
+      return true; // this is a placeholder for the actual logic
+      // return request.auth.uid != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.approved;
+    }            
+    match /clients/{client} {
+      allow read: if isApproved();
+      allow write: if isApproved();
+    }
+    match /{path=**}/counselings/{counseling} {
+      allow read: if isApproved();
+      allow write: if isApproved();
+    }
+    match /{path=**}/links/{link} {
+      allow read: if isApproved();
+      allow write: if isApproved();
     }
   }
 }

@@ -5,7 +5,7 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-	console.log('data', data);
+	console.debug('data', data);
 	const { clients, counselings, links } = data;
 </script>
 

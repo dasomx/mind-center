@@ -1,50 +1,72 @@
 <script lang="ts">
-	import { type Counseling, type Client, CounselingType, RelationVictim, EvaluationCategory } from '$lib/types/index.d.ts';
+	import {
+		type Counseling,
+		type Client,
+		EvaluationCategory,
+
+		DisasterVictimType
+
+	} from '$lib/types/index.d.ts';
 	import FormField from '@smui/form-field';
 	import Select, { Option } from '@smui/select';
 	import Radio from '@smui/radio';
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
-  	import HelperText from '@smui/textfield/helper-text';
+	import HelperText from '@smui/textfield/helper-text';
 	import {
-		DISASTER_NAMES,
 		DISASTER_TYPES,
 		DISASTER_VICTIM_TYPES,
-		REFER_TO,
 		COUNSELING_TYPE,
-		INIT_COUNSELING
 	} from '$lib/config';
+	import { saveCounseling } from '$lib/firebase/firebase.client';
+	import CircularProgress from '@smui/circular-progress';
 
-	let data: Counseling = INIT_COUNSELING;
-	console.log('data ', data);
+	/** @type {import('./$types').PageData} */
+	export let counseling: Counseling;
+	export let client: Client
+
+	counseling = {
+		...counseling,
+		categoricalEvaluation: {
+			psychological: 0,
+			physical: 0,
+			educational: 0,
+			financial: 0,
+			spiritual: 0
+		},
+	}
+
+	let startTime = counseling?.startTime?.toISOString().slice(0, 16);
+	let endTime = counseling?.endTime?.toISOString().slice(0, 16);
+
 	let selectedSession = 'normal';
-	let clientData: Client = {
-		id:'',
-		name: '',
-		mobile:'',
-		address:'',
-		contactNoHome:''
-	};
 
-	let clients: any = [
-		{id: '1', name: 'Ahmed Raza'},
-		{id: '2', name: 'Fatima Haq'},
-		{id: '3', name: 'Bilal Sami'},
-		{id: '4', name: 'Zainab Akbar'}
-	];
-
-	let relationVictimeEntries = Object.entries(RelationVictim);
 	let evaluationCategory = Object.entries(EvaluationCategory);
-	
+
+	// save counseling
+	async function save() {
+		if(!counseling || !client) return;
+		try {
+			await saveCounseling(counseling, client);
+		} catch (error) {
+			console.error('error on saving counseling', error);
+		}
+	}
+
+	// cancel and go back
+	function cancel() {
+		history.back();
+	}
 </script>
 
 <div class="container">
+	{#if !counseling || !client}
+	<CircularProgress />
+	{:else}
 	<div class="form-container">
 		<div class="inner-container addSessionType">
-			<span>
-				Add Session Type *
-			</span>
+			<span> Add Session Type * </span>
 			<span>
 				<FormField>
 					<Radio bind:group={selectedSession} value="normal" touch />
@@ -58,79 +80,57 @@
 			</span>
 		</div>
 
-		<div class="grid-title">Normal Session</div>
-		<LayoutGrid class="grid-container">		
+		<div class="grid-title">Client Info</div>
+		<LayoutGrid class="grid-container">
 			<Cell>
-				<Textfield
-					bind:value={data.startTime}
-					label="Start Time"
-					type="datetime-local"
-					variant="outlined"
-    			/>
+				<Textfield label="Client Name" bind:value={client.name} variant="outlined" input$readonly />
 			</Cell>
 			<Cell>
-				<Textfield
-					bind:value={data.endTime}
-					label="End Time"
-					type="datetime-local"
-					variant="outlined"
-    			/>
+				<Textfield label="Disaster Victim Type" bind:value={client.disasterVictimType} variant="outlined" input$readonly />
 			</Cell>
 			<Cell>
-				<Textfield label="Counselor" variant="outlined" bind:value={data.counselorId} />
+				<Textfield label="Disaster Type" variant="outlined" bind:value={client.disasterType} input$readonly />
 			</Cell>
 			<Cell>
-				<Select variant="outlined" label="Counseling Type" bind:value={data.counselingType}>
-					{#each COUNSELING_TYPE as option}
-						<Option value={option}>{option}</Option>
-					{/each}
-				</Select>
-			</Cell>
-			<Cell span={12}>
-				<div class="grid-title">Information Provider</div>
-				<div>Information ProviderRelationship with the Victim*</div>
-				
-				<div style="display: flex; flex-direction: column;">
-					{#each relationVictimeEntries as [key, value]}
-						<FormField>
-							<Radio bind:group={data.relationVictim} value={key} touch />
-							<span slot="label">{value}
-							{#if key === 'Family'}
-								<Select variant="outlined" label="Choose if Family" bind:value={data.relationFamilyDetail}>
-									{#each DISASTER_VICTIM_TYPES as option}
-										<Option value={option}>{option}</Option>
-									{/each}
-								</Select>								
-							{/if}
-							</span>
-						</FormField>
-				  	{/each}
-				</div>
+				<Textfield label="Mobile" variant="outlined" bind:value={client.mobile} input$readonly/>
 			</Cell>
 			<Cell>
-				<Select variant="outlined" label="Client Name" bind:value={clientData.id}>
-					{#each clients as option}
-						<Option value={option.id}>{option.name}</Option>
-					{/each}
-				</Select>
-			</Cell>
-			<Cell>
-				<Textfield label="Mobile" variant="outlined" bind:value={clientData.mobile} />
-			</Cell>
-			<Cell>
-				<Textfield label="Home Phone" variant="outlined" bind:value={clientData.contactNoHome} />
+				<Textfield label="Home Phone" variant="outlined" bind:value={client.contactNoHome} input$readonly/>
 			</Cell>
 			<Cell span={12}>
 				<Textfield
 					label="Address"
 					variant="outlined"
-					bind:value={clientData.address}
+					bind:value={client.address}
 					style="width: 100%"
+					input$readonly
 				/>
 			</Cell>
-			<Cell span={12}>
-				<Select variant="outlined" label="Disaster Type" bind:value={data.disasterType}>
-					{#each DISASTER_TYPES as option}
+		</LayoutGrid>
+		<div class="grid-title">Normal Session</div>
+		<LayoutGrid class="grid-container">
+			<Cell>
+				<Textfield
+					bind:value={startTime}
+					label="Start Time"
+					type="datetime-local"
+					variant="outlined"
+				/>
+			</Cell>
+			<Cell>
+				<Textfield
+					bind:value={endTime}
+					label="End Time"
+					type="datetime-local"
+					variant="outlined"
+				/>
+			</Cell>
+			<Cell>
+				<Textfield label="Counselor" variant="outlined" bind:value={counseling.counselorId} />
+			</Cell>
+			<Cell>
+				<Select variant="outlined" label="Counseling Type" bind:value={counseling.counselingType}>
+					{#each COUNSELING_TYPE as option}
 						<Option value={option}>{option}</Option>
 					{/each}
 				</Select>
@@ -139,7 +139,7 @@
 				<Textfield
 					label="Emergency Intervention"
 					variant="outlined"
-					bind:value={data.emergencyIntervention}
+					bind:value={counseling.emergencyIntervention}
 					style="width: 100%"
 				/>
 			</Cell>
@@ -147,46 +147,46 @@
 				<Textfield
 					label="Counseling Topic"
 					variant="outlined"
-					bind:value={data.counselingTopic}
+					bind:value={counseling.counselingTopic}
 					style="width: 100%"
 				/>
 			</Cell>
 			<Cell span={12}>
 				<div class="margins">
 					<Textfield
-					  style="width: 100%;"
-					  helperLine$style="width: 100%;"
-					  textarea
-					  bind:value={data.counselingDetails}
-					  label="Counseling Detail"
+						style="width: 100%;"
+						helperLine$style="width: 100%;"
+						textarea
+						bind:value={counseling.counselingDetails}
+						label="Counseling Detail"
 					>
-					  <HelperText slot="helper">Write the Counseling Details</HelperText>
+						<HelperText slot="helper">Write the Counseling Details</HelperText>
 					</Textfield>
-				</div>	   
+				</div>
 			</Cell>
 			<Cell span={12}>
 				<div class="margins">
 					<Textfield
-					  style="width: 100%;"
-					  helperLine$style="width: 100%;"
-					  textarea
-					  bind:value={data.pictureUrls}
-					  label="Click to upload or drag & drop"
+						style="width: 100%;"
+						helperLine$style="width: 100%;"
+						textarea
+						bind:value={counseling.pictureUrls}
+						label="Click to upload or drag & drop"
 					>
-					  <HelperText slot="helper">Click to upload or drag & drop</HelperText>
+						<HelperText slot="helper">Click to upload or drag & drop</HelperText>
 					</Textfield>
-				</div>	   
+				</div>
 			</Cell>
 			<Cell span={12}>
 				<div class="margins">
 					<Textfield
-					  style="width: 100%;"
-					  helperLine$style="width: 100%;"
-					  textarea
-					  bind:value={data.psychologicalAidDetails}
-					  label="Psychological Aid Details"
+						style="width: 100%;"
+						helperLine$style="width: 100%;"
+						textarea
+						bind:value={counseling.psychologicalAidDetails}
+						label="Psychological Aid Details"
 					>
-					  <HelperText slot="helper">Write the Psychological Aid Details</HelperText>
+						<HelperText slot="helper">Write the Psychological Aid Details</HelperText>
 					</Textfield>
 				</div>
 			</Cell>
@@ -194,54 +194,74 @@
 				<div class="grid-title">Categorical Evaluations</div>
 			</Cell>
 			<Cell>
-				<Select variant="outlined" label="Psycological" bind:value={data.categoricalEvaluation.psychological}>
-					{#each evaluationCategory as [key,value]}
+				<Select
+					variant="outlined"
+					label="Psycological"
+					bind:value={counseling.categoricalEvaluation.psychological}
+				>
+					{#each evaluationCategory as [key, value]}
 						<Option value={key}>{value}</Option>
 					{/each}
 				</Select>
 			</Cell>
 			<Cell>
-				<Select variant="outlined" label="Physical" bind:value={data.categoricalEvaluation.physical}>
-					{#each evaluationCategory as [key,value]}
+				<Select
+					variant="outlined"
+					label="Physical"
+					bind:value={counseling.categoricalEvaluation.physical}
+				>
+					{#each evaluationCategory as [key, value]}
 						<Option value={key}>{value}</Option>
 					{/each}
 				</Select>
 			</Cell>
 			<Cell>
-				<Select variant="outlined" label="Educational" bind:value={data.categoricalEvaluation.educational}>
-					{#each evaluationCategory as [key,value]}
+				<Select
+					variant="outlined"
+					label="Educational"
+					bind:value={counseling.categoricalEvaluation.educational}
+				>
+					{#each evaluationCategory as [key, value]}
 						<Option value={key}>{value}</Option>
 					{/each}
 				</Select>
 			</Cell>
 			<Cell>
-				<Select variant="outlined" label="Financial" bind:value={data.categoricalEvaluation.financial}>
-					{#each evaluationCategory as [key,value]}
+				<Select
+					variant="outlined"
+					label="Financial"
+					bind:value={counseling.categoricalEvaluation.financial}
+				>
+					{#each evaluationCategory as [key, value]}
 						<Option value={key}>{value}</Option>
 					{/each}
 				</Select>
 			</Cell>
 			<Cell>
-				<Select variant="outlined" label="Spiritual" bind:value={data.categoricalEvaluation.spiritual}>
-					{#each evaluationCategory as [key,value]}
+				<Select
+					variant="outlined"
+					label="Spiritual"
+					bind:value={counseling.categoricalEvaluation.spiritual}
+				>
+					{#each evaluationCategory as [key, value]}
 						<Option value={key}>{value}</Option>
 					{/each}
 				</Select>
 			</Cell>
 			<Cell span={12}>
-				<div class="grid-title">Evaluation  Total: _____   Average:_____</div>
+				<div class="grid-title">Evaluation Total: _____ Average:_____</div>
 			</Cell>
 		</LayoutGrid>
-		
+
 		<div class="grid-title">Assessment</div>
-		<LayoutGrid class="grid-container">
-		</LayoutGrid>
+		<LayoutGrid class="grid-container"></LayoutGrid>
 
 		<div style="align-self: flex-end;">
-			<Button variant="outlined" on:click={()=>history.back()}>Close</Button>
-			<Button variant="raised" on:click={()=>alert('under construction :)')}>Save</Button>
+			<Button variant="outlined" on:click={() => history.back()}>Close</Button>
+			<Button variant="raised" on:click={save}>Save</Button>
 		</div>
 	</div>
+	{/if}
 </div>
 
 <style>
@@ -273,7 +293,7 @@
 		width: 100%;
 	}
 	.grid-title {
-        font-size: 1.5rem;
+		font-size: 1.5rem;
 		height: 32px;
 		align-self: stretch;
 		flex-grow: 0;
@@ -282,7 +302,7 @@
 		justify-content: flex-start;
 		align-items: flex-start;
 		padding: 0;
-        margin-top: 2.5rem;
+		margin-top: 2.5rem;
 	}
 
 	.addSessionType {

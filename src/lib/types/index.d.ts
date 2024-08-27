@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase/firestore';
+
 export enum DisasterType {
 	Killed = 'Killed',
 	Injured = 'Injured',
@@ -20,6 +22,7 @@ export enum Jobs {
 }
 
 export enum DisasterVictimType {
+	Self = 'Self',
 	Father = 'Father',
 	Mother = 'Mother',
 	Son = 'Son',
@@ -27,6 +30,7 @@ export enum DisasterVictimType {
 	Sister = 'Sister',
 	Brother = 'Brother',
 	Relative = 'Relative',
+	CoWorker = 'Co-worker',
 	Others = 'Others'
 }
 
@@ -82,7 +86,7 @@ export type Client = {
 	otherJobs?: string;
 	disasterName?: DisasterName;
 	disasterType?: DisasterType;
-	disasterVictimType?: DisasterVictimType;
+	disasterVictimType: DisasterVictimType;
 	referTo?: ReferType;
 	resultOfAction?: ResultOfAction;
 	status?: ClientStatus;
@@ -94,19 +98,17 @@ export type Client = {
 };
 
 export type Counseling = {
-	id: string;
+	id: string | null;
 	clientId: Client['id'];
 	clientName: Client['name'];
 	clientMobile: Client['mobile'];
 	disasterName?: DisasterName;
 	disasterType?: DisasterType;
-	date?: string;
 	startTime?: Date | null;
 	endTime?: Date | null;
 	counselorId: string;
 	counselingType: CounselingType;
-	relationVictim: RelationVictim;
-	relationFamilyDetail: DisasterVictimType
+	disasterVictimType: DisasterVictimType;
 	status: CounselingStatus;
 	emergencyIntervention?: string;
 	counselingTopic: string;
@@ -118,11 +120,11 @@ export type Counseling = {
 		physical: number;
 		educational: number;
 		financial: number;
-		spriitual: number;
+		spiritual: number;
 	};
 	assessmentId?: string;
-	createdAt: number;
-	updatedAt: number;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
 
 	// Ending Session Only
 	treatmentEnding: string | null;
@@ -158,22 +160,20 @@ export enum CounselingStatus {
 	Canceled = 'Canceled'
 }
 
-export enum RelationVictim {
-	Self = 'Self',
-	Family = 'Family',
-	Neighbor = 'Neighbor',
-	RelatedWorker = 'Related Worker',
-	Others = 'Others'
-}
-
 export enum EvaluationCategory {
-	'2' = "Worst",
-	'4' = "Bad",
-	'6' = "So&so",
-	'8' = "Good",
-	'10' = "Best",
+	'2' = 'Worst',
+	'4' = 'Bad',
+	'6' = 'So&so',
+	'8' = 'Good',
+	'10' = 'Best'
 }
 export type ClientSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type CounselingSearchCriteria = {
 	name?: string;
 	mobile?: string;
 	disasterName?: DisasterName;

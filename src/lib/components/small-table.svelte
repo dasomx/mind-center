@@ -28,7 +28,6 @@
 				class="content-row"
 				style="cursor: pointer"
 				on:click={() => {
-					console.log('id', id);
 					goto(`/mc/${resource}/${id}`);
 				}}
 			>

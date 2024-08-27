@@ -27,13 +27,13 @@
 	onMount(async () => {
 		const user: any = await data.getAuthUser();
 		if (user) {
-			console.log('user', user);
+			console.debug('user', user);
 			displayName = user.displayName;
 			imageUrl = user.photoURL?.length > 0 ? user.photoURL : defaultImage;
 		}
-		console.log('imageUrl', imageUrl);
+		console.debug('imageUrl', imageUrl);
 		const loggedIn = !!user; // ignore emailVerified for now && user.emailVerified;
-		console.log('user', user, loggedIn);
+		console.debug('user', user, loggedIn);
 		session.update((cur: any) => {
 			loading = false;
 			return {
@@ -70,7 +70,7 @@
 									<button
 										class="text-button"
 										on:click={async () => {
-											console.log('logging out...');
+											console.debug('logging out...');
 											try {
 												await signOut(auth);
 											} catch (error) {

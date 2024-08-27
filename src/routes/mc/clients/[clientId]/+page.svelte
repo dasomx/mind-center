@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ClientForm from '$lib/components/client-form.svelte';
 	import type { Client } from '$lib/types';
-	import Card, { Content, Actions } from '@smui/card';
 	import Button from '@smui/button';
 	import TextField from '@smui/textfield';
 	import {
@@ -9,18 +8,21 @@
 		convertTimestampToDateTimeString
 	} from '$lib/firebase/utils';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
+	import Tab, { Label } from '@smui/tab';
+	import TabBar from '@smui/tab-bar';
+	import Paper, { Content } from '@smui/paper';
 	import { goto } from '$app/navigation';
 	import { deleteClient } from '$lib/firebase/firebase.client';
 	import { routes } from '$lib/config';
+	import StatusChip from '$lib/components/status-chip.svelte';
+	import CounselingList from '$lib/components/counseling-list.svelte';
 
 	/** @type {import('./$types').PageData}*/
 	export let data;
 
-	console.log('client data', data.props.client);
-
 	// If some keys of client were undefined, make them as null
 	const client: Client = {
-		... data.props.client,
+		...data.props.client,
 		fatherName: data.props.client?.fatherName ?? null,
 		name: data.props.client?.name ?? null,
 		gender: data.props.gender ?? null,
@@ -46,126 +48,169 @@
 		medicalCoverage: data.props.client?.medicalCoverage ?? null,
 		createdAt: data.props.client?.createdAt ?? null,
 		updatedAt: data.props.client?.updatedAt ?? null
+	};
+
+	async function removeClient(id: string) {
+		console.debug('removeClient', id);
+		try {
+			await deleteClient(id);
+			console.debug('Client deleted successfully');
+			goto(routes.clients);
+		} catch (error) {
+			console.error('Error deleting client', error);
+		}
 	}
 
-
-
-    async function removeClient(id: string) {
-        console.log('removeClient', id);
-        try {
-            await deleteClient(id);
-            console.log('Client deleted successfully');
-            goto(routes.clients);
-        } catch (error) {
-            console.error('Error deleting client', error);
-        }
-    }
+	let active = 'General';
 </script>
 
 <h3>{data.props.client.name}'s profile</h3>
 
 <div>
-	<Card>
-		<Content>
-			<h4>General Information</h4>
-			<LayoutGrid>
-				<Cell>
-					<TextField label="Father's Name" value={client.fatherName} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Name" value={client.name} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Gender" value={client.gender} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Date of Birth" value={client.dob} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="CNIC Number" value={client.cnicNumber} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Code" value={client.code} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Contact No (Home)" value={client.contactNoHome} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Mobile" value={client.mobile} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Address" value={client.address} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Job" value={client.job} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="School Name" value={client.schoolName} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Grade" value={client.grade} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Company Name" value={client.companyName} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Other Jobs" value={client.otherJobs} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Disaster Name" value={client.disasterName} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Disaster Type" value={client.disasterType} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField
-						label="Disaster Victim Type"
-						value={client.disasterVictimType}
-						input$readonly
-					/>
-				</Cell>
-				<Cell>
-					<TextField label="Refer To" value={client.referTo} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Result of Action" value={client.resultOfAction} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Status" value={client.status} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Sessions" value={client.sessions} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Registration Date" value={client.regDate} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Case Manager" value={client.caseManager} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField label="Medical Coverage" value={client.medicalCoverage} input$readonly />
-				</Cell>
-				<Cell>
-					<TextField
-						label="Created At"
-						value={convertTimestampToDateTimeString(client.createdAt)}
-						input$readonly
-					/>
-				</Cell>
-				<Cell>
-					<TextField
-						label="Updated At"
-						value={convertTimestampToDateTimeString(client.updatedAt)}
-						input$readonly
-					/>
-				</Cell>
-			</LayoutGrid>
-		</Content>
-		<Actions>
-			<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/edit`)}>Edit</Button>
-			<Button variant="outlined" on:click={async ()=> await removeClient(client.id)}>Delete</Button>
-		</Actions>
-	</Card>
+	<TabBar tabs={['General', 'Counselings', 'Links', 'Memos']} let:tab bind:active>
+		<Tab {tab}>
+			<Label>{tab}</Label>
+		</Tab>
+	</TabBar>
+	{#if active === 'General'}
+		<Paper variant="unelevated">
+			<Content>
+				<Paper variant="outlined" style="margin-bottom: 1em">
+				<section>Genenral</section>
+				<LayoutGrid>
+					<Cell>
+						<StatusChip status={client.status} />
+					</Cell>
+					<Cell>
+						<TextField label="Name" value={client.name} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Gender" value={client.gender} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Date of Birth" value={client.dob} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Father's Name" value={client.fatherName} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="CNIC Number" value={client.cnicNumber} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Code" value={client.code} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Contact No (Home)" value={client.contactNoHome} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Mobile" value={client.mobile} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Address" value={client.address} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Job" value={client.job} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="School Name" value={client.schoolName} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Grade" value={client.grade} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Company Name" value={client.companyName} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Other Jobs" value={client.otherJobs} input$readonly />
+					</Cell>
+				</LayoutGrid>
+				</Paper>
+				<Paper variant="outlined"  style="margin-bottom: 1em">
+				<section>Disaster</section>
+				<LayoutGrid>
+					<Cell>
+						<TextField label="Disaster Name" value={client.disasterName} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Disaster Type" value={client.disasterType} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField
+							label="Disaster Victim Type"
+							value={client.disasterVictimType}
+							input$readonly
+						/>
+					</Cell>
+					<Cell>
+						<TextField label="Case Manager" value={client.caseManager} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Medical Coverage" value={client.medicalCoverage} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField
+							label="Created At"
+							value={convertTimestampToDateTimeString(client.createdAt)}
+							input$readonly
+						/>
+					</Cell>
+					<Cell>
+						<TextField
+							label="Updated At"
+							value={convertTimestampToDateTimeString(client.updatedAt)}
+							input$readonly
+						/>
+					</Cell>
+				</LayoutGrid>
+				</Paper>
+				<div>
+					<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/edit`)}
+						>Edit</Button
+					>
+					<Button variant="outlined" on:click={async () => await removeClient(client.id)}
+						>Delete</Button
+					>
+				</div>
+			</Content>
+		</Paper>
+	{:else if active === 'Counselings'}
+		<Paper variant="unelevated">
+			<Content>
+				<section>Counselings</section>
+				<div>
+					<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/new`)}
+						>Add</Button
+					>
+				</div>
+				<CounselingList data={data.props.client.counselings} />
+			</Content>
+		</Paper>
+	{:else if active === 'Links'}
+		<Paper variant="unelevated">
+			<Content>
+				<Paper variant="outlined" style="margin-bottom: 1em">
+				<section>Links</section>
+				<LayoutGrid>
+					<Cell>
+						<TextField label="Refer To" value={client.referTo} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Result of Action" value={client.resultOfAction} input$readonly />
+					</Cell>
+					<Cell>
+						<TextField label="Sessions" value={client.sessions} input$readonly />
+					</Cell>
+				</LayoutGrid>
+				</Paper>
+			</Content>
+		</Paper>
+	{:else if active === 'Memos'}
+		<Paper variant="unelevated">
+			<Content>
+				<section>Memos</section>
+			</Content>
+		</Paper>
+	{/if}
 </div>
 
 <style>

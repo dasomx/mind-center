@@ -5,15 +5,8 @@
 	import { DISASTER_NAMES } from '$lib/config';
 	import ClientList from '$lib/components/client-list.svelte';
 	import {
-		ClientStatus,
-		DisasterType,
-		DisasterVictimType,
-		GenderType,
-		Jobs,
-		ReferType,
-		ResultOfAction,
 		type Client
-	} from '$lib/types/index.d.ts';
+	} from '$lib/types/index.d';
 	import Snackbar, { Label, Actions } from '@smui/snackbar';
 	import IconButton from '@smui/icon-button';
 	import { goto } from '$app/navigation';
@@ -22,7 +15,7 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-	console.log('data', data);
+	console.debug('data', data);
 	const { clients } = data;
 
 	let filteredClients: Client[] = clients;
@@ -48,7 +41,7 @@
 	async function search() {
 		try {
 			const data = await searchClients({ name, disasterName, mobile });
-			console.log('data', data);
+			console.debug('data', data);
 			filteredClients = data;
 		} catch (error) {
 			showSnackbarInfo(error);

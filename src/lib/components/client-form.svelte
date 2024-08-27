@@ -31,7 +31,6 @@
 		medicalCoverage: data?.medicalCoverage ?? null
 	};
 
-	console.log('data ', data);
 	let saving = false;
 
 	async function save() {
@@ -45,7 +44,6 @@
 		} finally {
 			saving = false;
 		}
-		console.log('data ', data);
 	}
 </script>
 

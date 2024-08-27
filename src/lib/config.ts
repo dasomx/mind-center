@@ -17,6 +17,7 @@ export const GENDERS = ['Male', 'Female'];
 export const JOBS = ['None', 'Student', 'Job / Work', 'Others'];
 
 export const DISASTER_VICTIM_TYPES = [
+	'Self',
 	'Father',
 	'Mother',
 	'Son',
@@ -24,6 +25,7 @@ export const DISASTER_VICTIM_TYPES = [
 	'Sister',
 	'Brother',
 	'Relative',
+	'Co-worker',
 	'Others'
 ];
 
@@ -77,15 +79,15 @@ export const INIT_CLIENT: Client = {
 };
 
 export const INIT_COUNSELING: Counseling = {
-	id: '',
-	clientId: '',
-	disasterType: '',
-	disasterName: '',
+	id: null,
+	clientId: null,
+	disasterType: null,
+	disasterVictimType: null,
+	disasterName: null,
 	clientName: '',
 	clientMobile: '',
 	counselorId: '',
 	counselingType: '',
-	relationVictim: '',
 	relationFamilyDetail: '',
 	status: '',
 	startTime: new Date(),
@@ -93,17 +95,17 @@ export const INIT_COUNSELING: Counseling = {
 	date: '',
 	createdAt: '',
 	updatedAt: '',
-	emergencyIntervention: "",
-	counselingTopic: "",
-	counselingDetails: "",
-	pictureUrls: [""],
-	psychologicalAidDetails: "",
+	emergencyIntervention: '',
+	counselingTopic: '',
+	counselingDetails: '',
+	pictureUrls: [],
+	psychologicalAidDetails: '',
 	categoricalEvaluation: {
 		psychological: 0,
 		physical: 0,
 		educational: 0,
 		financial: 0,
-		spriitual: 0
+		spiritual: 0
 	},
 	assessmentId: '',
 	treatmentEnding: '',
