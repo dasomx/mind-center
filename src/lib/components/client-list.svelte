@@ -18,10 +18,9 @@
 	let lastPage = Math.ceil(data.length / rowsPerPage) - 1;
 	
 	async function removeClient(id: string) {
-		console.log('removeClient', id);
 		try {
 			await deleteClient(id);
-			console.log('Client deleted successfully');
+			console.debug('Client deleted successfully');
 			data = data.filter(client => client.id !== id);
 		} catch (error) {
 			console.error('Error deleting client', error);

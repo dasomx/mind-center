@@ -15,7 +15,7 @@
 
 	/** @type {import('./$types').PageData} */
 	export let data;
-	console.log('data', data);
+	console.debug('data', data);
 	const { clients } = data;
 
 	let filteredClients: Client[] = clients;
@@ -41,7 +41,7 @@
 	async function search() {
 		try {
 			const data = await searchClients({ name, disasterName, mobile });
-			console.log('data', data);
+			console.debug('data', data);
 			filteredClients = data;
 		} catch (error) {
 			showSnackbarInfo(error);

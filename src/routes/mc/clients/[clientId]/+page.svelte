@@ -51,10 +51,10 @@
 	};
 
 	async function removeClient(id: string) {
-		console.log('removeClient', id);
+		console.debug('removeClient', id);
 		try {
 			await deleteClient(id);
-			console.log('Client deleted successfully');
+			console.debug('Client deleted successfully');
 			goto(routes.clients);
 		} catch (error) {
 			console.error('Error deleting client', error);

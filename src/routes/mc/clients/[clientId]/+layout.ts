@@ -9,7 +9,7 @@ export async function load({ params }) {
 	let client = null;
 	let counselings: Counseling[] = [];
 
-	console.log('clientId', clientId);
+	console.debug('clientId', clientId);
 
 	if (clientId) {
 		// Get the client

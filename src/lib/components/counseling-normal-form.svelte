@@ -46,12 +46,11 @@
 
 	// save counseling
 	async function save() {
-		console.log('counseling', counseling);
 		if(!counseling || !client) return;
 		try {
 			await saveCounseling(counseling, client);
 		} catch (error) {
-			console.log('error on saving counseling', error);
+			console.error('error on saving counseling', error);
 		}
 	}
 
