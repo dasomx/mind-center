@@ -21,10 +21,13 @@
 	} from '$lib/config';
 	import { saveCounseling } from '$lib/firebase/firebase.client';
 	import CircularProgress from '@smui/circular-progress';
+	import { goto } from '$app/navigation';
 
 	/** @type {import('./$types').PageData} */
 	export let counseling: Counseling;
 	export let client: Client
+
+	let saving = false;
 
 	counseling = {
 		...counseling,
@@ -48,7 +51,9 @@
 	async function save() {
 		if(!counseling || !client) return;
 		try {
+			saving = true;
 			await saveCounseling(counseling, client);
+			history.back();
 		} catch (error) {
 			console.error('error on saving counseling', error);
 		}
@@ -258,7 +263,12 @@
 
 		<div style="align-self: flex-end;">
 			<Button variant="outlined" on:click={() => history.back()}>Close</Button>
-			<Button variant="raised" on:click={save}>Save</Button>
+			<Button variant="raised" disabled={saving} on:click={save}>
+				{saving ? 'Saving...' : 'Save'}
+				{#if saving}
+					<CircularProgress style="height: 24px; width: 24px;" indeterminate />
+				{/if}
+			</Button>
 		</div>
 	</div>
 	{/if}
