@@ -1,13 +1,17 @@
 <script lang="ts">
 	import CounselingForm from "$lib/components/counseling-normal-form.svelte";
 	import { INIT_COUNSELING } from "$lib/config";
+    export let data;
+    const { clientId, client } = data.props;
+    const initData = {...INIT_COUNSELING, clientId}
+
 </script>
 <div>
     <span class="Page-header">
         Add Session Detail
       </span>
     <div>
-        <CounselingForm data={INIT_COUNSELING}/>
+        <CounselingForm counseling={initData} client={client}/>
     </div>
 </div>
 

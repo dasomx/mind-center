@@ -12,18 +12,18 @@ service cloud.firestore {
         return true; // this is a placeholder for the actual logic
       	// return request.auth.uid != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.approved;
       }            
-      match /counselings/{counselingId} {
-        allow read: if isApproved();
-        allow write: if isApproved();
-      }
       match /clients/{clientId} {
         allow read: if isApproved();
         allow write: if isApproved();
+        match /counselings/{counselingId} {
+          allow read: if isApproved();
+          allow write: if isApproved();
+        }
+        match /links/{linkId} {
+          allow read: if isApproved();
+          allow write: if isApproved();
+        }
       }
-      match /links/{linkId} {
-        allow read: if isApproved();
-        allow write: if isApproved();
-      }      
     }
   }
 }

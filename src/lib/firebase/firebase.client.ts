@@ -3,6 +3,7 @@ import { connectAuthEmulator, getAuth, type Auth } from 'firebase/auth';
 import {
 	addDoc,
 	collection,
+	collectionGroup,
 	connectFirestoreEmulator,
 	deleteDoc,
 	doc,
@@ -18,7 +19,14 @@ import {
 	where
 } from 'firebase/firestore';
 import { browser } from '$app/environment';
-import type { Client, ClientSearchCriteria, Counseling, Link } from '$lib/types';
+import type {
+	Client,
+	ClientSearchCriteria,
+	Counseling,
+	CounselingSearchCriteria,
+	Link
+} from '$lib/types';
+import { cleanObject } from './utils';
 
 export let db: Firestore;
 export let app: FirebaseApp;
@@ -52,14 +60,14 @@ export const initializeFirebase = () => {
 	}
 };
 
+/**
+ * Client CRUD
+ */
+
 export const saveClient = async (client: Client) => {
 	// covert the client object to fit the firestore schema
 	// undefiend values are not allowed in firestore
-	Object.keys(client).forEach((key) => {
-		if (client[key] === '' || client[key] === undefined) {
-			client[key] = null;
-		}
-	});
+	cleanObject(client);
 
 	client.createdAt = client.createdAt || Timestamp.now();
 	client.updatedAt = Timestamp.now();
@@ -103,28 +111,6 @@ export const fetchClients = async () => {
 	return clients;
 };
 
-export const fetchCounselings = async () => {
-	const q = query(collection(db, 'counselings'), orderBy('createdAt', 'desc'), limit(5));
-	const querySnapshot = await getDocs(q);
-	const counselings: Counseling[] = [];
-	querySnapshot.forEach((doc) => {
-		// prettier-ignore
-		counselings.push({ id: doc.id, ...(doc.data() as Omit<Counseling, 'id'>) });
-	});
-	return counselings;
-};
-
-export const fetchLinks = async () => {
-	const q = query(collection(db, 'links'), orderBy('createdAt', 'desc'), limit(5));
-	const querySnapshot = await getDocs(q);
-	const links: Link[] = [];
-	querySnapshot.forEach((doc) => {
-		// prettier-ignore
-		links.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
-	});
-	return links;
-};
-
 export const searchClients = async (criteria: ClientSearchCriteria) => {
 	let q = query(collection(db, 'clients'));
 	if (criteria.name) {
@@ -144,3 +130,113 @@ export const searchClients = async (criteria: ClientSearchCriteria) => {
 	});
 	return clients;
 };
+
+/**
+ * Counseling CRUD
+ */
+
+export const saveCounseling = async (counseling: Counseling, client: Client) => {
+	cleanObject(counseling);
+	counseling.createdAt = counseling.createdAt || Timestamp.now();
+	counseling.updatedAt = Timestamp.now();
+	const { id, clientId, ...rest } = counseling;
+
+	// populate the client information to the counseling
+	rest.clientName = client.name;
+	rest.clientMobile = client.mobile;
+	rest.disasterName = client.disasterName;
+	rest.disasterType = client.disasterType;
+	rest.disasterVictimType = client.disasterVictimType;
+
+	// if the counseling has an id, update the counseling, otherwise create a new counseling
+	let docRef = null;
+	if (!counseling) {
+		throw new Error('Counseling is required.');
+	}
+
+	if (!clientId) {
+		throw new Error('Client ID is required.');
+	}
+
+	if (id) {
+		docRef = doc(db, `clients/${clientId}/counselings`, id);
+		await setDoc(docRef, rest);
+	} else {
+		const colRef = collection(db, `clients/${clientId}/counselings`);
+		docRef = await addDoc(colRef, rest);
+	}
+	return docRef.id;
+};
+
+export const deleteCounseling = async (clientId: string, counselingId: string) => {
+	const docRef = doc(db, `clients/${clientId}/counselings`, counselingId);
+	return await deleteDoc(docRef);
+};
+
+export const getCounseling = async (clientId: string, counselingId: string) => {
+	const docRef = doc(db, `clients/${clientId}/counselings`, counselingId);
+	const counselingDoc = await getDoc(docRef);
+	return counselingDoc.exists() ? { id: counselingDoc.id, ...counselingDoc.data() } : null;
+};
+
+export const fetchCounselings = async (clientId: string) => {
+	const q = query(
+		collection(db, `clients/${clientId}/counselings`),
+		orderBy('createdAt', 'desc'),
+		limit(5)
+	);
+	const querySnapshot = await getDocs(q);
+	const counselings: Counseling[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		counselings.push({ id: doc.id, ...(doc.data() as Omit<Counseling, 'id'>) });
+	});
+	return counselings;
+};
+
+export const fetchAllCounselings = async () => {
+	const q = query(collectionGroup(db, 'counselings'), orderBy('createdAt', 'desc'), limit(5));
+	const querySnapshot = await getDocs(q);
+	const counselings: Counseling[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		counselings.push({ id: doc.id, ...(doc.data() as Omit<Counseling, 'id'>) });
+	});
+	return counselings;
+};
+
+export const searchCounseling = async (criteria: CounselingSearchCriteria) => {
+	let q = query(collectionGroup(db, 'counselings'));
+	if (criteria.name) {
+		q = query(q, where('name', '==', criteria.name));
+	}
+	if (criteria.mobile) {
+		q = query(q, where('mobile', '==', criteria.mobile));
+	}
+	if (criteria.disasterName) {
+		q = query(q, where('disasterName', '==', criteria.disasterName));
+	}
+	const querySnapshot = await getDocs(q);
+	const counselings: Counseling[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		counselings.push({ id: doc.id, ...(doc.data() as Omit<Client, 'id'>) });
+	});
+	return counselings;
+};
+
+/**
+ * Link CRUD
+ */
+
+export const fetchLinks = async () => {
+	const q = query(collection(db, 'links'), orderBy('createdAt', 'desc'), limit(5));
+	const querySnapshot = await getDocs(q);
+	const links: Link[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		links.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
+	});
+	return links;
+};
+

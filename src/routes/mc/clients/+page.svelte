@@ -5,15 +5,8 @@
 	import { DISASTER_NAMES } from '$lib/config';
 	import ClientList from '$lib/components/client-list.svelte';
 	import {
-		ClientStatus,
-		DisasterType,
-		DisasterVictimType,
-		GenderType,
-		Jobs,
-		ReferType,
-		ResultOfAction,
 		type Client
-	} from '$lib/types/index.d.ts';
+	} from '$lib/types/index.d';
 	import Snackbar, { Label, Actions } from '@smui/snackbar';
 	import IconButton from '@smui/icon-button';
 	import { goto } from '$app/navigation';

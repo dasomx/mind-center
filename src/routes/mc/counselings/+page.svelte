@@ -64,7 +64,7 @@
                 physical: 10,
                 educational: 10,
                 financial: 10,
-                spriitual: 10
+                spiritual: 10
             },
             assessmentId: '1',
             treatmentEnding: null,
@@ -97,7 +97,7 @@
                 physical: 10,
                 educational: 10,
                 financial: 10,
-                spriitual: 10
+                spiritual: 10
             },
             assessmentId: '1',
             treatmentEnding: null,
@@ -130,7 +130,7 @@
                 physical: 10,
                 educational: 10,
                 financial: 10,
-                spriitual: 10
+                spiritual: 10
             },
             assessmentId: '1',
             treatmentEnding: null,
@@ -163,7 +163,7 @@
                 physical: 10,
                 educational: 10,
                 financial: 10,
-                spriitual: 10
+                spiritual: 10
             },
             assessmentId: '1',
             treatmentEnding: null,
