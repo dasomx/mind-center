@@ -9,6 +9,7 @@
 	import Radio from '@smui/radio';
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
+	import LayoutGridCell from '@smui/layout-grid';
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
 	import { COUNSELING_TYPE } from '$lib/config';
@@ -286,7 +287,7 @@
 					</Select>
 				</Cell>
 				<Cell span={12}>
-					<div class="grid-title">Evaluation Total: {catEvalTotal} Average:{catEvalAvg}</div>
+					<div class="grid-title" style='display: inline-block;'><span style='color:blue; font-weight: bold; margin-right:4px;'>Evaluation </span> <span style='font-weight: bold; margin-right:4px;'>Total</span>: {catEvalTotal} <span style='font-weight: bold;'>Average</span>:{catEvalAvg}</div>
 				</Cell>
 			</LayoutGrid>
 
