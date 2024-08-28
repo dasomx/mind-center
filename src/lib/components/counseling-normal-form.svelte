@@ -17,7 +17,7 @@
 	import CircularProgress from '@smui/circular-progress';
 	import { Timestamp } from 'firebase/firestore';
 	import { convertTimestampToLocaleISOString } from '$lib/firebase/utils';
-	import { isUndefined, round} from 'lodash';
+	import _ from 'lodash';
 	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').PageData} */
@@ -25,7 +25,6 @@
 	export let client: Client;
 
 	let saving = false;
-	counseling = counseling;
 
 	let catEvalTotal = 0; // Total evaluation
 	let catEvalAvg = 0; // Average evaluation
@@ -36,13 +35,13 @@
 		let cnt = 0;
 
 		Object.values(counseling.categoricalEvaluation).forEach( value => {
-			if(!isUndefined(value)) {
+			if(!_.isUndefined(value)) {
 				catEvalTotal += parseInt(value);
 				cnt++;
 			}
 		})
 
-		catEvalAvg = round(catEvalTotal / cnt, 1);
+		catEvalAvg = _.round(catEvalTotal / cnt, 1);
 	}
 
 	// Run to get evaluation result
