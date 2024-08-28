@@ -161,10 +161,10 @@ export enum CounselingStatus {
 }
 
 export enum EvaluationCategory {
-	'2' = 'Worst',
-	'4' = 'Bad',
-	'6' = 'So&so',
-	'8' = 'Good',
+	'1' = 'Worst',
+	'3' = 'Bad',
+	'5' = 'So&so',
+	'7' = 'Good',
 	'10' = 'Best'
 }
 export type ClientSearchCriteria = {
