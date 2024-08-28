@@ -9,6 +9,7 @@
 	import Radio from '@smui/radio';
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
+	import LayoutGridCell from '@smui/layout-grid';
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
 	import { COUNSELING_TYPE } from '$lib/config';
@@ -16,6 +17,8 @@
 	import CircularProgress from '@smui/circular-progress';
 	import { Timestamp } from 'firebase/firestore';
 	import { convertTimestampToLocaleISOString } from '$lib/firebase/utils';
+	import _ from 'lodash';
+	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let counseling: Counseling;
@@ -23,19 +26,28 @@
 
 	let saving = false;
 
-	counseling = {
-		...counseling,
-		categoricalEvaluation: {
-			psychological: 0,
-			physical: 0,
-			educational: 0,
-			financial: 0,
-			spiritual: 0
-		},
-		
-	};
+	let catEvalTotal = 0; // Total evaluation
+	let catEvalAvg = 0; // Average evaluation
+	
+	function calculateEval() {
+		catEvalTotal = 0; // reset
+		catEvalAvg = 0; // reset
+		let cnt = 0;
 
-	console.debug('counseling', counseling);
+		Object.values(counseling.categoricalEvaluation).forEach( value => {
+			if(!_.isUndefined(value)) {
+				catEvalTotal += parseInt(value);
+				cnt++;
+			}
+		})
+
+		catEvalAvg = _.round(catEvalTotal / cnt, 1);
+	}
+
+	// Run to get evaluation result
+	onMount(() => {
+		calculateEval();
+	});
 
 	let startTime = convertTimestampToLocaleISOString(counseling?.startTime ?? Timestamp.now());
 	let endTime = convertTimestampToLocaleISOString(counseling?.endTime ?? Timestamp.now());
@@ -218,6 +230,7 @@
 						variant="outlined"
 						label="Psycological"
 						bind:value={counseling.categoricalEvaluation.psychological}
+						on:SMUISelect:change={calculateEval}
 					>
 						{#each evaluationCategory as [key, value]}
 							<Option value={key}>{value}</Option>
@@ -229,6 +242,7 @@
 						variant="outlined"
 						label="Physical"
 						bind:value={counseling.categoricalEvaluation.physical}
+						on:SMUISelect:change={calculateEval}
 					>
 						{#each evaluationCategory as [key, value]}
 							<Option value={key}>{value}</Option>
@@ -240,6 +254,7 @@
 						variant="outlined"
 						label="Educational"
 						bind:value={counseling.categoricalEvaluation.educational}
+						on:SMUISelect:change={calculateEval}
 					>
 						{#each evaluationCategory as [key, value]}
 							<Option value={key}>{value}</Option>
@@ -251,6 +266,7 @@
 						variant="outlined"
 						label="Financial"
 						bind:value={counseling.categoricalEvaluation.financial}
+						on:SMUISelect:change={calculateEval}
 					>
 						{#each evaluationCategory as [key, value]}
 							<Option value={key}>{value}</Option>
@@ -262,6 +278,7 @@
 						variant="outlined"
 						label="Spiritual"
 						bind:value={counseling.categoricalEvaluation.spiritual}
+						on:SMUISelect:change={calculateEval}
 					>
 						{#each evaluationCategory as [key, value]}
 							<Option value={key}>{value}</Option>
@@ -269,7 +286,7 @@
 					</Select>
 				</Cell>
 				<Cell span={12}>
-					<div class="grid-title">Evaluation Total: _____ Average:_____</div>
+					<div class="grid-title" style='display: inline-block;'><span style='color:blue; font-weight: bold; margin-right:4px;'>Evaluation </span> <span style='font-weight: bold; margin-right:4px;'>Total</span>: {catEvalTotal} <span style='font-weight: bold;'>Average</span>:{catEvalAvg}</div>
 				</Cell>
 			</LayoutGrid>
 
