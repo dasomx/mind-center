@@ -9,7 +9,6 @@
 	import Radio from '@smui/radio';
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
-	import LayoutGridCell from '@smui/layout-grid';
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
 	import { COUNSELING_TYPE } from '$lib/config';
@@ -17,7 +16,6 @@
 	import CircularProgress from '@smui/circular-progress';
 	import { Timestamp } from 'firebase/firestore';
 	import { convertTimestampToLocaleISOString } from '$lib/firebase/utils';
-	import _ from 'lodash';
 	import { onMount } from 'svelte';
 
 	/** @type {import('./$types').PageData} */
@@ -25,23 +23,33 @@
 	export let client: Client;
 
 	let saving = false;
+	counseling = counseling;
 
 	let catEvalTotal = 0; // Total evaluation
 	let catEvalAvg = 0; // Average evaluation
 	
+	function isUndefined(value: unknown): value is undefined {
+		return value === undefined;
+	}
+
+	function round(value: number, precision: number = 0): number {
+		const factor = Math.pow(10, precision);
+		return Math.round(value * factor) / factor;
+	}
+
 	function calculateEval() {
 		catEvalTotal = 0; // reset
 		catEvalAvg = 0; // reset
 		let cnt = 0;
 
 		Object.values(counseling.categoricalEvaluation).forEach( value => {
-			if(!_.isUndefined(value)) {
+			if(!isUndefined(value)) {
 				catEvalTotal += parseInt(value);
 				cnt++;
 			}
 		})
 
-		catEvalAvg = _.round(catEvalTotal / cnt, 1);
+		catEvalAvg = cnt > 0 ? round(catEvalTotal / cnt, 1): 0;
 	}
 
 	// Run to get evaluation result

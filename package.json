@@ -72,7 +72,6 @@
 	"dependencies": {
 		"@material/theme": "^14.0.0",
 		"firebase": "^10.11.1",
-		"lodash": "^4.17.21",
 		"svelte-material-ui": "^7.0.0-beta.18"
 	}
 }
