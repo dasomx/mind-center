@@ -108,7 +108,7 @@ export const INIT_COUNSELING: Counseling = {
 		financial: 0,
 		spiritual: 0
 	},
-	assessmentId: '',
+	assessment: '',
 	treatmentEnding: '',
 	endingType: ''
 };

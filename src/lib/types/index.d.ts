@@ -122,7 +122,7 @@ export type Counseling = {
 		financial: number;
 		spiritual: number;
 	};
-	assessmentId?: string;
+	assessment?: string;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
 

@@ -11,12 +11,13 @@
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
-	import { COUNSELING_TYPE } from '$lib/config';
+	import { COUNSELING_TYPE, routes } from '$lib/config';
 	import { saveCounseling } from '$lib/firebase/firebase.client';
 	import CircularProgress from '@smui/circular-progress';
 	import { Timestamp } from 'firebase/firestore';
 	import { convertTimestampToLocaleISOString } from '$lib/firebase/utils';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	/** @type {import('./$types').PageData} */
 	export let counseling: Counseling;
@@ -299,7 +300,19 @@
 			</LayoutGrid>
 
 			<div class="grid-title">Assessment</div>
-			<LayoutGrid class="grid-container"></LayoutGrid>
+			<LayoutGrid class="grid-container">
+				<Cell>
+					{#if counseling.id}
+						<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/${counseling.id}/assessment`)} >
+							Assessment
+						</Button>
+					{:else}
+						<Button variant="outlined" on:click={() => { alert('Save the Counseling session first') }} >
+							Assessment
+						</Button>
+					{/if}
+				</Cell>
+			</LayoutGrid>
 
 			<div style="align-self: flex-end;">
 				<Button variant="outlined" on:click={() => history.back()}>Close</Button>
