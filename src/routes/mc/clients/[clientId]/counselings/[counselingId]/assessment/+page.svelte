@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AssessmentAdultForm from "$lib/components/assessment-adult-pcl5-form.svelte";
+	import AssessmentAdultForm from "$lib/components/assessment-form.svelte";
 
     /** @type {import('./$types').PageData}*/
     export let data;

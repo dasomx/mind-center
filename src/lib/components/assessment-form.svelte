@@ -372,7 +372,7 @@
 								{#each question.options as option}
 								<FormField>
 									<Radio bind:group={assessQuestions[question.id].answer} value={option} touch />
-									<span slot="label">{option}</span>
+									<span slot="label" style="margin-right:4px;">{option}</span>
 								</FormField>									
 								{/each}
 							</div>
