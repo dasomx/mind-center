@@ -69,7 +69,7 @@ export enum CounselingEndingType {
 export const DisasterName = ['816', '922'];
 
 export type Client = {
-	id?: string | null;
+	id: string | null;
 	fatherName?: string;
 	name?: string;
 	gender?: GenderType;
@@ -134,9 +134,9 @@ export type Counseling = {
 
 export type Link = {
 	id: string;
-	clientId: string;
-	createdAt: number;
-	updatedAt: number;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
 	counselorId: string;
 	referralName: string;
 	referType: ReferType;
@@ -174,6 +174,12 @@ export type ClientSearchCriteria = {
 };
 
 export type CounselingSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type LinkSearchCriteria = {
 	name?: string;
 	mobile?: string;
 	disasterName?: DisasterName;
