@@ -41,7 +41,7 @@
 		</Row>
 	</Head>
 	<Body>
-		{#each data as { no, createdAt, clientId, id, startTime, clientName, disasterName, counselingType, status, assessmentId }}
+		{#each data as { no, createdAt, clientId, id, startTime, clientName, disasterName, counselingType, status, assessment }}
 			<Row class="content-row">
 				<Cell>{no}</Cell>
 				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
@@ -49,7 +49,11 @@
 				<Cell>{disasterName}</Cell>
 				<Cell>{counselingType}</Cell>
 				<Cell><StatusChipCounseling status={status}/></Cell>
-				<Cell>VIEW</Cell>
+				<Cell>
+					{#if assessment != null}
+						<span style='color:red'> SAVED</span>
+					{/if}
+				</Cell>
 				<Cell>
 					<Button on:click={()=>goto(`/mc/clients/${clientId}/counselings/${id}/edit`)}>Edit</Button>
 					<Button on:click={()=>removeCounseling(clientId, id)}>Delete</Button>

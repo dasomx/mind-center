@@ -11,13 +11,14 @@
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
-	import { COUNSELING_TYPE, routes } from '$lib/config';
+	import { COUNSELING_TYPE, routes, STATUS_TYPES } from '$lib/config';
 	import { saveCounseling } from '$lib/firebase/firebase.client';
 	import CircularProgress from '@smui/circular-progress';
 	import { Timestamp } from 'firebase/firestore';
 	import { convertTimestampToLocaleISOString } from '$lib/firebase/utils';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { getAgeFromDOB, isUndefined, round } from '$lib/utils/common';
 
 	/** @type {import('./$types').PageData} */
 	export let counseling: Counseling;
@@ -29,14 +30,27 @@
 	let catEvalTotal = 0; // Total evaluation
 	let catEvalAvg = 0; // Average evaluation
 	
-	function isUndefined(value: unknown): value is undefined {
-		return value === undefined;
-	}
+	let age = getAgeFromDOB(client.dob);
 
-	function round(value: number, precision: number = 0): number {
-		const factor = Math.pow(10, precision);
-		return Math.round(value * factor) / factor;
+	// Assessment Button Styling
+	let assessmentButtonAdult = "";
+	let assessmentButtonChild = "";
+	let assessmentAdultStyle = "";
+	let assessmentChildStyle = "";
+
+	if(counseling.assessment) {
+		let assessmentData = JSON.parse(counseling.assessment);
+		let assessmentType = assessmentData[0].options; // ADULT, CHILD
+		if(assessmentType == "ADULT") {
+			assessmentButtonAdult = " (saved)";
+			assessmentAdultStyle = "color:red; ";
+		}
+		else if(assessmentType == "CHILD") {
+			assessmentButtonChild = " (saved)";
+			assessmentChildStyle = "color:red; ";
+		}
 	}
+	// End of Assessment Button Styling
 
 	function calculateEval() {
 		catEvalTotal = 0; // reset
@@ -79,6 +93,7 @@
 			console.error('error on saving counseling', error);
 		}
 	}
+
 </script>
 
 <div class="container">
@@ -126,6 +141,9 @@
 						bind:value={client.disasterType}
 						input$readonly
 					/>
+				</Cell>
+				<Cell>
+					<Textfield label="Age" variant="outlined" bind:value={ age } input$style="color: red;" input$readonly />
 				</Cell>
 				<Cell>
 					<Textfield label="Mobile" variant="outlined" bind:value={client.mobile} input$readonly />
@@ -176,6 +194,13 @@
 						{/each}
 					</Select>
 				</Cell>
+				<Cell>
+					<Select variant="outlined" label="Counseling Status" bind:value={counseling.status}>
+						{#each STATUS_TYPES as option}
+							<Option value={option}>{option}</Option>
+						{/each}
+					</Select>
+				</Cell>
 				<Cell span={12}>
 					<Textfield
 						label="Emergency Intervention"
@@ -210,9 +235,10 @@
 						<Textfield
 							style="width: 100%;"
 							helperLine$style="width: 100%;"
+							input$readonly
 							textarea
 							bind:value={counseling.pictureUrls}
-							label="Click to upload or drag & drop"
+							label="Click to upload or drag & drop (To be available)"
 						>
 							<HelperText slot="helper">Click to upload or drag & drop</HelperText>
 						</Textfield>
@@ -301,10 +327,13 @@
 
 			<div class="grid-title">Assessment</div>
 			<LayoutGrid class="grid-container">
-				<Cell>
+				<Cell span={12}>
 					{#if counseling.id}
-						<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/${counseling.id}/assessment`)} >
-							Assessment
+						<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/${counseling.id}/assessment?type=ADULT`)} style="{assessmentAdultStyle} margin-right:10px;" >
+							Assessment(Adult){assessmentButtonAdult}
+						</Button>
+						<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/${counseling.id}/assessment?type=CHILD`)} style="{assessmentChildStyle}">
+							Assessment(Child){assessmentButtonChild}
 						</Button>
 					{:else}
 						<Button variant="outlined" on:click={() => { alert('Save the Counseling session first') }} >
