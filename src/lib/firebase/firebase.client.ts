@@ -24,7 +24,8 @@ import type {
 	ClientSearchCriteria,
 	Counseling,
 	CounselingSearchCriteria,
-	Link
+	Link,
+	LinkSearchCriteria
 } from '$lib/types';
 import { cleanObject } from './utils';
 
@@ -241,6 +242,49 @@ export const searchCounseling = async (criteria: CounselingSearchCriteria) => {
  * Link CRUD
  */
 
+export const saveLink = async (link: Link, client: Client) => {
+	console.debug('DB: saveLink');
+	cleanObject(link);
+	// populate the client information to the link
+	link.createdAt = link.createdAt ?? Timestamp.now();
+	link.updatedAt = Timestamp.now();
+	link.clientId = client.id;
+	const clientId = client.id;
+	const { id, ...rest } = link;
+
+	// if the link has an id, update the link, otherwise create a new link
+	let docRef = null;
+	if (!link) {
+		throw new Error('Link is required.');
+	}
+
+	if (!clientId) {
+		throw new Error('Client ID is required.');
+	}
+
+	if (id) {
+		docRef = doc(db, `clients/${clientId}/links`, id);
+		await setDoc(docRef, rest);
+	} else {
+		const colRef = collection(db, `clients/${clientId}/links`);
+		docRef = await addDoc(colRef, rest);
+	}
+	return docRef.id;
+};
+
+export const deleteLink = async (clientId: string, linkId: string) => {
+	console.debug('DB: deleteLink');
+	const docRef = doc(db, `clients/${clientId}/links`, linkId);
+	return await deleteDoc(docRef);
+};
+
+export const getLink = async (clientId: string, linkId: string) => {
+	console.debug('DB: getLink');
+	const docRef = doc(db, `clients/${clientId}/links`, linkId);
+	const linkDoc = await getDoc(docRef);
+	return linkDoc.exists() ? { id: linkDoc.id, ...linkDoc.data() } : null;
+};
+
 export const fetchLinks = async (clientId: string) => {
 	console.debug('DB: fetchLinks');
 	const q = query(
@@ -267,4 +311,25 @@ export const fetchAllLinks = async () => {
 		links.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
 	});
 	return links;
+};
+
+export const searchLink = async (criteria: LinkSearchCriteria) => {
+	console.debug('DB: searchLink');
+	let q = query(collectionGroup(db, 'links'));
+	if (criteria.name) {
+		q = query(q, where('name', '==', criteria.name));
+	}
+	if (criteria.mobile) {
+		q = query(q, where('mobile', '==', criteria.mobile));
+	}
+	if (criteria.disasterName) {
+		q = query(q, where('disasterName', '==', criteria.disasterName));
+	}
+	const querySnapshot = await getDocs(q);
+	const counselings: Link[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		counselings.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
+	});
+	return counselings;
 };
