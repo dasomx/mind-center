@@ -133,11 +133,11 @@ export type Counseling = {
 };
 
 export type Link = {
-	id: string;
+	id: string | null;
 	clientId: Client.id;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
-	counselorId: string;
+	processingDate: Timestamp;
 	referralName: string;
 	referType: ReferType;
 	receptionist: string;

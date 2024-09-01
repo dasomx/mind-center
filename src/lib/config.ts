@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat/app';
-import { type Client, type Counseling } from './types/index.d.ts';
+import { ReferType, type Client, type Counseling, type Link } from './types/index.d.ts';
 import { Timestamp } from 'firebase/firestore';
 
 export const DISASTER_NAMES = ['816', '922'];
@@ -111,6 +111,19 @@ export const INIT_COUNSELING: Counseling = {
 	assessment: '',
 	treatmentEnding: '',
 	endingType: ''
+};
+
+export const INIT_LINK: Link = {
+	id: null,
+	clientId: null,
+	referType: ReferType.Others,
+	referralName: '',
+	receptionist: '',
+	createdAt: Timestamp.now(),
+	updatedAt: Timestamp.now(),
+	processingDate: Timestamp.now(),
+	reason: '',
+	organizationName: ''
 };
 
 export const COUNSELING_TYPE = [
