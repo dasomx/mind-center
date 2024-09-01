@@ -1,7 +1,12 @@
 /** @type {import('./$types').PageLoad} */
 
-import { fetchCounselings, fetchLinks, getClient } from '$lib/firebase/firebase.client';
-import type { Counseling, Link } from '$lib/types/index.js';
+import {
+	fetchCounselings,
+	fetchEndings,
+	fetchLinks,
+	getClient
+} from '$lib/firebase/firebase.client';
+import type { Counseling, EndingSession, Link } from '$lib/types/index.js';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params }) {
@@ -9,6 +14,7 @@ export async function load({ params }) {
 	let client = null;
 	let counselings: Counseling[] = [];
 	let links: Link[] = [];
+	let endings: EndingSession[] = [];
 
 	console.debug('clientId', clientId);
 
@@ -33,6 +39,13 @@ export async function load({ params }) {
 				no: index + 1
 			};
 		});
+		endings = await fetchEndings(clientId);
+		endings = endings.map((ending, index) => {
+			return {
+				...ending,
+				no: index + 1
+			};
+		});
 	}
 
 	return {
@@ -40,7 +53,8 @@ export async function load({ params }) {
 			clientId,
 			client,
 			counselings,
-			links
+			links,
+			endings
 		}
 	};
 }

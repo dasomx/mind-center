@@ -22,5 +22,17 @@ service cloud.firestore {
       allow read: if isApproved();
       allow write: if isApproved();
     }
+    match /{path=**}/endings/{link} {
+      allow read: if isApproved();
+      allow write: if isApproved();
+    }
+    match /{path=**}/memos/{link} {
+      allow read: if isApproved();
+      allow write: if isApproved();
+    }
+    match /{path=**}/files/{link} {
+      allow read: if isApproved();
+      allow write: if isApproved();
+    }
   }
 }

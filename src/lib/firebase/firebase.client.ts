@@ -20,12 +20,18 @@ import {
 } from 'firebase/firestore';
 import { browser } from '$app/environment';
 import type {
+	Assessment,
+	AssessmentSearchCriteria,
 	Client,
 	ClientSearchCriteria,
 	Counseling,
 	CounselingSearchCriteria,
+	EndingSearchCriteria,
+	EndingSession,
 	Link,
-	LinkSearchCriteria
+	LinkSearchCriteria,
+	Memo,
+	MemoSearchCriteria
 } from '$lib/types';
 import { cleanObject } from './utils';
 
@@ -135,6 +141,102 @@ export const searchClients = async (criteria: ClientSearchCriteria) => {
 		clients.push({ id: doc.id, ...(doc.data() as Omit<Client, 'id'>) });
 	});
 	return clients;
+};
+
+/**
+ * Assessment CRUD
+ */
+
+export const saveAssessment = async (memo: Memo, client: Client) => {
+	console.debug('DB: saveMemo');
+	cleanObject(memo);
+	// populate the ending session information to the ending
+	memo.createdAt = memo.createdAt ?? Timestamp.now();
+	memo.updatedAt = Timestamp.now();
+	memo.clientId = client.id;
+	const clientId = client.id;
+	const { id, ...rest } = memo;
+
+	// if the memo has an id, update the memo, otherwise create a new memo
+	let docRef = null;
+	if (!memo) {
+		throw new Error('Memo is required.');
+	}
+
+	if (!clientId) {
+		throw new Error('Client ID is required.');
+	}
+
+	if (id) {
+		docRef = doc(db, `clients/${clientId}/memos`, id);
+		await setDoc(docRef, rest);
+	} else {
+		const colRef = collection(db, `clients/${clientId}/memos`);
+		docRef = await addDoc(colRef, rest);
+	}
+	return docRef.id;
+};
+
+export const deleteAssessment = async (clientId: string, assessmentId: string) => {
+	console.debug('DB: deleteAssessment');
+	const docRef = doc(db, `clients/${clientId}/assessments`, assessmentId);
+	return await deleteDoc(docRef);
+};
+
+export const getAssessment = async (clientId: string, assessmentId: string) => {
+	console.debug('DB: getAssessment');
+	const docRef = doc(db, `clients/${clientId}/assessments`, assessmentId);
+	const theDoc = await getDoc(docRef);
+	return theDoc.exists() ? { id: theDoc.id, ...theDoc.data() } : null;
+};
+
+export const fetchAssessments = async (clientId: string) => {
+	console.debug('DB: fetchAssessment');
+	const q = query(
+		collection(db, `clients/${clientId}/assessments`),
+		orderBy('createdAt', 'desc'),
+		limit(25)
+	);
+	const querySnapshot = await getDocs(q);
+	const items: Assessment[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		items.push({ id: doc.id, ...(doc.data() as Omit<Assessment, 'id'>) });
+	});
+	return items;
+};
+
+export const fetchAllAssessments = async () => {
+	console.debug('DB: fetchAllAssessments');
+	const q = query(collectionGroup(db, 'assessments'), orderBy('createdAt', 'desc'), limit(25));
+	const querySnapshot = await getDocs(q);
+	const items: Assessment[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		items.push({ id: doc.id, ...(doc.data() as Omit<Assessment, 'id'>) });
+	});
+	return items;
+};
+
+export const searchAssessment = async (criteria: AssessmentSearchCriteria) => {
+	console.debug('DB: searchAssessment');
+	let q = query(collectionGroup(db, 'assessments'));
+	if (criteria.name) {
+		q = query(q, where('name', '==', criteria.name));
+	}
+	if (criteria.mobile) {
+		q = query(q, where('mobile', '==', criteria.mobile));
+	}
+	if (criteria.disasterName) {
+		q = query(q, where('disasterName', '==', criteria.disasterName));
+	}
+	const querySnapshot = await getDocs(q);
+	const items: Assessment[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		items.push({ id: doc.id, ...(doc.data() as Omit<Assessment, 'id'>) });
+	});
+	return items;
 };
 
 /**
@@ -326,10 +428,206 @@ export const searchLink = async (criteria: LinkSearchCriteria) => {
 		q = query(q, where('disasterName', '==', criteria.disasterName));
 	}
 	const querySnapshot = await getDocs(q);
-	const counselings: Link[] = [];
+	const links: Link[] = [];
 	querySnapshot.forEach((doc) => {
 		// prettier-ignore
-		counselings.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
+		links.push({ id: doc.id, ...(doc.data() as Omit<Link, 'id'>) });
 	});
-	return counselings;
+	return links;
 };
+
+/**
+ * Ending Session CRUD
+ */
+
+export const saveEnding = async (ending: EndingSession, client: Client) => {
+	console.debug('DB: saveEnding');
+	cleanObject(ending);
+	// populate the ending session information to the ending
+	ending.createdAt = ending.createdAt ?? Timestamp.now();
+	ending.updatedAt = Timestamp.now();
+	ending.clientId = client.id;
+	const clientId = client.id;
+	const { id, ...rest } = ending;
+
+	// if the ending has an id, update the ending, otherwise create a new ending
+	let docRef = null;
+	if (!ending) {
+		throw new Error('Ending is required.');
+	}
+
+	if (!clientId) {
+		throw new Error('Client ID is required.');
+	}
+
+	if (id) {
+		docRef = doc(db, `clients/${clientId}/endings`, id);
+		await setDoc(docRef, rest);
+	} else {
+		const colRef = collection(db, `clients/${clientId}/endings`);
+		docRef = await addDoc(colRef, rest);
+	}
+	return docRef.id;
+};
+
+export const deleteEnding = async (clientId: string, endingId: string) => {
+	console.debug('DB: deleteEnding');
+	const docRef = doc(db, `clients/${clientId}/endings`, endingId);
+	return await deleteDoc(docRef);
+};
+
+export const getEnding = async (clientId: string, endingId: string) => {
+	console.debug('DB: getEnding');
+	const docRef = doc(db, `clients/${clientId}/endings`, endingId);
+	const endingDoc = await getDoc(docRef);
+	return endingDoc.exists() ? { id: endingDoc.id, ...endingDoc.data() } : null;
+};
+
+export const fetchEndings = async (clientId: string) => {
+	console.debug('DB: fetchEndings');
+	const q = query(
+		collection(db, `clients/${clientId}/endings`),
+		orderBy('createdAt', 'desc'),
+		limit(25)
+	);
+	const querySnapshot = await getDocs(q);
+	const endings: EndingSession[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		endings.push({ id: doc.id, ...(doc.data() as Omit<EndingSession, 'id'>) });
+	});
+	return endings;
+};
+
+export const fetchAllEndings = async () => {
+	console.debug('DB: fetchAllEndings');
+	const q = query(collectionGroup(db, 'endings'), orderBy('createdAt', 'desc'), limit(25));
+	const querySnapshot = await getDocs(q);
+	const endings: EndingSession[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		endings.push({ id: doc.id, ...(doc.data() as Omit<EndingSession, 'id'>) });
+	});
+	return endings;
+};
+
+export const searchEnding = async (criteria: EndingSearchCriteria) => {
+	console.debug('DB: searchEnding');
+	let q = query(collectionGroup(db, 'endings'));
+	if (criteria.name) {
+		q = query(q, where('name', '==', criteria.name));
+	}
+	if (criteria.mobile) {
+		q = query(q, where('mobile', '==', criteria.mobile));
+	}
+	if (criteria.disasterName) {
+		q = query(q, where('disasterName', '==', criteria.disasterName));
+	}
+	const querySnapshot = await getDocs(q);
+	const endings: EndingSession[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		endings.push({ id: doc.id, ...(doc.data() as Omit<EndingSession, 'id'>) });
+	});
+	return endings;
+};
+
+/**
+ * Memo CRUD
+ */
+
+export const saveMemo = async (memo: Memo, client: Client) => {
+	console.debug('DB: saveMemo');
+	cleanObject(memo);
+	// populate the ending session information to the ending
+	memo.createdAt = memo.createdAt ?? Timestamp.now();
+	memo.updatedAt = Timestamp.now();
+	memo.clientId = client.id;
+	const clientId = client.id;
+	const { id, ...rest } = memo;
+
+	// if the memo has an id, update the memo, otherwise create a new memo
+	let docRef = null;
+	if (!memo) {
+		throw new Error('Memo is required.');
+	}
+
+	if (!clientId) {
+		throw new Error('Client ID is required.');
+	}
+
+	if (id) {
+		docRef = doc(db, `clients/${clientId}/memos`, id);
+		await setDoc(docRef, rest);
+	} else {
+		const colRef = collection(db, `clients/${clientId}/memos`);
+		docRef = await addDoc(colRef, rest);
+	}
+	return docRef.id;
+};
+
+export const deleteMemo = async (clientId: string, memoId: string) => {
+	console.debug('DB: deleteMemo');
+	const docRef = doc(db, `clients/${clientId}/memos`, memoId);
+	return await deleteDoc(docRef);
+};
+
+export const getMemo = async (clientId: string, memoId: string) => {
+	console.debug('DB: getMemo');
+	const docRef = doc(db, `clients/${clientId}/memos`, memoId);
+	const endingDoc = await getDoc(docRef);
+	return endingDoc.exists() ? { id: endingDoc.id, ...endingDoc.data() } : null;
+};
+
+export const fetchMemos = async (clientId: string) => {
+	console.debug('DB: fetchMemos');
+	const q = query(
+		collection(db, `clients/${clientId}/memos`),
+		orderBy('createdAt', 'desc'),
+		limit(25)
+	);
+	const querySnapshot = await getDocs(q);
+	const memos: Memo[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		memos.push({ id: doc.id, ...(doc.data() as Omit<Memo, 'id'>) });
+	});
+	return memos;
+};
+
+export const fetchAllMemos = async () => {
+	console.debug('DB: fetchAllMemos');
+	const q = query(collectionGroup(db, 'memos'), orderBy('createdAt', 'desc'), limit(25));
+	const querySnapshot = await getDocs(q);
+	const memos: Memo[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		memos.push({ id: doc.id, ...(doc.data() as Omit<Memo, 'id'>) });
+	});
+	return memos;
+};
+
+export const searchMemo = async (criteria: MemoSearchCriteria) => {
+	console.debug('DB: searchMemo');
+	let q = query(collectionGroup(db, 'memos'));
+	if (criteria.name) {
+		q = query(q, where('name', '==', criteria.name));
+	}
+	if (criteria.mobile) {
+		q = query(q, where('mobile', '==', criteria.mobile));
+	}
+	if (criteria.disasterName) {
+		q = query(q, where('disasterName', '==', criteria.disasterName));
+	}
+	const querySnapshot = await getDocs(q);
+	const memos: Memo[] = [];
+	querySnapshot.forEach((doc) => {
+		// prettier-ignore
+		memos.push({ id: doc.id, ...(doc.data() as Omit<Memo, 'id'>) });
+	});
+	return memos;
+};
+
+
+
+

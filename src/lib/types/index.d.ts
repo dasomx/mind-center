@@ -97,6 +97,13 @@ export type Client = {
 	updatedAt?: firebase.firestore.Timestamp;
 };
 
+export type Assessment = {
+	id: string | null;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
+};
+
 export type Counseling = {
 	id: string | null;
 	clientId: Client['id'];
@@ -125,8 +132,13 @@ export type Counseling = {
 	assessment?: string;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
+};
 
-	// Ending Session Only
+export type EndingSession = {
+	id: string | null;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
 	treatmentEnding: string | null;
 	endingType?: CounselingEndingType | null;
 	reason?: string;
@@ -143,6 +155,14 @@ export type Link = {
 	receptionist: string;
 	organizationName: string;
 	reason: string;
+};
+
+export type Memo = {
+	id: string | null;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
+	content: string;
 };
 
 export enum ClientStatus {
@@ -180,6 +200,24 @@ export type CounselingSearchCriteria = {
 };
 
 export type LinkSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type EndingSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type MemoSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type AssessmentSearchCriteria = {
 	name?: string;
 	mobile?: string;
 	disasterName?: DisasterName;

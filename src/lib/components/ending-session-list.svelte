@@ -1,101 +1,56 @@
 <script lang="ts">
 	import DataTable, { Head, Body, Row, Cell, Pagination, Label } from '@smui/data-table';
+	import Button from '@smui/button';
 	import StatusChip from './status-chip.svelte';
 	import Select, {Option} from '@smui/select';
 	import IconButton from '@smui/icon-button';
-	  import Dialog, { Title, Content, Actions } from '@smui/dialog';
-	  import Button from '@smui/button';
-
-
-	import type { Client } from '$lib/types';
+	import type { Client, EndingSession, Link } from '$lib/types';
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/config';
 	import { convertTimestampToDateString } from '$lib/firebase/utils';
-	import { deleteClient } from '$lib/firebase/firebase.client';
-
+	import { deleteClient, deleteEnding, deleteLink } from '$lib/firebase/firebase.client';
+	
+	type Data = EndingSession & { no: number };
+	
 	export let data: Data[] = [];
-	type Data = Client & { no: number };
 	let rowsPerPage = 10;
 	let currentPage = 0;
 	let start = currentPage * rowsPerPage;
 	let end = start + rowsPerPage;
 	let lastPage = Math.ceil(data.length / rowsPerPage) - 1;
-
-	  let open = false;
-	  let clicked = 'Nothing yet.';
-
-	  let selectedId: string | null = null;
-
-	function areYouSure(id: string) {
-		selectedId = id;
-		open = true;
-	};
 	
-	async function removeClient() {
+	async function remove(clientId: string, id: string) {
 		try {
-			if (!selectedId) return;
-			await deleteClient(selectedId);
-			console.debug('Client deleted successfully');
-			data = data.filter(client => client.id !== selectedId);
+			await deleteEnding(clientId, id);
+			console.debug('Ending session was deleted successfully');
+			data = data.filter(ending => ending.id !== id);
 		} catch (error) {
-			console.error('Error deleting client', error);
-		} finally {
-			open = false;
-			selectedId = null;
+			console.error('Error deleting ending', error);
 		}
 	}
 </script>
-
-
-<Dialog
-  bind:open
-  aria-labelledby="simple-title"
-  aria-describedby="simple-content"
->
-  <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-  <Title id="simple-title">Delete permanately</Title>
-  <Content id="simple-content">Are you sure?</Content>
-  <Actions>
-    <Button on:click={() => (clicked = 'No')}>
-      <Label>Cancel</Label>
-    </Button>
-    <Button on:click={() => removeClient()}>
-      <Label>Delete</Label>
-    </Button>
-  </Actions>
-</Dialog>
-
-<pre class="status">Clicked: {clicked}</pre>
-
 
 <DataTable table$aria-label="People list" style="width: 100%; border: 0px">
 	<Head>
 		<Row>
 			<Cell>No</Cell>
 			<Cell>Reg Date</Cell>
-			<Cell>Name</Cell>
-			<Cell>Disaster</Cell>
-			<Cell>Gender</Cell>
-			<Cell>Age</Cell>
-			<Cell>Status</Cell>
-			<Cell>Sessions</Cell>
-			<Cell>Actions</Cell>
+			<Cell>Ending Type</Cell>
+			<Cell>Treatment Ending</Cell>
+			<Cell>Reason</Cell>
 		</Row>
 	</Head>
 	<Body>
-		{#each data as { id, no, createdAt, name, disasterName, gender, dob, status, sessions }}
-			<Row class="content-row" on:click={()=>goto(`${routes.clients}/${id}`)}>
+		{#each data as { id, no, clientId, createdAt, treatmentEnding, endingType, reason }}
+			<Row class="content-row">
 				<Cell>{no}</Cell>
 				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
-				<Cell>{name}</Cell>
-				<Cell>{disasterName}</Cell>
-				<Cell>{gender}</Cell>
-				<Cell>{dob}</Cell>
-				<Cell><StatusChip status={status}/></Cell>
-				<Cell>{sessions}</Cell>
+				<Cell>{endingType}</Cell>
+				<Cell>{treatmentEnding}</Cell>
+				<Cell>{reason}</Cell>
 				<Cell>
-					<Button on:click={()=>goto(`${routes.clients}/${id}/edit`)}>Edit</Button>
-					<Button on:click={()=>areYouSure(id)}>Delete</Button>
+					<Button on:click={()=>goto(`${routes.clients}/${clientId}/endings/${id}/edit`)}>Edit</Button>
+					<Button on:click={()=>remove(clientId, id)}>Delete</Button>
 				</Cell>
 			</Row>
 		{/each}

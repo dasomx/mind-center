@@ -1,5 +1,12 @@
 import firebase from 'firebase/compat/app';
-import { ReferType, type Client, type Counseling, type Link } from './types/index.d.ts';
+import {
+	CounselingEndingType,
+	ReferType,
+	type Client,
+	type Counseling,
+	type EndingSession,
+	type Link
+} from './types/index.d.ts';
 import { Timestamp } from 'firebase/firestore';
 
 export const DISASTER_NAMES = ['816', '922'];
@@ -124,6 +131,16 @@ export const INIT_LINK: Link = {
 	processingDate: Timestamp.now(),
 	reason: '',
 	organizationName: ''
+};
+
+export const INIT_ENDING_SESSION: EndingSession = {
+	id: null,
+	clientId: null,
+	createdAt: Timestamp.now(),
+	updatedAt: Timestamp.now(),
+	treatmentEnding: '',
+	endingType: CounselingEndingType.Others,
+	reason: ''
 };
 
 export const COUNSELING_TYPE = [
