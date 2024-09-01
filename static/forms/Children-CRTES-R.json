@@ -1,0 +1,202 @@
+[ 
+    {
+        "id": 0,
+        "no": "",
+        "text": "Children-CRTES-R",
+        "options": "CHILD",
+        "type": "Meta",
+        "answer":""
+    },
+    {
+        "id": 1000,
+        "no": "",
+        "text": "Below is a list of comments made by people after stressful life events. Please check each item, indicating how often these comments were true for you DURING THE PAST SEVEN DAYS. If they did not occur during that time, please mark the \"Not at all\" column.",
+        "options": "",
+        "type": "Instruction",
+        "answer":""
+    },
+    {
+        "id": 1,
+        "no": "1",
+        "text": "I thought about it when I didn't mean to.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 2,
+        "no": "2",
+        "text": "I stopped letting myself get upset when I thought about it or was reminded of it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 3,
+        "no": "3",
+        "text": "I tried not to remember.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 4,
+        "no": "4",
+        "text": "I had trouble falling asleep or staying asleep because pictures or thoughts about it came into my mind.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 5,
+        "no": "5",
+        "text": "I had strong feelings about it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 6,
+        "no": "6",
+        "text": "I had dreams about it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 7,
+        "no": "7",
+        "text": "I stayed away from things that reminded me of it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 8,
+        "no": "8",
+        "text": "I felt that it did not happen or that it was make-believe.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 9,
+        "no": "9",
+        "text": "I tried not to talk about it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 10,
+        "no": "10",
+        "text": "I kept seeing it over and over in my mind.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 11,
+        "no": "11",
+        "text": "Other things kept making me think about it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 12,
+        "no": "12",
+        "text": "I had lots of feelings about it, but I didn't pay attention to them.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 13,
+        "no": "13",
+        "text": "I tried not to think about it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 14,
+        "no": "14",
+        "text": "Any reminder brought back feelings about it.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 15,
+        "no": "15",
+        "text": "I don't have feelings about it anymore.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 16,
+        "no": "16",
+        "text": "It was easy to make me angry and upset.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 17,
+        "no": "17",
+        "text": "Loud noises made me jump in surprise.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 18,
+        "no": "18",
+        "text": "I would act like it was happening all over again.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 19,
+        "no": "19",
+        "text": "I had trouble keeping my mind on what I was doing.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 20,
+        "no": "20",
+        "text": "Thinking about it made my heart beat faster.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 21,
+        "no": "21",
+        "text": "Thinking about it made it hard for me to breathe.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 22,
+        "no": "22",
+        "text": "Thinking about it made me sweat.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    },
+    {
+        "id": 23,
+        "no": "23",
+        "text": "I kept checking to make sure nothing else bad would happen.",
+        "options": ["Not at All","Rarely","Sometimes","Often"],
+        "type": "Rating",
+        "answer": ""
+    }
+]
