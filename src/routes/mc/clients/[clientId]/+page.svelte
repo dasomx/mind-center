@@ -15,6 +15,8 @@
 	import StatusChip from '$lib/components/status-chip.svelte';
 	import CounselingList from '$lib/components/counseling-list.svelte';
 	import { page } from '$app/stores';
+	import LinkList from '$lib/components/link-list.svelte';
+	import EndingSessionList from '$lib/components/ending-session-list.svelte';
 
 
 	/** @type {import('./$types').PageData}*/
@@ -76,7 +78,7 @@
 <h3>{data.props.client.name}'s profile</h3>
 
 <div>
-	<TabBar tabs={['General', 'Counselings', 'Links', 'Memos']} let:tab bind:active>
+	<TabBar tabs={['General', 'Assessments', 'Counselings', 'Links', 'Ending', 'Memo']} let:tab bind:active>
 		<Tab {tab}>
 			<Label>{tab}</Label>
 		</Tab>
@@ -182,7 +184,13 @@
 				</div>
 			</Content>
 		</Paper>
-	{:else if active === 'Counselings'}
+		{:else if active === 'Assessments'}
+		<Paper variant="unelevated">
+			<Content>
+				<section>Assessments</section>
+			</Content>
+		</Paper>
+		{:else if active === 'Counselings'}
 		<Paper variant="unelevated">
 			<Content>
 				<section>Counselings</section>
@@ -197,20 +205,25 @@
 	{:else if active === 'Links'}
 		<Paper variant="unelevated">
 			<Content>
-				<Paper variant="outlined" style="margin-bottom: 1em">
 				<section>Links</section>
-				<LayoutGrid>
-					<Cell>
-						<TextField label="Refer To" value={client.referTo} input$readonly />
-					</Cell>
-					<Cell>
-						<TextField label="Result of Action" value={client.resultOfAction} input$readonly />
-					</Cell>
-					<Cell>
-						<TextField label="Sessions" value={client.sessions} input$readonly />
-					</Cell>
-				</LayoutGrid>
-				</Paper>
+				<div style="display: flex; justify-content: flex-end;">
+					<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/links/new`)}
+						>Add new referrer</Button
+					>
+				</div>
+				<LinkList data={data.props.links} />
+			</Content>
+		</Paper>
+	{:else if active === 'Ending'}
+		<Paper variant="unelevated">
+			<Content>
+				<section>Ending</section>
+				<div style="display: flex; justify-content: flex-end;">
+					<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/endings/new`)}
+						>Add new ending</Button
+					>
+				</div>
+				<EndingSessionList data={data.props.endings} />
 			</Content>
 		</Paper>
 	{:else if active === 'Memos'}

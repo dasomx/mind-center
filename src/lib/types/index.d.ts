@@ -69,7 +69,7 @@ export enum CounselingEndingType {
 export const DisasterName = ['816', '922'];
 
 export type Client = {
-	id?: string | null;
+	id: string | null;
 	fatherName?: string;
 	name?: string;
 	gender?: GenderType;
@@ -95,6 +95,13 @@ export type Client = {
 	medicalCoverage?: string | null;
 	createdAt?: firebase.firestore.Timestamp;
 	updatedAt?: firebase.firestore.Timestamp;
+};
+
+export type Assessment = {
+	id: string | null;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
 };
 
 export type Counseling = {
@@ -125,24 +132,37 @@ export type Counseling = {
 	assessment?: string;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
+};
 
-	// Ending Session Only
+export type EndingSession = {
+	id: string | null;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
 	treatmentEnding: string | null;
 	endingType?: CounselingEndingType | null;
 	reason?: string;
 };
 
 export type Link = {
-	id: string;
-	clientId: string;
-	createdAt: number;
-	updatedAt: number;
-	counselorId: string;
+	id: string | null;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
+	processingDate: Timestamp;
 	referralName: string;
 	referType: ReferType;
 	receptionist: string;
 	organizationName: string;
 	reason: string;
+};
+
+export type Memo = {
+	id: string | null;
+	clientId: Client.id;
+	createdAt: Timestamp;
+	updatedAt: Timestamp;
+	content: string;
 };
 
 export enum ClientStatus {
@@ -174,6 +194,30 @@ export type ClientSearchCriteria = {
 };
 
 export type CounselingSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type LinkSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type EndingSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type MemoSearchCriteria = {
+	name?: string;
+	mobile?: string;
+	disasterName?: DisasterName;
+};
+
+export type AssessmentSearchCriteria = {
 	name?: string;
 	mobile?: string;
 	disasterName?: DisasterName;
