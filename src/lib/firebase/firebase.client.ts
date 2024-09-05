@@ -126,10 +126,18 @@ export const searchClients = async (criteria: ClientSearchCriteria) => {
 	console.debug('DB: searchClients');
 	let q = query(collection(db, 'clients'));
 	if (criteria.name) {
-		q = query(q, where('name', '==', criteria.name));
+		// [TBD] It's only 'criteria.name%'
+		q = query(q, 
+			where('name', '>=', criteria.name),
+			where('name', '<=', criteria.name + '\uf8ff')
+		);
 	}
 	if (criteria.mobile) {
-		q = query(q, where('mobile', '==', criteria.mobile));
+		// [TBD] It's only 'criteria.name%'
+		q = query(q, 
+			where('mobile', '>=', criteria.mobile),
+			where('mobile', '<=', criteria.mobile + '\uf8ff')
+		);
 	}
 	if (criteria.disasterName) {
 		q = query(q, where('disasterName', '==', criteria.disasterName));
@@ -323,10 +331,18 @@ export const searchCounseling = async (criteria: CounselingSearchCriteria) => {
 	console.debug('DB: searchCounseling');
 	let q = query(collectionGroup(db, 'counselings'));
 	if (criteria.name) {
-		q = query(q, where('name', '==', criteria.name));
+		// [TBD] It's only 'criteria.name%'
+		q = query(q, 
+			where('clientName', '>=', criteria.name),
+			where('clientName', '<=', criteria.name + '\uf8ff')
+		);
 	}
 	if (criteria.mobile) {
-		q = query(q, where('mobile', '==', criteria.mobile));
+		// [TBD] It's only 'criteria.name%'
+		q = query(q, 
+			where('clientMobile', '>=', criteria.mobile),
+			where('clientMobile', '<=', criteria.mobile + '\uf8ff')
+		);
 	}
 	if (criteria.disasterName) {
 		q = query(q, where('disasterName', '==', criteria.disasterName));

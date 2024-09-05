@@ -11,7 +11,7 @@
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text';
-	import { COUNSELING_TYPE, routes, STATUS_TYPES } from '$lib/config';
+	import { COUNSELING_TYPE, routes, COUNSELING_STATUS_TYPES } from '$lib/config';
 	import { saveCounseling } from '$lib/firebase/firebase.client';
 	import CircularProgress from '@smui/circular-progress';
 	import { Timestamp } from 'firebase/firestore';
@@ -107,11 +107,6 @@
 						<Radio bind:group={selectedSession} value="normal" touch />
 						<span slot="label">Normal Session</span>
 					</FormField>
-
-					<FormField>
-						<Radio bind:group={selectedSession} value="ending" touch />
-						<span slot="label">Ending Session</span>
-					</FormField>
 				</span>
 			</div>
 			<ClientGeneralInfoForm {client} />
@@ -145,7 +140,7 @@
 				</Cell>
 				<Cell>
 					<Select variant="outlined" label="Counseling Status" bind:value={counseling.status}>
-						{#each STATUS_TYPES as option}
+						{#each COUNSELING_STATUS_TYPES as option}
 							<Option value={option}>{option}</Option>
 						{/each}
 					</Select>

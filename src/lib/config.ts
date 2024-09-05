@@ -56,6 +56,8 @@ export const RESULT_OF_ACTION = [
 
 export const STATUS_TYPES = ['Init', 'In Progress', 'Completed', 'Cancelled', 'Pending', 'Deleted'];
 
+export const COUNSELING_STATUS_TYPES = ['Planned', 'Completed', 'Canceled'];
+
 export const INIT_CLIENT: Client = {
 	id: null,
 	disasterName: '',

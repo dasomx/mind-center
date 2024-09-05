@@ -1,6 +1,7 @@
 <!-- Dashboard -->
 <script lang="ts">
 	import SmallTable from '$lib/components/small-table.svelte';
+	import SmallTableCounseling from '$lib/components/small-table-counseling.svelte';
 	import Calendar from '$lib/components/calendar.svelte';
 
 	/** @type {import('./$types').PageData} */
@@ -19,7 +20,7 @@
 		</div>
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Active Individual Counseling</div>
-			<SmallTable data={counselings} resource="counselings"/>
+			<SmallTableCounseling data={counselings} resource="counselings"/>
 		</div>
 		<div class="mc_dash_small_list">
 			<div class="mc_dash_small_item_title">Link/Refer List</div>

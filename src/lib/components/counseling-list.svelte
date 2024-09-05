@@ -8,6 +8,7 @@
 	import { convertTimestampToDateString } from '$lib/firebase/utils';
 	import { goto } from '$app/navigation';
 	import { deleteCounseling } from '$lib/firebase/firebase.client';
+	import Dialog, { Title, Content, Actions } from '@smui/dialog';
 	export let data: Data[] = [];
 	type Data = Counseling & { no: number };
 	let rowsPerPage = 10;
@@ -16,6 +17,7 @@
 	let end = start + rowsPerPage;
 	let lastPage = Math.ceil(data.length / rowsPerPage) - 1;
 
+	// Warning before removing a session
 	async function removeCounseling(clientId: string, id: string) {
 		try {
 			await deleteCounseling(clientId, id);
@@ -25,6 +27,13 @@
 			console.error('Error deleting counseling', error);
 		}
 	}
+
+	let open = false;
+	let delClientId: String = '';
+	let delId: String = '';
+
+	// End: Warning before removing a session
+
 </script>
 
 <DataTable table$aria-label="People list" style="width: 100%; border: 0px">
@@ -56,7 +65,11 @@
 				</Cell>
 				<Cell>
 					<Button on:click={()=>goto(`/mc/clients/${clientId}/counselings/${id}/edit`)}>Edit</Button>
-					<Button on:click={()=>removeCounseling(clientId, id)}>Delete</Button>
+					<Button on:click={()=>{
+						open = true; 
+						delClientId = clientId;
+						delId = id;
+					}}>Delete</Button>
 				</Cell>
 			</Row>
 		{/each}
@@ -104,6 +117,30 @@
     >
   </Pagination>	
 </DataTable>
+
+
+<!-- Warning before deleting a session -->
+<Dialog
+  bind:open
+  aria-labelledby="simple-title"
+  aria-describedby="simple-content"
+>
+  <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+  <Title id="simple-title">Warning</Title>
+  <Content id="simple-content">This Counseling Session will be deleted. Would you like to continue?</Content>
+  <Actions>
+    <Button>
+      <Label>No</Label>
+    </Button>
+    <Button on:click={() => {
+		removeCounseling(delClientId, delId);
+	}}>
+      <Label>Yes</Label>
+    </Button>
+  </Actions>
+</Dialog>
+<!-- End: Warning before deleting a session -->
+
 
 <style>
 	:global(.header-row) {
