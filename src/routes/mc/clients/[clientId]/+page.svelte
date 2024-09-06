@@ -14,6 +14,7 @@
 	import { routes } from '$lib/config';
 	import StatusChip from '$lib/components/status-chip.svelte';
 	import CounselingList from '$lib/components/counseling-list.svelte';
+	import AssessmentList from '$lib/components/assessment-list.svelte';
 	import { page } from '$app/stores';
 	import LinkList from '$lib/components/link-list.svelte';
 	import EndingSessionList from '$lib/components/ending-session-list.svelte';
@@ -188,6 +189,12 @@
 		<Paper variant="unelevated">
 			<Content>
 				<section>Assessments</section>
+				<div style="display: flex; justify-content: flex-end;">
+					<Button variant="outlined" on:click={() => alert("Please do it by creating a new counseling session")}
+						>Add new assessment</Button
+					>
+				</div>
+				<AssessmentList data={data.props.counselings} />
 			</Content>
 		</Paper>
 		{:else if active === 'Counselings'}

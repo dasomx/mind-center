@@ -327,6 +327,15 @@ export const fetchAllCounselings = async () => {
 	return counselings;
 };
 
+export const countCounselings = async (clientId: string) => {
+	console.debug('DB: fetchCounselings');
+	const q = query(
+		collection(db, `clients/${clientId}/counselings`),
+	);
+	const querySnapshot = await getDocs(q);
+	return querySnapshot.size;
+}
+
 export const searchCounseling = async (criteria: CounselingSearchCriteria) => {
 	console.debug('DB: searchCounseling');
 	let q = query(collectionGroup(db, 'counselings'));
