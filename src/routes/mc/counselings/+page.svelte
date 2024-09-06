@@ -7,7 +7,7 @@
 	import { type Counseling } from '$lib/types/index.d';
     import Snackbar, { Label, Actions } from '@smui/snackbar';
     import IconButton from '@smui/icon-button';
-	import { goto } from '$app/navigation';
+	import { searchCounseling } from '$lib/firebase/firebase.client';
 	
 
 	/** @type {import('./$types').PageData} */
@@ -15,16 +15,19 @@
 
 	const { counselings } = data;
 	
+	let filteredCounselings: Counseling[] = counselings;
+
     let name: string = '';
 	let disasterName: string = '';
 	let mobile: string = '';
 	let snackbarInfo: Snackbar;
 	let information: string = '';
 
-	function initValues() {
+	function clearValues() {
 		name = '';
 		disasterName = '';
 		mobile = '';
+		filteredCounselings = counselings;
 	}
 
 	function showSnackbarInfo(info: string) {
@@ -32,14 +35,16 @@
 		snackbarInfo.open();
 	}
 
-    function calculateEndTime() {
-        // Calculate the end time based on the start time
-        // and update the endTime variable
-    }
+	async function search() {
+		try {
+			const data = await searchCounseling({ name, disasterName, mobile });
+			console.debug('data', data);
+			filteredCounselings = data;
+		} catch (error) {
+			showSnackbarInfo(error);
+		}
+	}
 
-    function saveCounseling() {
-        // Save all the input values to the database or perform any other necessary actions
-    }
 
 </script>
 
@@ -63,8 +68,8 @@
 			/>
 		</div>
 		<div style="align-self: flex-end;">
-			<Button on:click={initValues}>Clear</Button>
-			<Button variant="raised" on:click={()=>showSnackbarInfo('미구현')} >Search</Button>
+			<Button on:click={clearValues}>Clear</Button>
+			<Button variant="raised" on:click={search} >Search</Button>
 		</div>
 	</div>
 
@@ -72,11 +77,11 @@
 		<div class="list-header">
 			<div>
 			<span>Total</span>
-			<span style="margin-left: 17px"><strong>{counselings.length}</strong></span>
+			<span style="margin-left: 17px"><strong>{filteredCounselings.length}</strong></span>
 			</div>
-			<Button variant="raised" on:click={()=> {alert('Go to My clients')}}>Add Counseling</Button>
+			<Button variant="raised" on:click={()=> {alert("Please do it from \"My Clients\" menu.")}}>Add Counseling</Button>
 		</div>
-		<CounselingList data={counselings.map((counseling, index)=>({no: index+1, ...counseling}))}/>
+		<CounselingList data={filteredCounselings.map((counseling, index)=>({no: index+1, ...counseling}))}/>
 	</div>
 </div>
 <Snackbar bind:this={snackbarInfo}>
