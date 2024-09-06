@@ -103,14 +103,14 @@
 					<Cell>{cnt}</Cell>
 					{#if cnt > 0}
 						<Cell>
-							<Button on:click={()=>goto(`${routes.clients}/${id}/edit`)}>Edit</Button>
+							<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Show</Button>
 							<Button on:click={()=>{
 								alert("First delete all counseling sessions!")
 							}}>Delete</Button>
 						</Cell>
 					{:else}
 						<Cell>
-							<Button on:click={()=>goto(`${routes.clients}/${id}/edit`)}>Edit</Button>
+							<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Show</Button>
 							<Button on:click={()=>{
 								open = true; 
 								delClientId = clientId;
