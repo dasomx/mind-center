@@ -82,7 +82,7 @@ export const INIT_CLIENT: Client = {
 	caseManager: '',
 	medicalCoverage: '',
 	status: '',
-	sessions: 0,
+	sessions: '',
 	regDate: '',
 	createdAt: 0,
 	updatedAt: 0

@@ -17,22 +17,6 @@
 	let end = start + rowsPerPage;
 	let lastPage = Math.ceil(data.length / rowsPerPage) - 1;
 
-	// Warning before removing a session
-	async function removeCounseling(clientId: string, id: string) {
-		try {
-			await deleteCounseling(clientId, id);
-			console.debug('Counseling deleted successfully');
-			data = data.filter(counseling => counseling.id !== id);
-		} catch (error) {
-			console.error('Error deleting counseling', error);
-		}
-	}
-
-	let open = false;
-	let delClientId: String = '';
-	let delId: String = '';
-	// End: Warning before removing a session
-
 </script>
 
 <DataTable table$aria-label="People list" style="width: 100%; border: 0px">
@@ -43,34 +27,32 @@
 			<Cell>Name</Cell>
 			<Cell>Disaster Name</Cell>
 			<Cell>Type</Cell>
-			<Cell>Status</Cell>
-			<Cell>Assessment</Cell>
+			<Cell>Form</Cell>
 			<Cell>Actions</Cell>
 		</Row>
 	</Head>
 	<Body>
-		{#each data as { no, createdAt, clientId, id, startTime, clientName, disasterName, counselingType, status, assessment }}
+		{#each data as { no, createdAt, clientId, id, startTime, clientName, disasterName, counselingType, assessment }}
+		  {#if assessment !=null}
 			<Row class="content-row">
 				<Cell>{no}</Cell>
 				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
 				<Cell>{clientName}</Cell>
 				<Cell>{disasterName}</Cell>
 				<Cell>{counselingType}</Cell>
-				<Cell><StatusChipCounseling status={status}/></Cell>
-				<Cell>
-					{#if assessment != null}
-						<span style='color:red'> SAVED</span>
-					{/if}
-				</Cell>
-				<Cell>
-					<Button on:click={()=>goto(`/mc/clients/${clientId}/counselings/${id}/edit`)}>Edit</Button>
-					<Button on:click={()=>{
-						open = true; 
-						delClientId = clientId;
-						delId = id;
-					}}>Delete</Button>
-				</Cell>
+				<Cell>{JSON.parse(assessment)[0].options}</Cell>
+				{#if JSON.parse(assessment)[0].options =="ADULT"}
+					<Cell>
+						<Button on:click={()=>goto(`/mc/clients/${clientId}/counselings/${id}/assessment?type=ADULT`)}>Edit</Button>
+					</Cell>
+					
+				{:else if JSON.parse(assessment)[0].options =="CHILD"}
+					<Cell>
+						<Button on:click={()=>goto(`/mc/clients/${clientId}/counselings/${id}/assessment?type=CHILD`)}>Edit</Button>
+					</Cell>
+				{/if}
 			</Row>
+		  {/if}
 		{/each}
 	</Body>
 <Pagination style="background-color: white; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;" slot="paginate">
@@ -116,30 +98,6 @@
     >
   </Pagination>	
 </DataTable>
-
-
-<!-- Warning before deleting a session -->
-<Dialog
-  bind:open
-  aria-labelledby="simple-title"
-  aria-describedby="simple-content"
->
-  <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
-  <Title id="simple-title">Warning</Title>
-  <Content id="simple-content">This Counseling Session will be deleted. Would you like to continue?</Content>
-  <Actions>
-    <Button>
-      <Label>No</Label>
-    </Button>
-    <Button on:click={() => {
-		removeCounseling(delClientId, delId);
-	}}>
-      <Label>Yes</Label>
-    </Button>
-  </Actions>
-</Dialog>
-<!-- End: Warning before deleting a session -->
-
 
 <style>
 	:global(.header-row) {

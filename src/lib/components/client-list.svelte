@@ -11,7 +11,7 @@
 	import { goto } from '$app/navigation';
 	import { routes } from '$lib/config';
 	import { convertTimestampToDateString } from '$lib/firebase/utils';
-	import { deleteClient } from '$lib/firebase/firebase.client';
+	import { countCounselings, deleteClient } from '$lib/firebase/firebase.client';
 
 	export let data: Data[] = [];
 	type Data = Client & { no: number };
@@ -26,12 +26,7 @@
 
 	  let selectedId: string | null = null;
 
-	function areYouSure(id: string) {
-		selectedId = id;
-		open = true;
-	};
-	
-	async function removeClient() {
+	async function removeClient(clientId: string, id: string) {
 		try {
 			if (!selectedId) return;
 			await deleteClient(selectedId);
@@ -43,6 +38,16 @@
 			open = false;
 			selectedId = null;
 		}
+	}
+
+	// Warning before removing a session
+	let delClientId: String = '';
+	let delId: String = '';
+	// End: Warning before removing a session
+
+	let cnt = 0;
+	async function countSessions(id:string) {
+		cnt= await countCounselings(id);
 	}
 </script>
 
@@ -84,19 +89,37 @@
 	</Head>
 	<Body>
 		{#each data as { id, no, createdAt, name, disasterName, gender, dob, status, sessions }}
-			<Row class="content-row" on:click={()=>goto(`${routes.clients}/${id}`)}>
+			<Row class="content-row">
 				<Cell>{no}</Cell>
 				<Cell>{convertTimestampToDateString(createdAt)}</Cell>
-				<Cell>{name}</Cell>
+				<Cell  on:click={()=> {
+					goto(`${routes.clients}/${id}`)}
+				}>{name}</Cell>
 				<Cell>{disasterName}</Cell>
 				<Cell>{gender}</Cell>
 				<Cell>{dob}</Cell>
 				<Cell><StatusChip status={status}/></Cell>
-				<Cell>{sessions}</Cell>
-				<Cell>
-					<Button on:click={()=>goto(`${routes.clients}/${id}/edit`)}>Edit</Button>
-					<Button on:click={()=>areYouSure(id)}>Delete</Button>
-				</Cell>
+				{#await countCounselings(id) then cnt}
+					<Cell>{cnt}</Cell>
+					{#if cnt > 0}
+						<Cell>
+							<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Show</Button>
+							<Button on:click={()=>{
+								alert("First delete all counseling sessions!")
+							}}>Delete</Button>
+						</Cell>
+					{:else}
+						<Cell>
+							<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Show</Button>
+							<Button on:click={()=>{
+								open = true; 
+								delClientId = clientId;
+								delId = id;
+							}}>Delete</Button>
+						</Cell>
+					{/if}
+				{/await}
+				
 			</Row>
 		{/each}
 	</Body>
@@ -143,6 +166,28 @@
     >
   </Pagination>	
 </DataTable>
+
+<!-- Warning before deleting a session -->
+<Dialog
+  bind:open
+  aria-labelledby="simple-title"
+  aria-describedby="simple-content"
+>
+  <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+  <Title id="simple-title">Warning</Title>
+  <Content id="simple-content">The Client will be deleted. Would you like to continue?</Content>
+  <Actions>
+    <Button>
+      <Label>No</Label>
+    </Button>
+    <Button on:click={() => {
+		removeClient(delClientId, delId);
+	}}>
+      <Label>Yes</Label>
+    </Button>
+  </Actions>
+</Dialog>
+<!-- End: Warning before deleting a session -->
 
 <style>
 	:global(.header-row) {
