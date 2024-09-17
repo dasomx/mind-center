@@ -100,6 +100,7 @@ export type Client = {
 export type Assessment = {
 	id: string | null;
 	clientId: Client.id;
+	respond: any;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
 };

@@ -268,25 +268,6 @@
 					<div class="grid-title" style='display: inline-block;'><span style='color:blue; font-weight: bold; margin-right:4px;'>Evaluation </span> <span style='font-weight: bold; margin-right:4px;'>Total</span>: {catEvalTotal} <span style='font-weight: bold;'>Average</span>:{catEvalAvg}</div>
 				</Cell>
 			</LayoutGrid>
-
-			<div class="grid-title">Assessment</div>
-			<LayoutGrid class="grid-container">
-				<Cell span={12}>
-					{#if counseling.id}
-						<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/${counseling.id}/assessment?type=ADULT`)} style="{assessmentAdultStyle} margin-right:10px;" >
-							Assessment(Adult){assessmentButtonAdult}
-						</Button>
-						<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/counselings/${counseling.id}/assessment?type=CHILD`)} style="{assessmentChildStyle}">
-							Assessment(Child){assessmentButtonChild}
-						</Button>
-					{:else}
-						<Button variant="outlined" on:click={() => { alert('Save the Counseling session first') }} >
-							Assessment
-						</Button>
-					{/if}
-				</Cell>
-			</LayoutGrid>
-
 			<div style="align-self: flex-end;">
 				<Button variant="outlined" on:click={() => history.back()}>Close</Button>
 				<Button variant="raised" disabled={saving} on:click={save}>

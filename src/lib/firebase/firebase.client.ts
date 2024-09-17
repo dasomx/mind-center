@@ -155,20 +155,20 @@ export const searchClients = async (criteria: ClientSearchCriteria) => {
  * Assessment CRUD
  */
 
-export const saveAssessment = async (memo: Memo, client: Client) => {
-	console.debug('DB: saveMemo');
-	cleanObject(memo);
+export const saveAssessment = async (assessment: Assessment, client: Client) => {
+	console.debug('DB: saveAssessment');
+	cleanObject(assessment);
 	// populate the ending session information to the ending
-	memo.createdAt = memo.createdAt ?? Timestamp.now();
-	memo.updatedAt = Timestamp.now();
-	memo.clientId = client.id;
+	assessment.createdAt = assessment.createdAt ?? Timestamp.now();
+	assessment.updatedAt = Timestamp.now();
+	assessment.clientId = client.id;
 	const clientId = client.id;
-	const { id, ...rest } = memo;
+	const { id, ...rest } = assessment;
 
 	// if the memo has an id, update the memo, otherwise create a new memo
 	let docRef = null;
-	if (!memo) {
-		throw new Error('Memo is required.');
+	if (!assessment) {
+		throw new Error('Assessment is required.');
 	}
 
 	if (!clientId) {
@@ -176,10 +176,10 @@ export const saveAssessment = async (memo: Memo, client: Client) => {
 	}
 
 	if (id) {
-		docRef = doc(db, `clients/${clientId}/memos`, id);
+		docRef = doc(db, `clients/${clientId}/assessments`, id);
 		await setDoc(docRef, rest);
 	} else {
-		const colRef = collection(db, `clients/${clientId}/memos`);
+		const colRef = collection(db, `clients/${clientId}/assessments`);
 		docRef = await addDoc(colRef, rest);
 	}
 	return docRef.id;

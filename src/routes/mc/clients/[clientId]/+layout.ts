@@ -1,12 +1,13 @@
 /** @type {import('./$types').PageLoad} */
 
 import {
+	fetchAssessments,
 	fetchCounselings,
 	fetchEndings,
 	fetchLinks,
 	getClient
 } from '$lib/firebase/firebase.client';
-import type { Counseling, EndingSession, Link } from '$lib/types/index.js';
+import type { Assessment, Counseling, EndingSession, Link } from '$lib/types/index.js';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params }) {
@@ -15,6 +16,7 @@ export async function load({ params }) {
 	let counselings: Counseling[] = [];
 	let links: Link[] = [];
 	let endings: EndingSession[] = [];
+	let assessments: Assessment[] = [];
 
 	console.debug('clientId', clientId);
 
@@ -24,6 +26,13 @@ export async function load({ params }) {
 		if (!client) {
 			error(404, 'Client not found');
 		}
+		assessments = await fetchAssessments(clientId);
+		assessments = assessments.map((assessment, index) => {
+			return {
+				...assessment,
+				no: index + 1
+			};
+		});
 		// Get the client's counselings
 		counselings = await fetchCounselings(clientId);
 		counselings = counselings.map((counseling, index) => {
@@ -52,6 +61,7 @@ export async function load({ params }) {
 		props: {
 			clientId,
 			client,
+			assessments,
 			counselings,
 			links,
 			endings

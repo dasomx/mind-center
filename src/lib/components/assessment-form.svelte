@@ -1,88 +1,59 @@
 <script lang="ts">
 	import {
-		type Counseling,
 		type Client,
-		EvaluationCategory,
+		type Assessment,
 	} from '$lib/types/index.d';
 	import FormField from '@smui/form-field';
-	import Select, { Option } from '@smui/select';
 	import Radio from '@smui/radio';
 	import Textfield from '@smui/textfield';
 	import LayoutGrid, { Cell } from '@smui/layout-grid';
 	import Button from '@smui/button';
-	import HelperText from '@smui/textfield/helper-text';
-	import { COUNSELING_TYPE } from '$lib/config';
-	import { saveCounseling } from '$lib/firebase/firebase.client';
+	import { saveAssessment} from '$lib/firebase/firebase.client';
 	import CircularProgress from '@smui/circular-progress';
-	import { Timestamp } from 'firebase/firestore';
-	import { convertTimestampToLocaleISOString } from '$lib/firebase/utils';
 	import { onMount } from 'svelte';
 	import { getAgeFromDOB } from '$lib/utils/common';
 	import { page } from '$app/stores';
 
+	import AdultPCL5 from "./tools/Adult-PCL-5.json";
+	import ChildrenCRTESR from "./tools/Children-CRTES-R.json";
+	import TextWithNewline from './text-with-newline.svelte';
+
 	/** @type {import('./$types').PageData} */
-	export let counseling: Counseling;
 	export let client: Client;
+	export let assessment: Assessment | null;
 
 	let saving = false;
-	counseling = counseling;
 	let age = getAgeFromDOB(client.dob);
-	let type = $page.url.searchParams.get('type'); // adult or child (to select the right form)
-	let assessmentFile = (type == "ADULT" ? "Adult-PCL-5.json" : "Children-CRTES-R.json");
-	// save counseling
+	let assessQuestions = age > 18 ? AdultPCL5 : ChildrenCRTESR;
+
+	// save assessment data
 	async function save() {
-		if (!counseling || !client) return;
+		if (!client) return;
+		if (!assessment) {
+			assessment = {
+				respond: assessQuestions,
+			};
+		}
 		try {
-			counseling.assessment = JSON.stringify(assessQuestions);
 			saving = true;
-			await saveCounseling(counseling, client);
-			// window.location = `/mc/clients/${client.id}?tab=Counselings`;
-			window.location = `/mc/clients/${client.id}/counselings/${counseling.id}/edit`;
+			await saveAssessment(assessment, client);
+			window.location = `/mc/clients/${client.id}?tab=Assessments`;
 		} catch (error) {
-			console.error('error on saving counseling', error);
+			console.error('error on saving assessment', error);
 		}
 	}
 
-	let assessQuestions:[] = [];
 	
 	onMount(async () => {
-		if(!counseling.assessment) { // assessment data alread saved
-			try {
-				const response = await fetch('/forms/' + assessmentFile);
-				if (!response.ok) {
-					throw new Error('Failed to fetch JSON file');
-				}
-
-				assessQuestions = await response.json(); // array: eg, assessQuestions[3].answer
-			} catch (error) {
-				console.error('Error[0]:', error);
-			}
-		} else { // first time assessment data 
-			assessQuestions = JSON.parse(counseling.assessment);
-							
-			// type mismatched: 
-			// eg, type: ADULT but saved form is the one for CHILD
-			if(assessQuestions[0].options != type) {
-				try {
-					assessmentFile = (type == "ADULT" ? "Adult-PCL-5.json" : "Children-CRTES-R.json");
-					const response = await fetch('/forms/' + assessmentFile);
-					
-					if (!response.ok) {
-						throw new Error('Failed to fetch JSON file');
-					}
-					assessQuestions = await response.json(); // array: eg, assessQuestions[3].answer
-					console.log(assessQuestions);
-				} catch (error) {
-					console.error('Error[1]:', error);
-				}
-			}
+		if(assessment) { // assessment data alread saved
+			assessQuestions = assessment.respond;							
 		}
 	});
 
 </script>
 
 <div class="container">
-	{#if !counseling || !client}
+	{#if !client}
 		<CircularProgress />
 	{:else}
 		<div class="form-container">			
@@ -146,7 +117,7 @@
 							<div>{question.text}</div>
 						{:else if question.type == 'Instruction'}
 							<div style='font-weight:bold;'>Instructions: </div>
-							<div>{question.text}</div>
+							<TextWithNewline text={question.text} />
 						{:else if question.type == 'Text'}
 							<p>{question.no}. {question.text}</p>
 							<div>
