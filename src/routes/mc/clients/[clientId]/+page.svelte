@@ -190,11 +190,11 @@
 			<Content>
 				<section>Assessments</section>
 				<div style="display: flex; justify-content: flex-end;">
-					<Button variant="outlined" on:click={() => alert("Please do it by creating a new counseling session")}
+					<Button variant="outlined" on:click={() => goto(`${routes.clients}/${client.id}/assessments/new`)}
 						>Add new assessment</Button
 					>
 				</div>
-				<AssessmentList data={data.props.counselings} />
+				<AssessmentList data={data.props.assessments} />
 			</Content>
 		</Paper>
 		{:else if active === 'Counselings'}
