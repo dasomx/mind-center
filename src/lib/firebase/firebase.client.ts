@@ -116,7 +116,7 @@ export const getClient = async (clientId: string) => {
 // fetch clients from Firestore
 export const fetchClients = async () => {
 	console.debug('DB: fetchClients');
-	const q = query(collection(db, 'clients'), orderBy('createdAt', 'desc'), limit(25));
+	const q = query(collection(db, 'clients'), orderBy('createdAt', 'desc'), limit(100));
 	const querySnapshot = await getDocs(q);
 	const clients: Client[] = [];
 	querySnapshot.forEach((doc) => {
