@@ -37,27 +37,9 @@
 	let catEvalTotal = 0; // Total evaluation
 	let catEvalAvg = 0; // Average evaluation
 
-	// Assessment Button Styling
-	let assessmentButtonAdult = '';
-	let assessmentButtonChild = '';
-	let assessmentAdultStyle = '';
-	let assessmentChildStyle = '';
-
-	if (counseling.assessment) {
-		let assessmentData = JSON.parse(counseling.assessment);
-		let assessmentType = assessmentData[0].options; // ADULT, CHILD
-		if (assessmentType == 'ADULT') {
-			assessmentButtonAdult = ' (saved)';
-			assessmentAdultStyle = 'color:red; ';
-		} else if (assessmentType == 'CHILD') {
-			assessmentButtonChild = ' (saved)';
-			assessmentChildStyle = 'color:red; ';
-		}
-	}
 	if(!counseling.attachments) {
 		counseling.attachments = [];
 	}
-	// End of Assessment Button Styling
 
 	function calculateEval() {
 		catEvalTotal = 0; // reset
@@ -207,15 +189,11 @@
 
 						<ImageList class="demo-list">
 							{#each counseling.attachments.filter(a => a.status === 'a') as attachment}
-								<Item>
-									<ImageAspectContainer>
-										<Image src={attachment.url} alt={attachment.filename} />
-									</ImageAspectContainer>
-									<Supporting>
-										<Label>{attachment.filename}</Label>
-									</Supporting>
+								<div style="display:flex;align-items:center">
+									<IconButton class="material-icons">attach_file</IconButton>
+									<a href={attachment.url} target="_blank">{attachment.filename}</a>
 									<IconButton class="material-icons" on:click={() => counseling.attachments = counseling.attachments.map((a) => a.docId === attachment.docId ? a.status='d' : a)}>delete</IconButton>	
-								</Item>
+								</div>
 							{/each}
 						</ImageList>
 					</div>
