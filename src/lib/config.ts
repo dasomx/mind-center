@@ -108,7 +108,7 @@ export const INIT_COUNSELING: Counseling = {
 	emergencyIntervention: '',
 	counselingTopic: '',
 	counselingDetails: '',
-	pictureUrls: [],
+	attachments: [],
 	psychologicalAidDetails: '',
 	categoricalEvaluation: {
 		psychological: 0,

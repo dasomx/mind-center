@@ -1,9 +1,5 @@
 <script lang="ts">
-	import {
-		type Counseling,
-		type Client,
-		EvaluationCategory,
-	} from '$lib/types/index.d';
+	import { type Counseling, type Client, EvaluationCategory } from '$lib/types/index.d';
 	import FormField from '@smui/form-field';
 	import Select, { Option } from '@smui/select';
 	import Radio from '@smui/radio';
@@ -20,6 +16,16 @@
 	import { goto } from '$app/navigation';
 	import { isUndefined, round } from '$lib/utils/common';
 	import ClientGeneralInfoForm from './client-general-info-form.svelte';
+	import FileUploader from './file-uploader.svelte';
+	import ImageList, {
+		Item,
+		ImageAspectContainer,
+		Image,
+		Supporting,
+		Label
+	} from '@smui/image-list';
+	import { ImageViewer } from 'svelte-image-viewer';
+	import IconButton from '@smui/icon-button';
 
 	/** @type {import('./$types').PageData} */
 	export let counseling: Counseling;
@@ -31,45 +37,42 @@
 	let catEvalTotal = 0; // Total evaluation
 	let catEvalAvg = 0; // Average evaluation
 
-	// Assessment Button Styling
-	let assessmentButtonAdult = "";
-	let assessmentButtonChild = "";
-	let assessmentAdultStyle = "";
-	let assessmentChildStyle = "";
-
-	if(counseling.assessment) {
-		let assessmentData = JSON.parse(counseling.assessment);
-		let assessmentType = assessmentData[0].options; // ADULT, CHILD
-		if(assessmentType == "ADULT") {
-			assessmentButtonAdult = " (saved)";
-			assessmentAdultStyle = "color:red; ";
-		}
-		else if(assessmentType == "CHILD") {
-			assessmentButtonChild = " (saved)";
-			assessmentChildStyle = "color:red; ";
-		}
+	if(!counseling.attachments) {
+		counseling.attachments = [];
 	}
-	// End of Assessment Button Styling
 
 	function calculateEval() {
 		catEvalTotal = 0; // reset
 		catEvalAvg = 0; // reset
 		let cnt = 0;
 
-		Object.values(counseling.categoricalEvaluation).forEach( value => {
-			if(!isUndefined(value)) {
+		Object.values(counseling.categoricalEvaluation).forEach((value) => {
+			if (!isUndefined(value)) {
 				catEvalTotal += parseInt(value);
 				cnt++;
 			}
-		})
+		});
 
-		catEvalAvg = cnt > 0 ? round(catEvalTotal / cnt, 1): 0;
+		catEvalAvg = cnt > 0 ? round(catEvalTotal / cnt, 1) : 0;
 	}
 
 	// Run to get evaluation result
 	onMount(() => {
 		calculateEval();
 	});
+
+	const handleUploadSuccess = (event: any) => {
+		const { url, docId, filename } = event.detail;
+		console.log('File uploaded successfully:', url, docId);
+		counseling.attachments = [...counseling.attachments, { url, docId, filename, status: 'a' }];
+		// Additional actions (e.g., update UI, notify user)
+	};
+
+	const handleUploadError = (event: any) => {
+		const { error } = event.detail;
+		console.error('Upload error:', error);
+		// Handle the error as needed
+	};
 
 	let startTime = convertTimestampToLocaleISOString(counseling?.startTime ?? Timestamp.now());
 	let endTime = convertTimestampToLocaleISOString(counseling?.endTime ?? Timestamp.now());
@@ -92,7 +95,6 @@
 			console.error('error on saving counseling', error);
 		}
 	}
-
 </script>
 
 <div class="container">
@@ -176,16 +178,24 @@
 				</Cell>
 				<Cell span={12}>
 					<div class="margins">
-						<Textfield
-							style="width: 100%;"
-							helperLine$style="width: 100%;"
-							input$readonly
-							textarea
-							bind:value={counseling.pictureUrls}
-							label="Click to upload or drag & drop (To be available)"
-						>
-							<HelperText slot="helper">Click to upload or drag & drop</HelperText>
-						</Textfield>
+						<div>Upload file</div>
+						<FileUploader
+							directory="counseling"
+							metadata={{ description: 'Counseling files' }}
+							allowedTypes={['image/png', 'image/jpeg', 'image/jpg', 'application/pdf']}
+							on:success={handleUploadSuccess}
+							on:error={handleUploadError}
+						/>
+
+						<ImageList class="demo-list">
+							{#each counseling.attachments.filter(a => a.status === 'a') as attachment}
+								<div style="display:flex;align-items:center">
+									<IconButton class="material-icons">attach_file</IconButton>
+									<a href={attachment.url} target="_blank">{attachment.filename}</a>
+									<IconButton class="material-icons" on:click={() => counseling.attachments = counseling.attachments.map((a) => a.docId === attachment.docId ? a.status='d' : a)}>delete</IconButton>	
+								</div>
+							{/each}
+						</ImageList>
 					</div>
 				</Cell>
 				<Cell span={12}>
@@ -265,7 +275,11 @@
 					</Select>
 				</Cell>
 				<Cell span={12}>
-					<div class="grid-title" style='display: inline-block;'><span style='color:blue; font-weight: bold; margin-right:4px;'>Evaluation </span> <span style='font-weight: bold; margin-right:4px;'>Total</span>: {catEvalTotal} <span style='font-weight: bold;'>Average</span>:{catEvalAvg}</div>
+					<div class="grid-title" style="display: inline-block;">
+						<span style="color:blue; font-weight: bold; margin-right:4px;">Evaluation </span>
+						<span style="font-weight: bold; margin-right:4px;">Total</span>: {catEvalTotal}
+						<span style="font-weight: bold;">Average</span>:{catEvalAvg}
+					</div>
 				</Cell>
 			</LayoutGrid>
 			<div style="align-self: flex-end;">

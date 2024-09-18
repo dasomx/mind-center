@@ -34,7 +34,7 @@ service cloud.firestore {
       allow read: if isApproved();
       allow write: if isApproved();
     }
-    match /{path=**}/files/{link} {
+    match /{path=**}/uploads/{link} {
       allow read: if isApproved();
       allow write: if isApproved();
     }

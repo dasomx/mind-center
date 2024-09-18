@@ -26,7 +26,7 @@
 
 	  let selectedId: string | null = null;
 
-	async function removeClient(clientId: string, id: string) {
+	async function removeClient() {
 		try {
 			if (!selectedId) return;
 			await deleteClient(selectedId);
@@ -38,16 +38,6 @@
 			open = false;
 			selectedId = null;
 		}
-	}
-
-	// Warning before removing a session
-	let delClientId: String = '';
-	let delId: String = '';
-	// End: Warning before removing a session
-
-	let cnt = 0;
-	async function countSessions(id:string) {
-		cnt= await countCounselings(id);
 	}
 </script>
 
@@ -112,9 +102,8 @@
 						<Cell>
 							<Button on:click={()=>goto(`${routes.clients}/${id}`)}>Show</Button>
 							<Button on:click={()=>{
-								open = true; 
-								delClientId = clientId;
-								delId = id;
+								open = true; ;
+								selectedId = id;
 							}}>Delete</Button>
 						</Cell>
 					{/if}
@@ -181,7 +170,7 @@
       <Label>No</Label>
     </Button>
     <Button on:click={() => {
-		removeClient(delClientId, delId);
+		removeClient();
 	}}>
       <Label>Yes</Label>
     </Button>

@@ -121,7 +121,7 @@ export type Counseling = {
 	emergencyIntervention?: string;
 	counselingTopic: string;
 	counselingDetails: string;
-	pictureUrls: string[];
+	attachments: { url: string; docId: string; filename: string; status: 'a' | 'd' }[];
 	psychologicalAidDetails?: string;
 	categoricalEvaluation?: {
 		psychological: number;
