@@ -44,7 +44,6 @@
 			<Cell>Disaster Name</Cell>
 			<Cell>Type</Cell>
 			<Cell>Status</Cell>
-			<Cell>Assessment</Cell>
 			<Cell>Actions</Cell>
 		</Row>
 	</Head>
@@ -57,11 +56,6 @@
 				<Cell>{disasterName}</Cell>
 				<Cell>{counselingType}</Cell>
 				<Cell><StatusChipCounseling status={status}/></Cell>
-				<Cell>
-					{#if assessment != null}
-						<span style='color:red'> SAVED</span>
-					{/if}
-				</Cell>
 				<Cell>
 					<Button on:click={()=>goto(`/mc/clients/${clientId}/counselings/${id}/edit`)}>Edit</Button>
 					<Button on:click={()=>{
