@@ -12,6 +12,7 @@
 	import { routes } from '$lib/config';
 	import { convertTimestampToDateString } from '$lib/firebase/utils';
 	import { countCounselings, deleteClient } from '$lib/firebase/firebase.client';
+	import { getAgeFromDOB } from '$lib/utils/common';
 
 	export let data: Data[] = [];
 	type Data = Client & { no: number };
@@ -87,7 +88,7 @@
 				}>{name}</Cell>
 				<Cell>{disasterName}</Cell>
 				<Cell>{gender}</Cell>
-				<Cell>{dob}</Cell>
+				<Cell>{getAgeFromDOB(dob)}</Cell>
 				<Cell><StatusChip status={status}/></Cell>
 				{#await countCounselings(id) then cnt}
 					<Cell>{cnt}</Cell>
