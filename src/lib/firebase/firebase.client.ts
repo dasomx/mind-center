@@ -18,6 +18,7 @@ import {
 	Timestamp,
 	where
 } from 'firebase/firestore';
+import { connectStorageEmulator, getStorage, type FirebaseStorage } from 'firebase/storage';
 import { browser } from '$app/environment';
 import type {
 	Assessment,
@@ -38,6 +39,7 @@ import { cleanObject } from './utils';
 export let db: Firestore;
 export let app: FirebaseApp;
 export let auth: Auth;
+export let storage: FirebaseStorage;
 
 const firebaseConfig = {
 	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -56,6 +58,7 @@ export const initializeFirebase = () => {
 		app = initializeApp(firebaseConfig);
 		auth = getAuth(app);
 		db = getFirestore(app);
+		storage = getStorage(app);
 
 		if (firebaseConfig.useEmulator) {
 			const emulatorHost = import.meta.env.VITE_FIREBASE_EMULATOR_HOST ?? 'localhost';
@@ -63,6 +66,7 @@ export const initializeFirebase = () => {
 				import.meta.env.VITE_FIREBASE_EMULATOR_AUTH_URL ?? 'http://127.0.0.1:9099';
 			connectAuthEmulator(auth, emulatorAuthUrl);
 			connectFirestoreEmulator(db, emulatorHost, 9080);
+			connectStorageEmulator(storage, emulatorHost, 9299);
 		}
 	}
 };
