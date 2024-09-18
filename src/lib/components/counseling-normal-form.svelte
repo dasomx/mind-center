@@ -54,6 +54,9 @@
 			assessmentChildStyle = 'color:red; ';
 		}
 	}
+	if(!counseling.attachments) {
+		counseling.attachments = [];
+	}
 	// End of Assessment Button Styling
 
 	function calculateEval() {
