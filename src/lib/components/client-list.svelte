@@ -61,8 +61,6 @@
   </Actions>
 </Dialog>
 
-<pre class="status">Clicked: {clicked}</pre>
-
 
 <DataTable table$aria-label="People list" style="width: 100%; border: 0px">
 	<Head>
