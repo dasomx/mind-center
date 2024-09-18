@@ -9,6 +9,7 @@
 	import { goto } from '$app/navigation';
 	import { deleteAssessment } from '$lib/firebase/firebase.client';
 	import Dialog, { Title, Content, Actions } from '@smui/dialog';
+	import { numberOfAnswersAssessment, scoreAssessment } from '$lib/utils/assessment';
 	export let data: Data[] = [];
 	type Data = Assessment & { no: number };
 	let rowsPerPage = 10;
@@ -38,6 +39,8 @@
 			<Cell>No</Cell>
 			<Cell>Date</Cell>
 			<Cell>Form</Cell>
+			<Cell>Answered</Cell>
+			<Cell>Score</Cell>
 			<Cell>Actions</Cell>
 		</Row>
 	</Head>
@@ -48,6 +51,8 @@
 					<Cell>{no}</Cell>
 					<Cell>{convertTimestampToDateString(createdAt)}</Cell>
 					<Cell>{respond[0].text}</Cell>
+					<Cell>{numberOfAnswersAssessment(respond)}</Cell>
+					<Cell>{scoreAssessment(respond)}</Cell>
 					<Cell>
 						<Button
 							on:click={() =>
