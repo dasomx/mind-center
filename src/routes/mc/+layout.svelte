@@ -101,12 +101,12 @@
 					<Item href="/mc/clients">
 						<Text>My Clients</Text>
 					</Item>
-					<Item href="/mc/counselings">
+					<!-- <Item href="/mc/counselings">
 						<Text>My Counselings</Text>
 					</Item>
 					<Item href="/mc/links">
 						<Text>Link / Refer</Text>
-					</Item>
+					</Item> -->
 				</List>
 			</Content>
 		</Drawer>
