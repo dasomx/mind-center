@@ -42,6 +42,7 @@
 			filteredCounselings = data;
 		} catch (error) {
 			showSnackbarInfo(error);
+			console.error(error);
 		}
 	}
 
