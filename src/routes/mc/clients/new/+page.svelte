@@ -4,8 +4,7 @@
 
 </script>
 <div>
-    <h5>Add new client</h5>
     <div>
-        <ClientForm data={INIT_CLIENT}/>
+        <ClientForm data={INIT_CLIENT} mode="Add New"/>
     </div>
 </div>

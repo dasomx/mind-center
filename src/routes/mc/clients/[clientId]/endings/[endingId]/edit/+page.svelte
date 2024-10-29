@@ -8,4 +8,4 @@
     console.debug('data ', data);
 </script>
 
-<EndingSessionForm client={client} ending={ending}/>
+<EndingSessionForm client={client} ending={ending} mode="Edit"/>

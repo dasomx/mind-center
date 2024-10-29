@@ -8,8 +8,8 @@
 </script>
 <div>
     <span class="Page-header">
-        Add Session Detail
-      </span>
+      <span class='title'>Counseling | </span><span class='subtitle'>Add New Session</span>
+    </span>
     <div>
         <CounselingForm counseling={initData} client={client}/>
     </div>
@@ -29,5 +29,13 @@
   letter-spacing: 0.25px;
   text-align: left;
   color: rgba(0, 0, 0, 0.87);
+}
+.title {
+		font-weight: bold;
+		font-size: 100%; 
+	}
+.subtitle {
+  font-weight: bold;
+  font-size: 75%; 
 }
 </style>
