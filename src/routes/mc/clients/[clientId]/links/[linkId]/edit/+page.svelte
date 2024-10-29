@@ -9,4 +9,4 @@
     console.debug('data ', data);
 </script>
 
-<LinkForm client={client} link={link}/>
+<LinkForm client={client} link={link}  mode="Edit"/>

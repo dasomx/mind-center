@@ -7,5 +7,4 @@
 
     console.debug('client ', client, 'assessment ', assessment);
 </script>
-
-<AssessmentForm client={client}  assessment={assessment} />
+<AssessmentForm client={client}  assessment={assessment} mode="Add New"/>

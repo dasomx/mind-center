@@ -22,6 +22,8 @@
 	export let client: Client;
 	export let assessment: Assessment | null;
 
+	export let mode: string = ''; // used in the page title eg, Add New , Edit
+	
 	let saving = false;
 	let age = getAgeFromDOB(client.dob);
 	let assessQuestions = age > 18 ? AdultPCL5 : ChildrenCRTESR;
@@ -56,7 +58,10 @@
 	{#if !client}
 		<CircularProgress />
 	{:else}
-		<div class="form-container">			
+		<div class="form-container">
+			<span class="Page-header">
+				<span class='title'>Assessment | </span><span class='subtitle'>{mode} Assessment</span>
+			</span>			
 			<div class="grid-title">Client Info</div>
 			<LayoutGrid class="grid-container">
 				<Cell>
@@ -197,7 +202,6 @@
 		padding: 0;
 		margin-top: 2.5rem;
 	}
-
 	.addSessionType {
 		flex-grow: 1;
 		font-family: Roboto;
@@ -214,9 +218,15 @@
 		border-radius: 8px;
 		padding: 24px;
 	}
-
 	.question {
 		margin-bottom: 1em;
 	}
-
+	.title {
+		font-weight: bold;
+		font-size: 2em; /* 150% of the default size */
+	}
+	.subtitle {
+		font-weight: bold;
+		font-size: 1.5em; /* 150% of the default size */
+	}
 </style>

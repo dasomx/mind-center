@@ -7,4 +7,4 @@
     console.debug('data ', data);
 </script>
 
-<ClientForm data={data.props.client}/>
+<ClientForm data={data.props.client} mode="Edit"/>

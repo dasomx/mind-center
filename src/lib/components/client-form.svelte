@@ -31,6 +31,8 @@
 		medicalCoverage: data?.medicalCoverage ?? null
 	};
 
+	export let mode: string = ''; // used in the page title eg, Add New , Edit
+
 	let saving = false;
 
 	async function save() {
@@ -52,15 +54,19 @@
 		<LinearProgress indeterminate />
 	{/if}
 	<div class="form-container">
-	<h3>Client Form</h3>
-		<div style="align-self: flex-end;">
-			<Button variant="outlined" on:click={() => history.back()}>Close</Button>
-			<Button variant="raised" disabled={saving} on:click={save}
-				>{saving ? 'Saving...' : 'Save'}
-				{#if saving}
-					<CircularProgress style="height: 24px; width: 24px;" indeterminate />
-				{/if}
-			</Button>
+		<div class="content">
+			<div class="left-content">
+				<span class='title'>Client | </span><span class='subtitle'>{mode} Client</span>
+			</div>
+			<div class="right-content">
+				<Button variant="outlined" on:click={() => history.back()}>Close</Button>
+				<Button variant="raised" disabled={saving} on:click={save}
+					>{saving ? 'Saving...' : 'Save'}
+					{#if saving}
+						<CircularProgress style="height: 24px; width: 24px;" indeterminate />
+					{/if}
+				</Button>
+			</div>
 		</div>
 		<div class="grid-title">General Information</div>
 		<LayoutGrid class="grid-container">
@@ -256,5 +262,28 @@
 		align-items: flex-start;
 		padding: 0;
 		margin-top: 2.5rem;
+	}
+	.content {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		align-items: center;
+	}
+	.left-content {
+		flex: 1; /* Pushes the buttons to the right */
+		text-align: left;
+	}
+	.right-content {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+	}
+	.title {
+		font-weight: bold;
+		font-size: 2em; /* 150% of the default size */
+	}
+	.subtitle {
+		font-weight: bold;
+		font-size: 1.5em; /* 150% of the default size */
 	}
 </style>

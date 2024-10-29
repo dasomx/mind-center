@@ -52,7 +52,6 @@
 </script>
 
 <div>
-	<h6>My Clients</h6>
 	<h5>My Clients</h5>
 	<div class="search-container">
 		<div class="inner-container">

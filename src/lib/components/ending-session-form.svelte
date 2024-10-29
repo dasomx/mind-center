@@ -14,6 +14,8 @@
 	export let client: Client;
 	export let ending: EndingSession;
 
+	export let mode: string = ''; // used in the page title eg, Add New , Edit
+
 	let saving = false;
 
 	async function save() {
@@ -35,15 +37,19 @@
 		<LinearProgress indeterminate />
 	{/if}
 	<div class="form-container">
-		<h3>Ending Session</h3>
-		<div style="align-self: flex-end;">
-			<Button variant="outlined" on:click={() => history.back()}>Close</Button>
-			<Button variant="raised" disabled={saving} on:click={save}
-				>{saving ? 'Saving...' : 'Save'}
-				{#if saving}
-					<CircularProgress style="height: 24px; width: 24px;" indeterminate />
-				{/if}
-			</Button>
+		<div class="content">
+			<div class="left-content">
+				<span class='title'>End Counseling | </span><span class='subtitle'>{mode} Session</span>
+			</div>
+			<div class="right-content">
+				<Button variant="outlined" on:click={() => history.back()}>Close</Button>
+				<Button variant="raised" disabled={saving} on:click={save}
+					>{saving ? 'Saving...' : 'Save'}
+					{#if saving}
+						<CircularProgress style="height: 24px; width: 24px;" indeterminate />
+					{/if}
+				</Button>
+			</div>
 		</div>
 		<ClientGeneralInfoForm {client} />
 		<div class="grid-title">Ending Session Report</div>
@@ -119,5 +125,28 @@
 		align-items: flex-start;
 		padding: 0;
 		margin-top: 2.5rem;
+	}
+	.content {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		align-items: center;
+	}
+	.left-content {
+		flex: 1; /* Pushes the buttons to the right */
+		text-align: left;
+	}
+	.right-content {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+	}
+	.title {
+		font-weight: bold;
+		font-size: 2em; /* 150% of the default size */
+	}
+	.subtitle {
+		font-weight: bold;
+		font-size: 1.5em; /* 150% of the default size */
 	}
 </style>
